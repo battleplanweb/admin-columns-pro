@@ -9,7 +9,7 @@ Plugin URI: https://www.admincolumns.com
 Requires PHP: 5.6.20
 Text Domain: codepress-admin-columns
 Domain Path: /languages/
-Github Theme URI: https://github.com/battleplanweb/admin-columns-pro
+Github Plugin URI: https://github.com/battleplanweb/admin-columns-pro
 */
 
 if ( ! defined( 'ABSPATH' ) ) {
