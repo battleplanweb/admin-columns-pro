@@ -1,9 +1,10 @@
 <?php
 /*
 Plugin Name: Admin Columns Pro
-Version: 6.2.1
+Version: 6.2.2
 Description: Customize columns on the administration screens for post(types), users and other content. Filter and sort content, and edit posts directly from the posts overview. All via an intuitive, easy-to-use drag-and-drop interface.
 GitHub Plugin URI: battleplanweb/admin-columns-pro
+
 Requires PHP: 7.2
 Requires at least: 5.3
 Text Domain: codepress-admin-columns
@@ -35,7 +36,7 @@ if ( ! is_admin() ) {
 }
 
 define( 'ACP_FILE', __FILE__ );
-define( 'ACP_VERSION', '6.2.1' );
+define( 'ACP_VERSION', '6.2.2' );
 
 require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
