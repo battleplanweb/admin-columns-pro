@@ -7,7 +7,8 @@ use AC\Registerable;
 
 class RemoveDeprecatedColumnFromTypeSelector implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_filter( 'ac/column/settings/column_types', [ $this, 'remove_from_type_selector' ], 10, 2 );
 	}
 

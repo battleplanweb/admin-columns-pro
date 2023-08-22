@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ACA\EC\Service;
 
 use AC;
@@ -8,13 +10,14 @@ use ACA\EC\ListScreenFactory;
 
 final class ListScreens implements Registerable {
 
-	public function register() {
-		AC\ListScreenFactory::add( new ListScreenFactory\EventFactory() );
-		AC\ListScreenFactory::add( new ListScreenFactory\OrganizerFactory() );
-		AC\ListScreenFactory::add( new ListScreenFactory\VenueFactory() );
+	public function register(): void
+    {
+        AC\ListScreenFactory\Aggregate::add( new ListScreenFactory\EventFactory() );
+        AC\ListScreenFactory\Aggregate::add( new ListScreenFactory\OrganizerFactory() );
+        AC\ListScreenFactory\Aggregate::add( new ListScreenFactory\VenueFactory() );
 
 		if ( post_type_exists( 'tribe_event_series' ) ) {
-			AC\ListScreenFactory::add( new ListScreenFactory\EventSeriesFactory() );
+            AC\ListScreenFactory\Aggregate::add( new ListScreenFactory\EventSeriesFactory() );
 		}
 
 		add_action( 'ac/list_screen_groups', [ $this, 'register_list_screen_groups' ] );

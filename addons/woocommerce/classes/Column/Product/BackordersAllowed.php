@@ -4,7 +4,6 @@ namespace ACA\WC\Column\Product;
 
 use AC;
 use ACA\WC\Editing;
-use ACA\WC\Export;
 use ACA\WC\Filtering;
 use ACA\WC\Search;
 use ACA\WC\Sorting;

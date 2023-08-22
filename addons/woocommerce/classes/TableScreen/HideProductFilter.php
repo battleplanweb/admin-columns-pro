@@ -29,7 +29,8 @@ class HideProductFilter implements Registerable {
 		$this->filter_name = $filter_name;
 	}
 
-	public function register() {
+	public function register(): void
+    {
 		add_filter( 'woocommerce_products_admin_list_table_filters', [ $this, 'hide_filter' ] );
 	}
 

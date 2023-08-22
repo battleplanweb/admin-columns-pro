@@ -5,8 +5,8 @@ namespace ACA\EC\Column\Venue;
 use AC;
 use ACA\EC\Column;
 use ACA\EC\Filtering;
-use ACP\ConditionalFormat;
 use ACP;
+use ACP\ConditionalFormat;
 
 class UpcomingEvent extends Column\UpcomingEvent
 	implements AC\Column\Relation, ACP\Filtering\Filterable, ConditionalFormat\Formattable {

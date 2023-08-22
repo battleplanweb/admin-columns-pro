@@ -10,7 +10,8 @@ class ColumnGroup implements Registerable {
 
 	public const NAME = 'media-library-assistant';
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/column_groups', [ $this, 'register_column_group' ] );
 	}
 

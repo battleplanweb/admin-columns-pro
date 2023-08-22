@@ -10,38 +10,34 @@ use ACP\Search\Operators;
 use ACP\Search\Value;
 
 class Crosssells extends Comparison\Meta
-	implements Comparison\SearchableValues {
+    implements Comparison\SearchableValues
+{
 
-	public function __construct() {
-		$operators = new Operators( [
-			Operators::EQ,
-			Operators::IS_EMPTY,
-			Operators::NOT_IS_EMPTY,
-		] );
+    public function __construct()
+    {
+        $operators = new Operators([
+            Operators::EQ,
+            Operators::IS_EMPTY,
+            Operators::NOT_IS_EMPTY,
+        ]);
 
-		parent::__construct( $operators, '_crosssell_ids', MetaType::POST );
-	}
+        parent::__construct($operators, '_crosssell_ids', MetaType::POST);
+    }
 
-	/**
-	 * Template function that should work most of the cases
-	 *
-	 * @param string $operator
-	 * @param Value  $value
-	 *
-	 * @return array
-	 */
-	protected function get_meta_query( $operator, Value $value ) {
-		$comparison = SerializedComparisonFactory::create(
-			$this->meta_key,
-			$operator,
-			$value
-		);
+    protected function get_meta_query($operator, Value $value)
+    {
+        $comparison = SerializedComparisonFactory::create(
+            $this->meta_key,
+            $operator,
+            new Value((int)$value->get_value(), $value->get_type())
+        );
 
-		return $comparison();
-	}
+        return $comparison();
+    }
 
-	public function get_values( $s, $paged ) {
-		return new Select\Paginated\Products( (string) $s, (int) $paged );
-	}
+    public function get_values($s, $paged)
+    {
+        return new Select\Paginated\Products((string)$s, (int)$paged);
+    }
 
 }

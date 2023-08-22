@@ -8,7 +8,8 @@ use ACA\BbPress\Column;
 
 class Columns implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/column_groups', [ $this, 'register_column_group' ] );
 	}
 

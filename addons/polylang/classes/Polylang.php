@@ -2,30 +2,27 @@
 
 namespace ACA\Polylang;
 
-use AC;
 use AC\Registerable;
-use ACA\Polylang\Service;
+use AC\Services;
 
-class Polylang implements Registerable {
+class Polylang implements Registerable
+{
 
-	public function register() {
-		if ( ! defined( 'POLYLANG_VERSION' ) ) {
-			return;
-		}
+    public function register(): void
+    {
+        if ( ! defined('POLYLANG_VERSION')) {
+            return;
+        }
 
-		$services = [
-			new Service\Columns(),
-		];
+        $this->create_services()->register();
+    }
 
-		foreach ( $services as $service ) {
-			if ( $service instanceof Registerable ) {
-				$service->register();
-			}
-		}
-
-		add_action( 'ac/table/list_screen', function ( AC\ListScreen $list_screen ) {
-			( new Service\ColumnReplacement( $list_screen ) )->register();
-		} );
-	}
+    private function create_services(): Services
+    {
+        return new Services([
+            new Service\Columns(),
+            new Service\Table(),
+        ]);
+    }
 
 }

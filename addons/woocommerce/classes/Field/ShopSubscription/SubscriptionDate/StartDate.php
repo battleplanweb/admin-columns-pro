@@ -5,8 +5,8 @@ namespace ACA\WC\Field\ShopSubscription\SubscriptionDate;
 use ACA\WC\Editing;
 use ACA\WC\Field\ShopSubscription\SubscriptionDate;
 use ACA\WC\Search;
-use WC_Subscription;
 use WC_DateTime;
+use WC_Subscription;
 
 class StartDate extends SubscriptionDate {
 

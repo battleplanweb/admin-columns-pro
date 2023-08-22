@@ -3,26 +3,27 @@
 namespace ACA\BbPress;
 
 use AC\Registerable;
-use ACA\BbPress\Service;
+use AC\Services;
 
-class BbPress implements Registerable {
+class BbPress implements Registerable
+{
 
-	public function register() {
-		if ( ! class_exists( 'bbPress' ) ) {
-			return;
-		}
+    public function register(): void
+    {
+        if ( ! class_exists('bbPress')) {
+            return;
+        }
 
-		$services = [
-			new Service\Columns(),
-			new Service\Editing(),
-			new Service\ListScreens(),
-		];
+        $this->create_services()->register();
+    }
 
-		foreach ( $services as $service ) {
-			if ( $service instanceof Registerable ) {
-				$service->register();
-			}
-		}
-	}
+    private function create_services(): Services
+    {
+        return new Services([
+            new Service\Columns(),
+            new Service\Editing(),
+            new Service\ListScreens(),
+        ]);
+    }
 
 }

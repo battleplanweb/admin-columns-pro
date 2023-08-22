@@ -4,7 +4,7 @@ namespace ACA\GravityForms\TableScreen;
 
 use AC;
 use AC\DefaultColumnsRepository;
-use AC\ListScreenFactoryInterface;
+use AC\ListScreenFactory;
 use AC\ListScreenRepository\Storage;
 use AC\Type\ListScreenId;
 use ACA\GravityForms\Column;
@@ -25,7 +25,7 @@ class Entry implements AC\Registerable {
 	private $default_columns_repository;
 
 	public function __construct(
-		ListScreenFactoryInterface $list_screen_factory,
+		ListScreenFactory $list_screen_factory,
 		Storage $storage,
 		DefaultColumnsRepository $default_columns_repository
 	) {
@@ -34,7 +34,8 @@ class Entry implements AC\Registerable {
 		$this->default_columns_repository = $default_columns_repository;
 	}
 
-	public function register() {
+	public function register(): void
+    {
 		add_filter( 'gform_entry_list_columns', [ $this, 'remove_selector_column' ], 11, 2 );
 		add_filter( 'acp/editing/result', [ $this, 'get_editing_ajax_value' ], 10, 3 );
 		add_action( 'ac/table/list_screen', [ $this, 'create_default_list_screen' ], 9 );

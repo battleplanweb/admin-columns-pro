@@ -51,10 +51,12 @@ class CheckboxList extends Column
 	}
 
 	public function editing() {
-		return $this->is_clonable() ? false : new ACP\Editing\Service\Basic(
-			( new ACP\Editing\View\CheckboxList( $this->get_field_setting( 'options' ) ) )->set_clear_button( true ),
-			( new StorageFactory() )->create( $this, false )
-		);
+		return $this->is_clonable()
+			? false
+			: new ACP\Editing\Service\Basic(
+				( new ACP\Editing\View\CheckboxList( $this->get_field_setting( 'options' ) ) )->set_clear_button( true ),
+				( new StorageFactory() )->create( $this, false )
+			);
 	}
 
 	public function search() {

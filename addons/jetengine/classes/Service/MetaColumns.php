@@ -9,15 +9,16 @@ use ACA\JetEngine\FieldRepository;
 
 final class MetaColumns implements AC\Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/column_types', [ $this, 'add_meta_columns' ] );
 	}
 
 	public function add_meta_columns( ListScreen $list_screen ) {
-		$repo = new FieldRepository();
+		$repo = new FieldRepository($list_screen);
 		$column_factory = new ColumnFactory();
 
-		$fields = $repo->find_by_list_screen( $list_screen );
+		$fields = $repo->find_all();
 
 		if ( empty( $fields ) ) {
 			return;

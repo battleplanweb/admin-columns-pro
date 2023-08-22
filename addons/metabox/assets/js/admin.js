@@ -2,7 +2,7 @@ const isAddonColumn = result => {
 	if ( result.element ) {
 		let group = result.element.parentElement;
 
-		if ( group && group.label.indexOf( 'MetaBox' ) === 0 ) {
+		if ( group && group.label.indexOf( 'MetaBox' ) > -1 ) {
 			return true;
 		}
 	}

@@ -109,6 +109,8 @@ final class ColumnFactory {
 				return $this->is_multiple( $field_settings )
 					? new Column\Users()
 					: new Column\User();
+			case 'group':
+				return new Column\Group();
 			default:
 				return false;
 		}

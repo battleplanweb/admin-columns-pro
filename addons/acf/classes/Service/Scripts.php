@@ -19,7 +19,8 @@ class Scripts implements Registerable {
 		$this->location = $location;
 	}
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/table_scripts/editing', [ $this, 'table_scripts_editing' ] );
 		add_action( 'ac/admin_scripts', [ $this, 'admin_scripts' ] );
 	}

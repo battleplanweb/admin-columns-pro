@@ -1,30 +1,42 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ACA\GravityForms;
 
 use AC;
 use GF_Entry_List_Table;
 use GFAPI;
 
-class ListTable implements AC\ListTable {
+class ListTable implements AC\ListTable
+{
 
-	private $listTable;
+    private $table;
 
-	public function __construct( GF_Entry_List_Table $listTable ) {
-		$this->listTable = $listTable;
-	}
+    public function __construct(GF_Entry_List_Table $table)
+    {
+        $this->table = $table;
+    }
 
-	public function get_column_value( $column, $id ) {
-		ob_start();
+    public function get_column_value(string $column, int $id): string
+    {
+        ob_start();
+        $this->table->column_default(GFAPI::get_entry($id), $column);
 
-		$entry = GFAPI::get_entry( $id );
-		$this->listTable->column_default( $entry, $column );
+        return ob_get_clean();
+    }
 
-		return ob_get_clean();
-	}
+    public function get_total_items(): int
+    {
+        return $this->table->get_pagination_arg('total_items');
+    }
 
-	public function get_total_items() {
-		return $this->listTable->get_pagination_arg( 'total_items' );
-	}
+    public function render_row(int $id): string
+    {
+        ob_start();
+        $this->table->single_row(GFAPI::get_entry($id));
+
+        return ob_get_clean();
+    }
 
 }

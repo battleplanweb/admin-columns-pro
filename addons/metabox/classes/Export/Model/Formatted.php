@@ -2,8 +2,6 @@
 
 namespace ACA\MetaBox\Export\Model;
 
-use ACA\MetaBox\Column;
-
 class Formatted extends Raw {
 
 	public function format_single_value( $value, $id = null ) {

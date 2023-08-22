@@ -11,7 +11,8 @@ use ACP\Type\HideOnScreen\Group;
 
 final class Admin implements AC\Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'acp/admin/settings/hide_on_screen', [ $this, 'add_hide_on_screen' ], 10, 2 );
 	}
 

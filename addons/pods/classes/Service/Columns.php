@@ -9,7 +9,8 @@ use ACP;
 
 final class Columns implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/column_groups', [ $this, 'register_column_groups' ] );
 		add_action( 'acp/column_types', [ $this, 'add_columns' ] );
 	}

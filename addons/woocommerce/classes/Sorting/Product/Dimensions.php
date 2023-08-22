@@ -1,46 +1,53 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ACA\WC\Sorting\Product;
 
+use ACP\Search\Query\Bindings;
 use ACP\Sorting\AbstractModel;
+use ACP\Sorting\Model\QueryBindings;
 use ACP\Sorting\Model\SqlOrderByFactory;
 use ACP\Sorting\Model\WarningAware;
 use ACP\Sorting\Type\ComputationType;
+use ACP\Sorting\Type\Order;
 
-class Dimensions extends AbstractModel implements WarningAware {
+class Dimensions extends AbstractModel implements WarningAware, QueryBindings
+{
 
-	public function get_sorting_vars() {
-		add_filter( 'posts_clauses', [ $this, 'sorting_clauses_callback' ] );
+    public function create_query_bindings(Order $order): Bindings
+    {
+        global $wpdb;
 
-		return [
-			'suppress_filters' => false,
-		];
-	}
+        $bindings = new Bindings();
 
-	public function sorting_clauses_callback( $clauses ) {
-		global $wpdb;
+        $alias_l = $bindings->get_unique_alias('length');
+        $alias_w = $bindings->get_unique_alias('width');
+        $alias_h = $bindings->get_unique_alias('height');
 
-		remove_filter( 'posts_clauses', [ $this, __FUNCTION__ ] );
+        $bindings->join(
+            "
+				LEFT JOIN $wpdb->postmeta AS $alias_l
+					ON $alias_l.post_id = $wpdb->posts.ID
+					AND $alias_l.meta_key = '_length' 
+				LEFT JOIN $wpdb->postmeta AS $alias_w
+					ON $alias_w.post_id = $wpdb->posts.ID
+					AND $alias_w.meta_key = '_width' 
+				LEFT JOIN $wpdb->postmeta AS $alias_h
+					ON $alias_h.post_id = $wpdb->posts.ID
+					AND $alias_h.meta_key = '_height' 
+				"
+        );
+        $bindings->group_by("$wpdb->posts.ID");
+        $bindings->order_by(
+            SqlOrderByFactory::create_with_computation(
+                new ComputationType(ComputationType::SUM),
+                "$alias_l.meta_value * $alias_w.meta_value * $alias_h.meta_value",
+                (string)$order
+            )
+        );
 
-		$clauses['join'] .= "
-				LEFT JOIN {$wpdb->postmeta} AS acsort_postmeta1
-					ON acsort_postmeta1.post_id = {$wpdb->posts}.ID
-					AND acsort_postmeta1.meta_key = '_length' 
-				LEFT JOIN {$wpdb->postmeta} AS acsort_postmeta2
-					ON acsort_postmeta2.post_id = {$wpdb->posts}.ID
-					AND acsort_postmeta2.meta_key = '_width' 
-				LEFT JOIN {$wpdb->postmeta} AS acsort_postmeta3
-					ON acsort_postmeta3.post_id = {$wpdb->posts}.ID
-					AND acsort_postmeta3.meta_key = '_height' 
-				";
-
-		$clauses['groupby'] = "{$wpdb->posts}.ID";
-		$clauses['orderby'] = sprintf( '%s,%s',
-			SqlOrderByFactory::create_with_computation( new ComputationType( ComputationType::SUM ), 'acsort_postmeta1.meta_value * acsort_postmeta2.meta_value * acsort_postmeta3.meta_value', $this->get_order() ),
-			"{$wpdb->posts}.ID"
-		);;
-
-		return $clauses;
-	}
+        return $bindings;
+    }
 
 }

@@ -6,7 +6,8 @@ use AC\Registerable;
 
 class Editing implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_filter( 'ac/editing/role_group', [ $this, 'editing_role_group' ], 10, 2 );
 	}
 

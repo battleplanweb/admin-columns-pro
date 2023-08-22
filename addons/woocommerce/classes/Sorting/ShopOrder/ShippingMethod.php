@@ -2,43 +2,37 @@
 
 namespace ACA\WC\Sorting\ShopOrder;
 
+use ACP\Search\Query\Bindings;
 use ACP\Sorting\AbstractModel;
+use ACP\Sorting\Model\QueryBindings;
 use ACP\Sorting\Model\SqlOrderByFactory;
+use ACP\Sorting\Type\Order;
 
-class ShippingMethod extends AbstractModel {
+class ShippingMethod extends AbstractModel implements QueryBindings
+{
 
-	public function get_sorting_vars() {
-		add_filter( 'posts_clauses', [ $this, 'sorting_clauses_callback' ] );
+    public function create_query_bindings(Order $order): Bindings
+    {
+        global $wpdb;
 
-		return [
-			'suppress_filters' => false,
-		];
-	}
+        $bindings = new Bindings();
 
-	/**
-	 * Setup clauses to sort by parent
-	 *
-	 * @param array $clauses array
-	 *
-	 * @return array
-	 * @since 4.0
-	 */
-	public function sorting_clauses_callback( $clauses ) {
-		global $wpdb;
+        $alias = $bindings->get_unique_alias('sortmethod');
 
-		remove_filter( 'posts_clauses', [ $this, __FUNCTION__ ] );
-
-		$clauses['join'] .= "
-			LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS acsort_oi ON {$wpdb->posts}.ID = acsort_oi.order_id
+        $bindings->join(
+            "
+			LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS acsort_oi ON $wpdb->posts.ID = acsort_oi.order_id
 				AND acsort_oi.order_item_type = 'shipping'
-			LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS acsort_oim ON acsort_oi.order_item_id = acsort_oim.order_item_id
-				AND acsort_oim.meta_key = 'method_id'
-		";
+			LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS $alias ON acsort_oi.order_item_id = $alias.order_item_id
+				AND $alias.meta_key = 'method_id'
+		"
+        );
+        $bindings->group_by("$wpdb->posts.ID");
+        $bindings->order_by(
+            SqlOrderByFactory::create("$alias.meta_value", (string)$order)
+        );
 
-		$clauses['groupby'] = "$wpdb->posts.ID";
-		$clauses['orderby'] = SqlOrderByFactory::create( 'acsort_oim.meta_value', $this->get_order() );
-
-		return $clauses;
-	}
+        return $bindings;
+    }
 
 }

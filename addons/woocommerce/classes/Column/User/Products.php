@@ -1,150 +1,119 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ACA\WC\Column\User;
 
 use AC;
 use ACA\WC\ConditionalFormat\FilteredHtmlIntegerFormatterTrait;
+use ACA\WC\Helper;
 use ACA\WC\Search;
 use ACA\WC\Settings;
-use ACA\WC\Sorting\User\ProductCount;
-use ACA\WC\Sorting\User\ProductCountUnique;
+use ACA\WC\Sorting;
 use ACP;
-use stdClass;
 
-/**
- * @since 3.0
- */
 class Products extends AC\Column
-	implements ACP\Sorting\Sortable, ACP\Search\Searchable, ACP\ConditionalFormat\Formattable {
+    implements ACP\Sorting\Sortable, ACP\Search\Searchable, ACP\ConditionalFormat\Formattable, AC\Column\AjaxValue
+{
 
-	use FilteredHtmlIntegerFormatterTrait;
+    use FilteredHtmlIntegerFormatterTrait;
 
-	public function __construct() {
-		$this->set_type( 'column-wc-user_products' )
-		     ->set_label( __( 'Products', 'codepress-admin-columns' ) )
-		     ->set_group( 'woocommerce' );
-	}
+    public function __construct()
+    {
+        $this->set_type('column-wc-user_products')
+             ->set_label(__('Products', 'codepress-admin-columns'))
+             ->set_group('woocommerce');
+    }
 
-	public function register_settings() {
-		$this->add_setting( new Settings\User\Products( $this ) );
-	}
+    public function get_value($id)
+    {
+        $count = $this->is_uniquely_purchased()
+            ? (new Helper\User())->get_uniquely_sold_product_count($id)
+            : (new Helper\User())->get_sold_product_count($id);
 
-	/**
-	 * @param int $id
-	 *
-	 * @return int
-	 */
-	public function get_raw_value( $id ) {
-		if ( $this->is_uniquely_purchased() ) {
-			return count( $this->get_products( $id ) );
-		}
+        return $count
+            ? ac_helper()->html->get_ajax_modal_link($count, [
+                'title' => sprintf(
+                    '%s %s',
+                    __('Products by', 'codepress-admin-columns'),
+                    ac_helper()->user->get_display_name($id)
+                ),
+                'class' => "-nopadding",
+            ])
+            : $this->get_empty_char();
+    }
 
-		$count = 0;
+    public function register_settings()
+    {
+        $this->add_setting(new Settings\User\Products($this));
+    }
 
-		foreach ( $this->get_products( $id ) as $product ) {
-			$count += $product->qty;
-		}
+    private function is_uniquely_purchased(): bool
+    {
+        $setting = $this->get_setting(Settings\User\Products::NAME);
 
-		return $count;
-	}
+        if ( ! $setting instanceof Settings\User\Products) {
+            return false;
+        }
 
-	/**
-	 * @param int $id User ID
-	 *
-	 * @return stdClass[] [ $product_id, $order_id, $qty ]
-	 */
-	private function get_products( $id ) {
-		global $wpdb;
+        return 'unique' === $setting->get_user_products();
+    }
 
-		// Unique products
-		$sql_parts = [
-			'select' => '
-				SELECT DISTINCT oim.meta_value AS product_id',
-			'from'   => "
-				FROM {$wpdb->postmeta} AS pm",
-			'joins'  => [
-				"
-				INNER JOIN {$wpdb->posts} AS p 
-					ON p.ID = pm.post_id 
-					AND p.post_status = 'wc-completed'",
-				"
-				INNER JOIN {$wpdb->prefix}woocommerce_order_items AS oi
-					ON oi.order_id = p.ID 
-					AND oi.order_item_type = 'line_item'",
-				"
-				INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS oim
-					ON oi.order_item_id = oim.order_item_id AND oim.meta_key = '_product_id'",
-			],
-			'where'  => "WHERE pm.meta_key = '_customer_user'
-				AND pm.meta_value = %d",
-		];
+    public function sorting()
+    {
+        if ($this->is_uniquely_purchased()) {
+            return new Sorting\User\ProductsUnique();
+        }
 
-		// Total products
-		if ( ! $this->is_uniquely_purchased() ) {
+        return new Sorting\User\Products();
+    }
 
-			$sql_parts['select'] = '
-				SELECT oim.meta_value AS product_id, pm.post_id AS order_id, oim2.meta_value as qty';
+    public function search()
+    {
+        return new Search\User\Products();
+    }
 
-			$sql_parts['joins'][] = "
-				INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS oim2 
-					ON oi.order_item_id = oim2.order_item_id 
-					AND oim2.meta_key = '_qty'";
-		}
+    public function get_ajax_value($user_id)
+    {
+        global $wpdb;
 
-		$sql = $this->built_sql( $sql_parts );
+        $statuses = array_map('esc_sql', wc_get_is_paid_statuses());
+        $statuses_sql = "( 'wc-" . implode("','wc-", $statuses) . "' )";
 
-		$stmt = $wpdb->prepare( $sql, [ $id ] );
-		$results = $wpdb->get_results( $stmt );
+        $sql = $wpdb->prepare(
+            "
+            SELECT CONCAT( wcopl.product_id, '#', wcopl.variation_id ) as pid, SUM( wcopl.product_qty ) as qty
+            FROM wp_wc_orders AS wco
+            LEFT JOIN wp_wc_order_product_lookup AS wcopl ON wcopl.order_id = wco.id
+            WHERE wco.customer_id = %d
+                AND wco.status IN $statuses_sql
+            GROUP BY pid
+        ",
+            $user_id
+        );
 
-		if ( empty( $results ) ) {
-			return [];
-		}
+        $items = [];
+        foreach ($wpdb->get_results($sql) as $row) {
+            $ids = explode('#', $row->pid);
+            $variation_id = $ids[1] !== '0' ? $ids[1] : $ids[0];
 
-		return $results;
-	}
+            $items[] = [
+                'title' => get_the_title($variation_id)
+                    ?: __(
+                           'Product removed',
+                           'codepress-admin-columns'
+                       ) . ' #' . $variation_id,
+                'link'  => get_edit_post_link($variation_id),
+                'total' => $row->qty,
+            ];
+        }
 
-	/**
-	 * @param array $parts
-	 *
-	 * @return string
-	 */
-	private function built_sql( $parts ) {
-		$sql = '';
+        $view = new AC\View([
+            'items' => $items,
+        ]);
 
-		foreach ( $parts as $part ) {
-			if ( is_array( $part ) ) {
-				$sql .= $this->built_sql( $part );
-			} else {
-				$sql .= ' ' . $part;
-			}
-		}
-
-		return $sql;
-	}
-
-	/**
-	 * @return bool
-	 */
-	private function is_uniquely_purchased() {
-		$setting = $this->get_setting( Settings\User\Products::NAME );
-
-		if ( ! $setting instanceof Settings\User\Products ) {
-			return false;
-		}
-
-		return 'unique' === $setting->get_user_products();
-	}
-
-	public function sorting() {
-		if ( $this->is_uniquely_purchased() ) {
-			return new ProductCountUnique();
-		}
-
-		return new ProductCount();
-	}
-
-	public function search() {
-		return new Search\User\Products();
-	}
+        echo $view->set_template('modal-value/products-by-user')->render();
+        exit;
+    }
 
 }

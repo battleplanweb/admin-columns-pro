@@ -2,74 +2,70 @@
 
 namespace ACA\WC\Sorting\ProductVariation;
 
+use ACP\Search\Query\Bindings;
 use ACP\Sorting\AbstractModel;
+use ACP\Sorting\Model\Post\PostRequestTrait;
+use ACP\Sorting\Model\QueryBindings;
 use ACP\Sorting\Model\SqlOrderByFactory;
-use ACP\Sorting\Strategy\Post;
+use ACP\Sorting\Type\Order;
 
-/**
- * @property Post $strategy
- */
-class SkuNaturalSort extends AbstractModel {
+class SkuNaturalSort extends AbstractModel implements QueryBindings
+{
 
-	public function get_sorting_vars() {
-		add_filter( 'posts_clauses', [ $this, 'sorting_clauses_callback' ] );
+    use PostRequestTrait;
 
-		return [
-			'suppress_filters' => false,
-		];
-	}
+    public function create_query_bindings(Order $order): Bindings
+    {
+        global $wpdb;
 
-	public function sorting_clauses_callback( $clauses ) {
-		global $wpdb;
+        return (new Bindings())->order_by(
+            SqlOrderByFactory::create_with_ids(
+                "$wpdb->posts.ID",
+                $this->get_sorted_ids(),
+                $order
+            )
+        );
+    }
 
-		remove_filter( 'posts_clauses', [ $this, __FUNCTION__ ] );
+    private function get_sorted_ids(): array
+    {
+        global $wpdb;
 
-		$clauses['orderby'] = SqlOrderByFactory::create_with_ids( "$wpdb->posts.ID", $this->get_sorted_ids(), $this->get_order() ) ?: $clauses['orderby'];
-
-		return $clauses;
-	}
-
-	/**
-	 * @return int[]
-	 */
-	private function get_sorted_ids() {
-		global $wpdb;
-
-		$sql = "
+        $sql = "
 			SELECT pp.ID AS id, COALESCE( NULLIF( acsort_postmeta.meta_value, '' ), acsort_parentmeta.meta_value ) AS sku
-			FROM {$wpdb->posts} AS pp
-			INNER JOIN {$wpdb->posts} AS acsort_parent ON acsort_parent.ID = pp.post_parent
+			FROM $wpdb->posts AS pp
+			INNER JOIN $wpdb->posts AS acsort_parent ON acsort_parent.ID = pp.post_parent
 				AND acsort_parent.post_type = 'product'
-			LEFT JOIN {$wpdb->postmeta} AS acsort_postmeta ON acsort_postmeta.post_id = pp.ID 
+			LEFT JOIN $wpdb->postmeta AS acsort_postmeta ON acsort_postmeta.post_id = pp.ID 
 				AND acsort_postmeta.meta_key = '_sku'
-			LEFT JOIN {$wpdb->postmeta} AS acsort_parentmeta ON acsort_parentmeta.post_id = acsort_parent.ID 
+			LEFT JOIN $wpdb->postmeta AS acsort_parentmeta ON acsort_parentmeta.post_id = acsort_parent.ID 
 				AND acsort_parentmeta.meta_key = '_sku'
 			WHERE pp.post_type = 'product_variation'
 		";
 
-		$status = $this->strategy->get_post_status();
+        $status = $this->get_var_post_status();
 
-		if ( $status ) {
-			$sql .= sprintf( " AND pp.post_status IN ( '%s' )", implode( "','", array_map( 'esc_sql', $status ) ) );
-		}
+        if ($status) {
+            $sql .= $wpdb->prepare("\nAND pp.post_status = %s", $status);
+        }
 
-		$results = $wpdb->get_results( $sql );
+        $results = $wpdb->get_results($sql);
 
-		if ( empty( $results ) ) {
-			return [];
-		}
+        if (empty($results)) {
+            return [];
+        }
 
-		$ids = [];
+        $ids = [];
 
-		foreach ( $results as $object ) {
-			if ( $object->sku ) {
-				$ids[ $object->id ] = $object->sku;
-			}
-		}
+        foreach ($results as $object) {
+            if ($object->sku) {
+                $ids[$object->id] = $object->sku;
+            }
+        }
 
-		natcasesort( $ids );
+        natcasesort($ids);
 
-		return array_keys( $ids );
-	}
+        return array_keys($ids);
+    }
 
 }

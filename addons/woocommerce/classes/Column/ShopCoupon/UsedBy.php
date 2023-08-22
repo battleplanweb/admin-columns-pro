@@ -3,7 +3,6 @@
 namespace ACA\WC\Column\ShopCoupon;
 
 use AC;
-use ACA\WC\Export;
 use ACP;
 use WC_Coupon;
 

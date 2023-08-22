@@ -184,7 +184,7 @@ class Variation extends AC\Column
 		foreach ( $this->get_variation_ids( $product_id ) as $variation_id ) {
 			$variation = wc_get_product( $variation_id );
 
-			if ( $variation->exists() ) {
+			if ( $variation && $variation->exists() ) {
 				$variations[] = $variation;
 			}
 		}

@@ -4,7 +4,6 @@ namespace ACA\BP\Editing\Service\User;
 
 use ACP;
 use ACP\Editing\Service;
-use ACP\Editing\Value\Data;
 use ACP\Editing\View;
 
 class Membertype implements Service {

@@ -2,8 +2,6 @@
 
 namespace ACA\JetEngine;
 
-use ACA\JetEngine\Field;
-
 final class FieldFactory {
 
 	public function create( array $settings ): ?Field\Field {

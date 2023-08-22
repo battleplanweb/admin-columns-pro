@@ -26,7 +26,8 @@ final class HideFilters implements Registerable {
 	 */
 	private $readability_score;
 
-	public function register() {
+	public function register(): void
+    {
 		$this->seo_scores = new FilterSeoScores();
 		$this->readability_score = new FilterReadabilityScore();
 

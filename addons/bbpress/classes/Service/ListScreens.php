@@ -9,11 +9,12 @@ use ACA\BbPress\ListScreenFactory\TopicFactory;
 
 class ListScreens implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/list_screen_groups', [ $this, 'register_list_screen_group' ] );
 		add_action( 'ac/admin/menu_group', [ $this, 'update_menu_list_groups' ], 10, 2 );
 
-		AC\ListScreenFactory::add( new TopicFactory() );
+		AC\ListScreenFactory\Aggregate::add( new TopicFactory() );
 	}
 
 	public function register_list_screen_group( AC\Groups $groups ): void {

@@ -4,7 +4,7 @@ namespace ACA\MetaBox\Column;
 
 use ACP\ConditionalFormat\FilteredHtmlFormatTrait;
 
-class Url extends Text{
+class Url extends Text {
 
 	use FilteredHtmlFormatTrait;
 

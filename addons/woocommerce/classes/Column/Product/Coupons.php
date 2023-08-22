@@ -3,7 +3,6 @@
 namespace ACA\WC\Column\Product;
 
 use AC;
-use ACA\WC\Export;
 use ACA\WC\Filtering;
 use ACA\WC\Search;
 use ACP;

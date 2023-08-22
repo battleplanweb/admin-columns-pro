@@ -64,10 +64,10 @@ class ProductDetails extends AC\Column implements ACP\Export\Exportable, ACP\Sea
 			$meta_values = [];
 
 			foreach ( $meta as $info ) {
-				$meta_values[] = $info->display_key . ': ' . strip_tags( $info->display_value );
+				$meta_values[] = sprintf('<span class="ac-wc-meta-%s">', $info->key ) . $info->display_key . ': ' . strip_tags( $info->display_value ) .'</span>';
 			}
 
-			$output .= '<div class="meta">' . implode( ', ', $meta_values ) . '</div>';
+			$output .= '<div class="meta">' . implode( '<span class="ac-wc-meta-sep">, </span>', $meta_values ) . '</div>';
 
 			$result[] = '<div class="ac-wc-product">' . $output . '</div>';
 		}

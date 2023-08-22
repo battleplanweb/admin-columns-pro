@@ -4,30 +4,32 @@ namespace ACA\BeaverBuilder;
 
 use AC;
 use AC\Registerable;
+use AC\Services;
 use ACA\BeaverBuilder\Service;
 
-class BeaverBuilder implements Registerable {
+class BeaverBuilder implements Registerable
+{
 
-	public function register() {
-		if ( ! class_exists( 'FLBuilderLoader' ) ) {
-				return;
-		}
+    public function register(): void
+    {
+        if ( ! class_exists('FLBuilderLoader')) {
+            return;
+        }
 
-		AC\ListScreenFactory::add( new ListScreenFactory\Templates() );
-		AC\ListScreenFactory::add( new ListScreenFactory\SavedColumns() );
-		AC\ListScreenFactory::add( new ListScreenFactory\SavedModules() );
-		AC\ListScreenFactory::add( new ListScreenFactory\SavedRows() );
+        AC\ListScreenFactory\Aggregate::add(new ListScreenFactory\Templates());
+        AC\ListScreenFactory\Aggregate::add(new ListScreenFactory\SavedColumns());
+        AC\ListScreenFactory\Aggregate::add(new ListScreenFactory\SavedModules());
+        AC\ListScreenFactory\Aggregate::add(new ListScreenFactory\SavedRows());
 
-		$services = [
-			new Service\ListScreens(),
-			new Service\PostTypes(),
-		];
+        $this->create_services()->register();
+    }
 
-		foreach ( $services as $service ) {
-			if ( $service instanceof Registerable ) {
-				$service->register();
-			}
-		}
-	}
+    private function create_services(): Services
+    {
+        return new Services([
+            new Service\ListScreens(),
+            new Service\PostTypes(),
+        ]);
+    }
 
 }

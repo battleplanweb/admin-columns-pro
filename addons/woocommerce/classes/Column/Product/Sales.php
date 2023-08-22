@@ -3,73 +3,70 @@
 namespace ACA\WC\Column\Product;
 
 use AC;
-use DateTime;
 use ACA\WC\Settings\OrderStatuses;
-use ACA\WC\Settings\Product\NumberOfDays;
 use ACP\ConditionalFormat\Formattable;
 use ACP\ConditionalFormat\IntegerFormattableTrait;
 
-/**
- * @since 3.0.3
- */
-class Sales extends AC\Column implements Formattable {
+class Sales extends AC\Column implements Formattable
+{
 
-	use IntegerFormattableTrait;
+    use IntegerFormattableTrait;
 
-	public function __construct() {
-		$this->set_type( 'column-wc-product_sales' )
-		     ->set_label( __( 'Products Sold', 'codepress-admin-columns' ) )
-		     ->set_group( 'woocommerce' );
-	}
+    public function __construct()
+    {
+        $this->set_type('column-wc-product_sales')
+             ->set_label(__('Products Sold', 'codepress-admin-columns'))
+             ->set_group('woocommerce');
+    }
 
-	public function get_value( $product_id ) {
-		$value = $this->get_raw_value( $product_id );
+    public function get_value($product_id)
+    {
+        return $this->get_raw_value($product_id) ?: $this->get_empty_char();
+    }
 
-		if ( ! $value ) {
-			return $this->get_empty_char();
-		}
+    protected function get_order_statuses(): array
+    {
+        $setting = $this->get_setting(OrderStatuses::NAME);
 
-		return $value;
-	}
+        return $setting instanceof OrderStatuses
+            ? $setting->get_order_status()
+            : ['wc-completed'];
+    }
 
-	protected function get_order_statuses(): array {
-		$setting = $this->get_setting( OrderStatuses::NAME );
+    protected function register_settings(): void
+    {
+        parent::register_settings();
 
-		return $setting instanceof OrderStatuses
-			? $setting->get_order_status()
-			: [ 'wc-completed' ];
-	}
+        $this->add_setting(new OrderStatuses($this, ['wc-completed']));
+    }
 
-	protected function register_settings(): void {
-		parent::register_settings();
+    public function get_raw_value($product_id)
+    {
+        global $wpdb;
 
-		$this->add_setting( new OrderStatuses( $this, [ 'wc-completed' ] ) );
-	}
+        $status = apply_filters('acp/wc/column/product/sales/statuses', $this->get_order_statuses(), $this);
+        $status_statement = '';
 
-	public function get_raw_value( $product_id ) {
-		global $wpdb;
+        if ( ! empty($status)) {
+            $status_statement = sprintf(
+                "AND wco.status IN ('%s')",
+                implode("','", array_map('esc_sql', $status))
+            );
+        }
 
-		$status = apply_filters( 'acp/wc/column/product/sales/statuses', $this->get_order_statuses(), $this );
-		$status_in = sprintf(
-			"'%s'",
-			implode( "','", array_map( 'esc_sql', $status ) )
-		);
+        $sql = $wpdb->prepare(
+            "
+            SELECT SUM( wcopl.product_qty )
+            FROM {$wpdb->prefix}wc_order_product_lookup as wcopl
+            JOIN {$wpdb->prefix}wc_orders as wco 
+                ON wcopl.order_id = wco.ID {$status_statement}
+            WHERE wcopl.product_id = %d OR wcopl.variation_id = %d
+        ",
+            $product_id,
+            $product_id
+        );
 
-		$sql = "
-			SELECT
-			    SUM( oim_q.meta_value )
-			FROM 
-			    {$wpdb->prefix}woocommerce_order_itemmeta AS oim_pid
-			INNER JOIN {$wpdb->prefix}woocommerce_order_items oi ON oim_pid.order_item_id = oi.order_item_id
-			INNER JOIN $wpdb->posts AS p ON p.ID = oi.order_id
-				AND p.post_status IN( $status_in )
-			INNER JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS oim_q ON oim_q.order_item_id = oi.order_item_id 
-				AND oim_q.meta_key = '_qty'
-			WHERE oim_pid.meta_key IN ( '_product_id', '_variation_id' ) 
-	        AND oim_pid.meta_value = %s
-	   	";
-
-		return $wpdb->get_var( $wpdb->prepare( $sql, $product_id ) );
-	}
+        return $wpdb->get_var($sql);
+    }
 
 }

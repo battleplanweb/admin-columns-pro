@@ -9,7 +9,8 @@ use ACP;
 
 final class Columns implements Registerable {
 
-	public function register(): void {
+	public function register(): void
+    {
 		add_action( 'ac/column_types', [ $this, 'add_columns' ] );
 	}
 
@@ -46,6 +47,8 @@ final class Columns implements Registerable {
 			new Column\Post\MetaDesc(),
 			new Column\Post\PrimaryTaxonomy(),
 			new Column\Post\Readability(),
+			new Column\Post\SchemaArticleType(),
+			new Column\Post\SchemaPageType(),
 			new Column\Post\Score(),
 			new Column\Post\Title(),
 			new Column\Post\TwitterDescription(),
@@ -54,7 +57,7 @@ final class Columns implements Registerable {
 		];
 
 		foreach ( $classes as $class ) {
-			$list_screen->register_column_type( new $class );
+			$list_screen->register_column_type( new $class() );
 		}
 	}
 

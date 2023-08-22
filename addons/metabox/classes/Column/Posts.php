@@ -23,11 +23,13 @@ class Posts extends Post {
 	}
 
 	public function editing() {
-		return $this->is_clonable() ? false : new ACP\Editing\Service\Posts(
-			( new ACP\Editing\View\AjaxSelect() )->set_clear_button( true )->set_multiple( true ),
-			( new Editing\StorageFactory() )->create( $this, false ),
-			new ACP\Editing\PaginatedOptions\Posts( (array) $this->get_field_setting( 'post_type' ), $this->get_field_setting( 'query_args' ) )
-		);
+		return $this->is_clonable()
+			? false
+			: new ACP\Editing\Service\Posts(
+				( new ACP\Editing\View\AjaxSelect() )->set_clear_button( true )->set_multiple( true ),
+				( new Editing\StorageFactory() )->create( $this, false ),
+				new ACP\Editing\PaginatedOptions\Posts( (array) $this->get_field_setting( 'post_type' ), $this->get_field_setting( 'query_args' ) )
+			);
 	}
 
 }

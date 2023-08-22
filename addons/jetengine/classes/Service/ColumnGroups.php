@@ -9,7 +9,8 @@ final class ColumnGroups implements AC\Registerable {
 	const JET_ENGINE = 'jet_engine';
 	const JET_ENGINE_RELATION = 'jet_engine_relation';
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/column_groups', [ $this, 'register_column_groups' ] );
 	}
 

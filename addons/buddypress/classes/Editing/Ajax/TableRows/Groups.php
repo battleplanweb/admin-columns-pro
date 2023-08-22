@@ -6,7 +6,8 @@ use ACP;
 
 class Groups extends ACP\Editing\Ajax\TableRows {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'bp_groups_admin_load', [ $this, 'handle_request' ] );
 	}
 

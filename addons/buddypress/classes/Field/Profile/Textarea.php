@@ -3,10 +3,10 @@
 namespace ACA\BP\Field\Profile;
 
 use AC;
-use ACP;
 use ACA\BP\Editing;
 use ACA\BP\Field\Profile;
 use ACA\BP\Search;
+use ACP;
 use ACP\Editing\Service\Basic;
 
 class Textarea extends Profile {

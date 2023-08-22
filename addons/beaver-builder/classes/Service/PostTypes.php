@@ -8,7 +8,8 @@ class PostTypes implements Registerable {
 
 	public const POST_TYPE_TEMPLATE = 'fl-builder-template';
 
-	public function register() {
+	public function register(): void
+    {
 		add_filter( 'ac/post_types', [ $this, 'deregister_global_post_type' ] );
 	}
 

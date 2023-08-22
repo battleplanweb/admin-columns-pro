@@ -3,7 +3,6 @@
 namespace ACA\WC\Column\ProductSubscription;
 
 use AC;
-use ACA\WC\Export;
 use ACP\ConditionalFormat\ConditionalFormatTrait;
 use ACP\ConditionalFormat\Formattable;
 use WC_Product;

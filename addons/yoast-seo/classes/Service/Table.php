@@ -7,7 +7,8 @@ use AC\Registerable;
 
 class Table implements Registerable {
 
-	public function register(): void {
+	public function register(): void
+    {
 		add_action( 'ac/admin_footer', [ $this, 'fix_yoast_heading_tooltips' ] );
 		add_action( 'ac/table/list_screen', [ $this, 'remove_link_column_on_ajax' ] );
 	}

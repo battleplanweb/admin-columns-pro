@@ -18,49 +18,50 @@ use ACP\Settings\ListScreen\HideOnScreen\FilterPostDate;
 use ACP\Settings\ListScreen\HideOnScreenCollection;
 use ACP\Type\HideOnScreen\Group;
 
-class Admin implements Registerable {
+class Admin implements Registerable
+{
 
-	/**
-	 * @var AC\Asset\Location\Absolute
-	 */
-	private $location;
+    private $location;
 
-	public function __construct( AC\Asset\Location\Absolute $location ) {
-		$this->location = $location;
-	}
+    public function __construct(AC\Asset\Location\Absolute $location)
+    {
+        $this->location = $location;
+    }
 
-	public function register() {
-		add_action( 'acp/admin/settings/hide_on_screen', [ $this, 'add_hide_on_screen' ], 10, 2 );
-		add_action( 'ac/admin_scripts', [ $this, 'admin_scripts' ] );
-	}
+    public function register(): void
+    {
+        add_action('acp/admin/settings/hide_on_screen', [$this, 'add_hide_on_screen'], 10, 2);
+        add_action('ac/admin_scripts', [$this, 'admin_scripts']);
+    }
 
-	public function admin_scripts() {
-		$script = new Asset\Script\Admin( 'aca-wc-admin', $this->location );
-		$script->enqueue();
-	}
+    public function admin_scripts(): void
+    {
+        $script = new Asset\Script\Admin('aca-wc-admin', $this->location);
+        $script->enqueue();
+    }
 
-	public function add_hide_on_screen( HideOnScreenCollection $collection, AC\ListScreen $list_screen ) {
+    public function add_hide_on_screen(HideOnScreenCollection $collection, AC\ListScreen $list_screen): void
+    {
+        switch (true) {
+            case $list_screen instanceof ShopOrder :
+                $collection->add(new FilterOrderCustomer(), new Group(Group::ELEMENT), 34);
 
-		switch ( true ) {
-			case $list_screen instanceof ShopOrder :
-				$collection->add( new FilterOrderCustomer(), new Group( Group::ELEMENT ), 34 );
+                break;
+            case $list_screen instanceof Product :
+                $collection->add(new FilterProductCategory(), new Group(Group::ELEMENT), 32)
+                           ->add(new FilterProductStockStatus(), new Group(Group::ELEMENT), 32)
+                           ->add(new FilterProductType(), new Group(Group::ELEMENT), 32);
 
-				break;
-			case $list_screen instanceof Product :
-				$collection->add( new FilterProductCategory(), new Group( Group::ELEMENT ), 32 )
-				           ->add( new FilterProductStockStatus(), new Group( Group::ELEMENT ), 32 )
-				           ->add( new FilterProductType(), new Group( Group::ELEMENT ), 32 );
+                $collection->remove(new FilterPostDate());
 
-				$collection->remove( new FilterPostDate() );
+                break;
+            case $list_screen instanceof Subscriptions :
+                $collection->add(new FilterSubscriptionProduct(), new Group(Group::ELEMENT), 34)
+                           ->add(new FilterSubscriptionPayment(), new Group(Group::ELEMENT), 34)
+                           ->add(new FilterSubscriptionCustomer(), new Group(Group::ELEMENT), 34);
 
-				break;
-			case $list_screen instanceof Subscriptions :
-				$collection->add( new FilterSubscriptionProduct(), new Group( Group::ELEMENT ), 34 )
-				           ->add( new FilterSubscriptionPayment(), new Group( Group::ELEMENT ), 34 )
-				           ->add( new FilterSubscriptionCustomer(), new Group( Group::ELEMENT ), 34 );
-
-				break;
-		}
-	}
+                break;
+        }
+    }
 
 }

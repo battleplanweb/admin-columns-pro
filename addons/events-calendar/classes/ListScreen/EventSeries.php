@@ -2,8 +2,8 @@
 
 namespace ACA\EC\ListScreen;
 
-use ACP;
 use ACA\EC\Column;
+use ACP;
 
 class EventSeries extends ACP\ListScreen\Post {
 
@@ -13,7 +13,8 @@ class EventSeries extends ACP\ListScreen\Post {
 		$this->set_group( 'events-calendar' );
 	}
 
-	protected function register_column_types() {
+	protected function register_column_types(): void
+    {
 		parent::register_column_types();
 
 		$this->register_column_types_from_list( [

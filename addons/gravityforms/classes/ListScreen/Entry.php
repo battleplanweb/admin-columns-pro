@@ -1,115 +1,105 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ACA\GravityForms\ListScreen;
 
 use AC;
+use AC\ColumnRepository;
+use AC\Type\Uri;
 use ACA\GravityForms;
 use ACA\GravityForms\Column;
 use ACA\GravityForms\Column\EntryConfigurator;
+use ACA\GravityForms\ListTable;
+use ACA\GravityForms\MetaTypes;
 use ACP\Editing;
 use ACP\Export;
 use GF_Entry_List_Table;
 use GFAPI;
 
-class Entry extends AC\ListScreenWP implements Editing\ListScreen, Export\ListScreen {
+class Entry extends AC\ListScreen implements Editing\ListScreen, Export\ListScreen, AC\ListScreen\ManageValue,
+                                             AC\ListScreen\ListTable
+{
 
-	private $form_id;
+    private $form_id;
 
-	private $column_configurator;
+    private $column_configurator;
 
-	public function __construct( int $form_id, EntryConfigurator $column_configurator ) {
-		$this->form_id = $form_id;
-		$this->column_configurator = $column_configurator;
+    public function __construct(int $form_id, EntryConfigurator $column_configurator)
+    {
+        parent::__construct('gf_entry_' . $form_id, '_page_gf_entries');
 
-		$this->set_group( 'gravity_forms' )
-		     ->set_page( 'gf_entries' )
-		     ->set_screen_id( '_page_gf_entries' )
-		     ->set_screen_base( '_page_gf_entries' )
-		     ->set_key( 'gf_entry_' . $form_id )
-		     ->set_meta_type( GravityForms\MetaTypes::GRAVITY_FORMS_ENTRY );
-	}
+        $this->form_id = $form_id;
+        $this->column_configurator = $column_configurator;
 
-	public function editing() {
-		return new GravityForms\Editing\Strategy\Entry( $this->get_list_table() );
-	}
+        $this->group = 'gravity_forms';
+        $this->set_meta_type(MetaTypes::GRAVITY_FORMS_ENTRY);
+    }
 
-	public function export() {
-		return new GravityForms\Export\Strategy\Entry( $this );
-	}
+    public function list_table(): AC\ListTable
+    {
+        return new ListTable($this->get_list_table());
+    }
 
-	public function get_heading_hookname() {
-		return 'gform_entry_list_columns';
-	}
+    public function manage_value(): AC\Table\ManageValue
+    {
+        return new GravityForms\Table\ManageValue\Entry(new ColumnRepository($this));
+    }
 
-	protected function get_object( $id ) {
-		return GFAPI::get_entry( $id );
-	}
+    public function editing()
+    {
+        return new GravityForms\Editing\Strategy\Entry($this->get_list_table());
+    }
 
-	public function set_manage_value_callback() {
-		add_filter( 'gform_entries_field_value', [ $this, 'manage_value_entry' ], 10, 4 );
-	}
+    public function export()
+    {
+        return new GravityForms\Export\Strategy\Entry($this);
+    }
 
-	/**
-	 * @param string $original_value
-	 * @param int    $form_id
-	 * @param string $field_id
-	 * @param array  $entry
-	 *
-	 * @return string
-	 */
-	public function manage_value_entry( $original_value, $form_id, $field_id, $entry ) {
-		$custom_column_value = $this->get_display_value_by_column_name( $field_id, $entry['id'], $original_value );
+    public function get_heading_hookname(): string
+    {
+        return 'gform_entry_list_columns';
+    }
 
-		if ( $custom_column_value ) {
-			return $custom_column_value;
-		}
+    public function get_label(): ?string
+    {
+        return GFAPI::get_form($this->get_form_id())['title'];
+    }
 
-		$value = $this->get_display_value_by_column_name( 'field_id-' . $field_id, $entry['id'], $original_value );
+    public function get_form_id(): int
+    {
+        return $this->form_id;
+    }
 
-		return $value ?: $original_value;
-	}
+    public function get_table_url(): Uri
+    {
+        $url = new AC\Type\Url\ListTable('admin.php');
 
-	/**
-	 * @return string
-	 */
-	public function get_label() {
-		return GFAPI::get_form( $this->get_form_id() )['title'];
-	}
+        return $url->with_arg('id', (string)$this->form_id)
+                   ->with_arg('page', 'gf_entries');
+    }
 
-	/**
-	 * @return int
-	 */
-	public function get_form_id() {
-		return $this->form_id;
-	}
+    public function get_list_table(): GF_Entry_List_Table
+    {
+        return (new GravityForms\TableFactory())->create($this->get_screen_id(), $this->form_id);
+    }
 
-	protected function get_admin_url() {
-		return admin_url( 'admin.php' );
-	}
+    public function register_column_types(): void
+    {
+        $this->column_configurator->register_entry_columns($this);
 
-	public function get_screen_link() {
-		return add_query_arg( [ 'id' => $this->get_form_id() ], parent::get_screen_link() );
-	}
-
-	public function get_list_table(): GF_Entry_List_Table {
-		return ( new GravityForms\TableFactory() )->create( $this->get_screen_id(), $this->form_id );
-	}
-
-	public function register_column_types(): void {
-		$this->column_configurator->register_entry_columns( $this );
-
-		$this->register_column_types_from_list( [
-			Column\Entry\Custom\User::class,
-			Column\Entry\Original\DateCreated::class,
-			Column\Entry\Original\DatePayment::class,
-			Column\Entry\Original\EntryId::class,
-			Column\Entry\Original\PaymentAmount::class,
-			Column\Entry\Original\SourceUrl::class,
-			Column\Entry\Original\Starred::class,
-			Column\Entry\Original\TransactionId::class,
-			Column\Entry\Original\User::class,
-			Column\Entry\Original\UserIp::class,
-		] );
-	}
+        $this->register_column_types_from_list([
+            Column\Entry\Custom\User::class,
+            Column\Entry\Original\DateCreated::class,
+            Column\Entry\Original\DatePayment::class,
+            Column\Entry\Original\EntryId::class,
+            Column\Entry\Original\PaymentAmount::class,
+            Column\Entry\Original\SourceUrl::class,
+            Column\Entry\Original\Starred::class,
+            Column\Entry\Original\TransactionId::class,
+            Column\Entry\Original\User::class,
+            Column\Entry\Original\UserIp::class,
+        ]);
+    }
 
 }

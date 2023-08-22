@@ -32,7 +32,8 @@ class AddColumns implements Registerable {
 		$this->column_factory = $column_factory;
 	}
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/column_types', [ $this, 'add_columns' ] );
 	}
 

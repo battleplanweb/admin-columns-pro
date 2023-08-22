@@ -2,39 +2,31 @@
 
 namespace ACA\BP\ListScreenFactory;
 
-use AC;
-use AC\ListScreenFactory\ListSettingsTrait;
-use AC\ListScreenFactoryInterface;
+use AC\ListScreenFactory;
 use ACA\BP\ListScreen;
-use LogicException;
 use WP_Screen;
 
-class Email implements ListScreenFactoryInterface {
+class Email extends ListScreenFactory\BaseFactory
+{
 
-	use ListSettingsTrait;
+    public function can_create(string $key): bool
+    {
+        return 'bp-email' === $key;
+    }
 
-	public function can_create( string $key ): bool {
-		return 'bp-email' === $key;
-	}
+    protected function create_list_screen(string $key): \AC\ListScreen
+    {
+        return new ListScreen\Email();
+    }
 
-	public function create( string $key, array $settings = [] ): AC\ListScreen {
-		if ( ! $this->can_create( $key ) ) {
-			throw new LogicException( 'Invalid Listscreen key' );
-		}
+    public function can_create_from_wp_screen(WP_Screen $screen): bool
+    {
+        return $screen->base === 'edit' && $screen->post_type === 'bp-email';
+    }
 
-		return $this->add_settings( new ListScreen\Email(), $settings );
-	}
-
-	public function can_create_by_wp_screen( WP_Screen $screen ): bool {
-		return $screen->base === 'edit' && $screen->post_type === 'bp-email';
-	}
-
-	public function create_by_wp_screen( WP_Screen $screen, array $settings = [] ): AC\ListScreen {
-		if ( ! $this->can_create_by_wp_screen( $screen ) ) {
-			throw new LogicException( 'Invalid Screen' );
-		}
-
-		return $this->add_settings( new ListScreen\Email(), $settings );
-	}
+    protected function create_list_screen_from_wp_screen(WP_Screen $screen): \AC\ListScreen
+    {
+        return $this->create_list_screen('bp-email');
+    }
 
 }

@@ -3,7 +3,6 @@
 namespace ACA\WC\Column\Product;
 
 use AC;
-use ACA\WC\Export;
 use ACP;
 
 /**

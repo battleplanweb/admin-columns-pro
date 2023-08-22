@@ -6,7 +6,6 @@ use ACA\WC\ConditionalFormat\Formatter\PriceFormatter;
 use ACA\WC\Filtering;
 use ACP;
 use ACP\ConditionalFormat\FormattableConfig;
-use ACP\ConditionalFormat\Formatter;
 
 class Discount extends ACP\Column\Meta implements ACP\ConditionalFormat\Formattable {
 

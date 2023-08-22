@@ -4,7 +4,6 @@ namespace ACA\WC\Column\ShopOrder;
 
 use AC;
 use ACA\WC\Editing;
-use ACA\WC\Export;
 use ACA\WC\Search;
 use ACA\WC\Settings;
 use ACP;

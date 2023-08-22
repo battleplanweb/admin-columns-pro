@@ -8,8 +8,8 @@ use ACP\ConditionalFormat\Formatter\DateFormatter;
 use ACP\ConditionalFormat\Formatter\FilterHtmlFormatter;
 use ACP\ConditionalFormat\Formatter\FloatFormatter;
 use ACP\ConditionalFormat\Formatter\IntegerFormatter;
-use ACP\ConditionalFormat\Formatter\StringFormatter;
 use ACP\ConditionalFormat\Formatter\SanitizedFormatter;
+use ACP\ConditionalFormat\Formatter\StringFormatter;
 
 class FormattableConfigFactory {
 

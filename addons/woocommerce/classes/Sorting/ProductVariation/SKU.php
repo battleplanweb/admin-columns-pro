@@ -2,36 +2,45 @@
 
 namespace ACA\WC\Sorting\ProductVariation;
 
+use ACP\Search\Query\Bindings;
 use ACP\Sorting\AbstractModel;
+use ACP\Sorting\Model\QueryBindings;
+use ACP\Sorting\Model\SqlOrderByFactory;
+use ACP\Sorting\Type\Order;
 
-class SKU extends AbstractModel {
+class SKU extends AbstractModel implements QueryBindings
+{
 
-	public function get_sorting_vars() {
-		add_filter( 'posts_clauses', [ $this, 'sorting_clauses_callback' ] );
+    public function create_query_bindings(Order $order): Bindings
+    {
+        global $wpdb;
 
-		return [
-			'suppress_filters' => false,
-		];
-	}
+        $bindings = new Bindings();
+        $alias_sku = $bindings->get_unique_alias('ssku');
+        $alias_sku_parent = $bindings->get_unique_alias('ssku');
 
-	public function sorting_clauses_callback( $clauses ) {
-		global $wpdb;
-
-		$clauses['fields'] .= ", COALESCE( NULLIF( acsort_postmeta.meta_value, '' ), acsort_parentmeta.meta_value ) AS acsort_sku";
-		$clauses['join'] .= " 
-			LEFT JOIN {$wpdb->postmeta} AS acsort_postmeta ON acsort_postmeta.post_id = {$wpdb->posts}.ID 
-				AND acsort_postmeta.meta_key = '_sku'
-			INNER JOIN {$wpdb->posts} AS acsort_parent ON acsort_parent.ID = {$wpdb->posts}.post_parent
+        $bindings->join(
+            " 
+			LEFT JOIN $wpdb->postmeta AS $alias_sku ON $alias_sku.post_id = $wpdb->posts.ID 
+				AND $alias_sku.meta_key = '_sku'
+			INNER JOIN $wpdb->posts AS acsort_parent ON acsort_parent.ID = $wpdb->posts.post_parent
 				AND acsort_parent.post_type = 'product'
-			LEFT JOIN {$wpdb->postmeta} AS acsort_parentmeta ON acsort_parentmeta.post_id = acsort_parent.ID 
-				AND acsort_parentmeta.meta_key = '_sku'
-		";
-		$clauses['orderby'] = sprintf( "acsort_sku %s, {$wpdb->posts}.ID", $this->get_order() );
-		$clauses['groupby'] = "{$wpdb->posts}.ID";
+			LEFT JOIN $wpdb->postmeta AS $alias_sku_parent ON $alias_sku_parent.post_id = acsort_parent.ID 
+				AND $alias_sku_parent.meta_key = '_sku'
+		"
+        );
+        $bindings->group_by("$wpdb->posts.ID");
+        $bindings->order_by(
+            SqlOrderByFactory::create(
+                "COALESCE( NULLIF( $alias_sku.meta_value, '' ), $alias_sku_parent.meta_value )",
+                (string)$order,
+                [
+                    'esc_sql' => false,
+                ]
+            )
+        );
 
-		remove_filter( 'posts_clauses', [ $this, __FUNCTION__ ] );
-
-		return $clauses;
-	}
+        return $bindings;
+    }
 
 }

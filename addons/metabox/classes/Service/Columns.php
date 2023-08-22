@@ -36,7 +36,8 @@ class Columns implements Registerable {
 		$this->relationship_repository = $relationship_repository;
 	}
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/column_groups', [ $this, 'register_column_groups' ] );
 		add_action( 'ac/column_types', [ $this, 'add_columns' ] );
 		add_action( 'ac/column_types', [ $this, 'add_relation_columns' ] );
@@ -45,6 +46,7 @@ class Columns implements Registerable {
 	public function register_column_groups( AC\Groups $groups ) {
 		$groups->add( 'metabox', 'MetaBox', 11 );
 		$groups->add( 'metabox_relation', 'MetaBox Relation', 11 );
+		$groups->add( 'metabox_custom', 'Custom MetaBox', 11 );
 	}
 
 	public function add_columns( AC\ListScreen $list_screen ) {

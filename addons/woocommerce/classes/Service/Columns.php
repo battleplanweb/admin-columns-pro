@@ -2,46 +2,34 @@
 
 namespace ACA\WC\Service;
 
-use ACA\WC\Column;
 use AC\ListScreen;
 use AC\Registerable;
 
-class Columns implements Registerable {
+class Columns implements Registerable
+{
 
-	public function register() {
-		add_action( 'ac/column_types', [ $this, 'register_columns' ] );
-	}
+    private $config;
 
-	public function register_columns( ListScreen $list_screen ) {
-		$columns = [];
+    private $list_screen_key;
 
-		if ( $list_screen instanceof ListScreen\User ) {
-			$columns = array_merge( $columns, [
-				Column\User\Address::class,
-				Column\User\Country::class,
-				Column\User\CouponsUsed::class,
-				Column\User\CustomerSince::class,
-				Column\User\FirstOrder::class,
-				Column\User\LastOrder::class,
-				Column\User\OrderCount::class,
-				Column\User\Orders::class,
-				Column\User\Products::class,
-				Column\User\Ratings::class,
-				Column\User\Reviews::class,
-				Column\User\TotalSales::class,
-			]);
-		}
+    public function __construct(string $list_screen_key, array $config)
+    {
+        $this->list_screen_key = $list_screen_key;
+        $this->config = $config;
+    }
 
-		if ( $list_screen instanceof ListScreen\Comment ) {
-			$columns = array_merge( $columns, [
-				Column\Comment\ProductReview::class,
-				Column\Comment\Rating::class,
-			]);
-		}
+    public function register(): void
+    {
+        add_action('ac/column_types', [$this, 'register_columns']);
+    }
 
-		foreach ( $columns as $column ) {
-			$list_screen->register_column_type( new $column );
-		}
-	}
+    public function register_columns(ListScreen $list_screen): void
+    {
+        if ($this->list_screen_key === $list_screen->get_key()) {
+            foreach ($this->config as $column) {
+                $list_screen->register_column_type(new $column());
+            }
+        }
+    }
 
 }

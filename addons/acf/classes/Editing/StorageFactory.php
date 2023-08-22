@@ -5,7 +5,6 @@ namespace ACA\ACF\Editing;
 use AC\MetaType;
 use ACA\ACF\CloneColumnFactory;
 use ACA\ACF\Column;
-use ACA\ACF\Editing\Storage;
 use ACA\ACF\GroupColumnFactory;
 
 class StorageFactory {

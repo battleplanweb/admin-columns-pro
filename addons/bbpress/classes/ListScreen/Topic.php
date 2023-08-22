@@ -13,7 +13,8 @@ class Topic extends ACP\ListScreen\Post {
 		$this->set_group( 'bbpress' );
 	}
 
-	protected function register_column_types() {
+	protected function register_column_types(): void
+    {
 		parent::register_column_types();
 
 		$this->register_column_type( new Column\Topic\Forum() );

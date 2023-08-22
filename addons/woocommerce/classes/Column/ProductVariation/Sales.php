@@ -7,6 +7,7 @@ use ACA\WC\Column;
 /**
  * @since 3.0.3
  */
-class Sales extends Column\Product\Sales {
+class Sales extends Column\Product\ShopOrder\Sales
+{
 
 }

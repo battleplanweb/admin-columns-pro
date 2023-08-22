@@ -3,38 +3,33 @@
 namespace ACA\WC\ListScreenFactory;
 
 use AC\ListScreen;
-use AC\ListScreenFactory\ListSettingsTrait;
-use AC\ListScreenFactoryInterface;
+use AC\ListScreenFactory;
 use ACA\WC\ListScreen\Subscriptions;
-use LogicException;
 use WP_Screen;
 
-class ShopSubscriptionFactory implements ListScreenFactoryInterface {
+class ShopSubscriptionFactory extends ListScreenFactory\BaseFactory
+{
 
-	use ListSettingsTrait;
+    private const KEY = 'shop_subscription';
 
-	public function can_create( string $key ): bool {
-		return 'shop_subscription' === $key;
-	}
+    public function can_create(string $key): bool
+    {
+        return self::KEY === $key;
+    }
 
-	public function create( string $key, array $settings = [] ): ListScreen {
-		if ( ! $this->can_create( $key ) ) {
-			throw new LogicException( 'Invalid Listscreen key' );
-		}
+    protected function create_list_screen(string $key): ListScreen
+    {
+        return new Subscriptions();
+    }
 
-		return $this->add_settings( new Subscriptions(), $settings );
-	}
+    public function can_create_from_wp_screen(WP_Screen $screen): bool
+    {
+        return $screen->base === 'edit' && $screen->post_type === self::KEY;
+    }
 
-	public function can_create_by_wp_screen( WP_Screen $screen ): bool {
-		return $screen->base === 'edit' && $screen->post_type === 'shop_subscription';
-	}
-
-	public function create_by_wp_screen( WP_Screen $screen, array $settings = [] ): ListScreen {
-		if ( ! $this->can_create_by_wp_screen( $screen ) ) {
-			throw new LogicException( 'Invalid Screen' );
-		}
-
-		return $this->add_settings( new Subscriptions(), $settings );
-	}
+    protected function create_list_screen_from_wp_screen(WP_Screen $screen): ListScreen
+    {
+        return $this->create_list_screen(self::KEY);
+    }
 
 }

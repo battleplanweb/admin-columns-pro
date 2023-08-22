@@ -7,7 +7,8 @@ use AC\Registerable;
 
 final class QuickAdd implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_filter( 'acp/quick_add/enable', [ $this, 'disable_quick_add' ], 10, 2 );
 	}
 

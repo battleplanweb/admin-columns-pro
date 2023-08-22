@@ -2,43 +2,41 @@
 
 namespace ACA\WC\Sorting\ShopOrder;
 
+use ACP\Search\Query\Bindings;
 use ACP\Sorting\AbstractModel;
+use ACP\Sorting\Model\QueryBindings;
 use ACP\Sorting\Model\SqlOrderByFactory;
 use ACP\Sorting\Type\ComputationType;
+use ACP\Sorting\Type\Order;
 
-class ItemCount extends AbstractModel {
+class ItemCount extends AbstractModel implements QueryBindings
+{
 
-	public function get_sorting_vars() {
-		add_filter( 'posts_clauses', [ $this, 'sorting_clauses_callback' ] );
+    public function create_query_bindings(Order $order): Bindings
+    {
+        global $wpdb;
 
-		return [
-			'suppress_filters' => false,
-		];
-	}
+        $bindings = new Bindings();
+        $alias = $bindings->get_unique_alias('quantity');
 
-	/**
-	 * Setup clauses to sort by parent
-	 *
-	 * @param array $clauses array
-	 *
-	 * @return array
-	 * @since 4.0
-	 */
-	public function sorting_clauses_callback( $clauses ) {
-		remove_filter( 'posts_clauses', [ $this, __FUNCTION__ ] );
-
-		global $wpdb;
-
-		$clauses['join'] .= "
-			LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS acsort_order_items ON {$wpdb->posts}.ID = acsort_order_items.order_id
+        $bindings->join(
+            "
+			LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS acsort_order_items ON $wpdb->posts.ID = acsort_order_items.order_id
 				AND acsort_order_items.order_item_type = 'line_item'
-			LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS acsort_order_itemmeta ON acsort_order_itemmeta.order_item_id = acsort_order_items.order_item_id
-				AND acsort_order_itemmeta.meta_key = '_qty'
-		";
-		$clauses['groupby'] = "{$wpdb->posts}.ID";
-		$clauses['orderby'] = SqlOrderByFactory::create_with_computation( new ComputationType( ComputationType::SUM ), 'acsort_order_itemmeta.meta_value', $this->get_order() );
+			LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS $alias ON $alias.order_item_id = acsort_order_items.order_item_id
+				AND $alias.meta_key = '_qty'
+		"
+        );
+        $bindings->group_by("$wpdb->posts.ID");
+        $bindings->order_by(
+            SqlOrderByFactory::create_with_computation(
+                new ComputationType(ComputationType::SUM),
+                "$alias.meta_value",
+                (string)$order
+            )
+        );
 
-		return $clauses;
-	}
+        return $bindings;
+    }
 
 }

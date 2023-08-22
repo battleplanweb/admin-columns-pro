@@ -15,7 +15,7 @@ class Description extends Column implements ACP\Export\Exportable, ACP\Editing\E
 	}
 
 	public function editing() {
-		return new ACP\Editing\Service\Post\Content( new ACP\Editing\View\TextArea() );
+		return new ACP\Editing\Service\Post\Content();
 	}
 
 	public function export() {

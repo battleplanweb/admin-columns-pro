@@ -4,7 +4,6 @@ namespace ACA\Pods;
 
 use AC;
 use ACA\Pods\ConditionalFormatting\FormattableConfigFactory;
-use ACA\Pods\Value;
 use ACP;
 use ACP\ConditionalFormat\FormattableConfig;
 

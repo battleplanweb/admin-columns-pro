@@ -3,7 +3,6 @@
 namespace ACA\ACF\Export;
 
 use AC;
-use ACA\ACF\Export\Model;
 use ACA\ACF\FieldType;
 use ACP;
 

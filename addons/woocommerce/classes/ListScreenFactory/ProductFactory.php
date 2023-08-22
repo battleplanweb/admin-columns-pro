@@ -3,38 +3,40 @@
 namespace ACA\WC\ListScreenFactory;
 
 use AC\ListScreen;
-use AC\ListScreenFactory\ListSettingsTrait;
-use AC\ListScreenFactoryInterface;
+use AC\ListScreenFactory;
 use ACA\WC\ListScreen\Product;
-use LogicException;
 use WP_Screen;
 
-class ProductFactory implements ListScreenFactoryInterface {
+class ProductFactory extends ListScreenFactory\BaseFactory
+{
 
-	use ListSettingsTrait;
+    private const KEY = 'product';
 
-	public function can_create( string $key ): bool {
-		return 'product' === $key;
-	}
+    private $column_config;
 
-	public function create( string $key, array $settings = [] ): ListScreen {
-		if ( ! $this->can_create( $key ) ) {
-			throw new LogicException( 'Invalid Listscreen key' );
-		}
+    public function __construct(array $column_config)
+    {
+        $this->column_config = $column_config;
+    }
 
-		return $this->add_settings( new Product(), $settings );
-	}
+    public function can_create(string $key): bool
+    {
+        return self::KEY === $key;
+    }
 
-	public function can_create_by_wp_screen( WP_Screen $screen ): bool {
-		return $screen->base === 'edit' && $screen->post_type === 'product';
-	}
+    protected function create_list_screen(string $key): ListScreen
+    {
+        return new Product($this->column_config);
+    }
 
-	public function create_by_wp_screen( WP_Screen $screen, array $settings = [] ): ListScreen {
-		if ( ! $this->can_create_by_wp_screen( $screen ) ) {
-			throw new LogicException( 'Invalid Screen' );
-		}
+    public function can_create_from_wp_screen(WP_Screen $screen): bool
+    {
+        return $screen->base === 'edit' && $screen->post_type === self::KEY;
+    }
 
-		return $this->add_settings( new Product(), $settings );
-	}
+    protected function create_list_screen_from_wp_screen(WP_Screen $screen): ListScreen
+    {
+        return $this->create_list_screen(self::KEY);
+    }
 
 }

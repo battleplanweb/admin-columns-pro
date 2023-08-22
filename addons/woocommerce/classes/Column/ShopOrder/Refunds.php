@@ -8,7 +8,6 @@ use ACA\WC\Filtering;
 use ACA\WC\Search;
 use ACP;
 use ACP\ConditionalFormat\FormattableConfig;
-use ACP\ConditionalFormat\Formatter;
 
 /**
  * @since 3.6

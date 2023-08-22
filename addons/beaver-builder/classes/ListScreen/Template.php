@@ -2,34 +2,37 @@
 
 namespace ACA\BeaverBuilder\ListScreen;
 
+use AC\Type\Uri;
 use ACP;
 
-class Template extends ACP\ListScreen\Post {
+class Template extends ACP\ListScreen\Post
+{
 
-	public const POST_TYPE = 'fl-builder-template';
+    public const POST_TYPE = 'fl-builder-template';
 
-	private $template_page;
+    private $template_page;
 
-	private $custom_label;
+    private $custom_label;
 
-	public function __construct( string $template_page, string $label ) {
-		parent::__construct( 'fl-builder-template' );
+    public function __construct(string $template_page, string $label)
+    {
+        parent::__construct('fl-builder-template', self::POST_TYPE . $template_page);
 
-		$this->template_page = $template_page;
-		$this->custom_label = $label;
+        $this->template_page = $template_page;
+        $this->custom_label = $label;
 
-		$this->set_key( self::POST_TYPE . $template_page )
-		     ->set_group( 'beaver_builder' )
-		     ->set_label( $label )
-		     ->set_screen_id( $this->get_screen_base() . '-fl-builder-template' );
-	}
+        $this->set_group('beaver_builder')
+             ->set_label($label);
+    }
 
-	public function get_label() {
-		return $this->custom_label;
-	}
+    public function get_label(): ?string
+    {
+        return $this->custom_label;
+    }
 
-	public function get_screen_link() {
-		return add_query_arg( [ 'fl-builder-template-type' => $this->template_page ], parent::get_screen_link() );
-	}
+    public function get_table_url(): Uri
+    {
+        return parent::get_table_url()->with_arg('fl-builder-template-type', $this->template_page);
+    }
 
 }

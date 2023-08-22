@@ -26,7 +26,7 @@ class TermField extends Field {
 
 		$result = [];
 		foreach ( $terms as $term ) {
-			if ( $term instanceof \WP_Term ) {
+			if ( $term instanceof WP_Term ) {
 				$result[ $term->term_id ] = $term->name;
 			}
 		}

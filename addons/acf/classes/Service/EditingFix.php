@@ -6,7 +6,8 @@ use AC\Registerable;
 
 class EditingFix implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_filter( 'acp/editing/post_statuses', [ $this, 'remove_acf_statuses_for_editing' ] );
 	}
 

@@ -4,43 +4,49 @@ namespace ACA\WC\Column\User;
 
 use AC;
 use ACA\WC\ConditionalFormat\FilteredHtmlIntegerFormatterTrait;
-use ACA\WC\Export;
 use ACA\WC\Settings;
 use ACA\WC\Sorting;
 use ACP;
 
-/**
- * @since 3.0
- */
 class Ratings extends AC\Column
-	implements ACP\Sorting\Sortable, ACP\Export\Exportable, ACP\ConditionalFormat\Formattable {
+    implements ACP\Sorting\Sortable, ACP\Export\Exportable, ACP\ConditionalFormat\Formattable
+{
 
-	use FilteredHtmlIntegerFormatterTrait;
+    use FilteredHtmlIntegerFormatterTrait;
 
-	public function __construct() {
-		$this->set_type( 'column-wc-user-ratings' )
-		     ->set_label( __( 'Ratings', 'woocommerce' ) )
-		     ->set_group( 'woocommerce' );
-	}
+    public function __construct()
+    {
+        $this->set_type('column-wc-user-ratings')
+             ->set_label(__('Ratings', 'woocommerce'))
+             ->set_group('woocommerce');
+    }
 
-	public function register_settings() {
-		$this->add_setting( new Settings\User\Ratings( $this ) );
-	}
+    public function register_settings()
+    {
+        $this->add_setting(new Settings\User\Ratings($this));
+    }
 
-	/**
-	 * @return string
-	 */
-	private function get_rating_type() {
-		return $this->get_setting( 'user_ratings' )->get_value();
-	}
+    public function get_value($id)
+    {
+        return $this->get_raw_value($id) ?: $this->get_empty_char();
+    }
 
-	public function get_raw_value( $user_id ) {
-		global $wpdb;
+    /**
+     * @return string
+     */
+    private function get_rating_type()
+    {
+        return $this->get_setting('user_ratings')->get_value();
+    }
 
-		$is_avg = 'avg' === $this->get_rating_type();
-		$af = $is_avg ? 'AVG' : 'COUNT';
+    public function get_raw_value($user_id)
+    {
+        global $wpdb;
 
-		$sql = "
+        $is_avg = 'avg' === $this->get_rating_type();
+        $af = $is_avg ? 'AVG' : 'COUNT';
+
+        $sql = "
 			SELECT {$af}(cm.meta_value)
 			FROM {$wpdb->comments} AS c
 			INNER JOIN {$wpdb->posts} AS p 
@@ -53,27 +59,28 @@ class Ratings extends AC\Column
 			AND cm.meta_key = 'rating'
 		";
 
-		$stmt = $wpdb->prepare( $sql, [ $user_id ] );
-		$value = $wpdb->get_var( $stmt );
+        $stmt = $wpdb->prepare($sql, [$user_id]);
+        $value = $wpdb->get_var($stmt);
 
-		if ( $is_avg ) {
-			$value = round( $value, 3 );
-		}
+        if ($is_avg) {
+            $value = round($value, 3);
+        }
 
-		return $value;
-	}
+        return $value;
+    }
 
-	public function export() {
-		return new ACP\Export\Model\RawValue( $this );
-	}
+    public function export()
+    {
+        return new ACP\Export\Model\RawValue($this);
+    }
 
-	public function sorting() {
+    public function sorting()
+    {
+        $rating_type = 'avg' === $this->get_rating_type()
+            ? 'AVG'
+            : 'COUNT';
 
-		$rating_type = 'avg' === $this->get_rating_type()
-			? 'AVG'
-			: 'COUNT';
-
-		return new Sorting\User\Ratings( $rating_type );
-	}
+        return new Sorting\User\Ratings($rating_type);
+    }
 
 }

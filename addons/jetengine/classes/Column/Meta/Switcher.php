@@ -6,7 +6,6 @@ use ACA\JetEngine\Column;
 use ACA\JetEngine\Editing;
 use ACA\JetEngine\Search;
 use ACA\JetEngine\Sorting;
-use ACA\JetEngine\Value\DefaultValueFormatterTrait;
 use ACP;
 
 class Switcher extends Column\Meta implements ACP\Search\Searchable, ACP\Editing\Editable, ACP\Sorting\Sortable {

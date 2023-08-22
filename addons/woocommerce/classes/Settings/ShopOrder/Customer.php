@@ -6,172 +6,181 @@ use AC;
 use ACA\WC\Helper;
 use ACP;
 
-class Customer extends ACP\Settings\Column\User {
+class Customer extends ACP\Settings\Column\User
+{
 
-	protected function get_display_options() {
-		$options = parent::get_display_options();
+    protected function get_display_options()
+    {
+        $options = parent::get_display_options();
 
-		$_options = [
-			'billing_address'  => __( 'Billing Address', 'woocommerce' ),
-			'billing_company'  => __( 'Billing Company', 'codepress-admin-columns' ),
-			'billing_country'  => __( 'Billing Country', 'codepress-admin-columns' ),
-			'billing_email'    => __( 'Billing Email', 'codepress-admin-columns' ),
-			'customer_since'   => __( 'Customer Since', 'codepress-admin-columns' ),
-			'order_count'      => __( 'Order Count', 'codepress-admin-columns' ),
-			'shipping_address' => __( 'Shipping Address', 'woocommerce' ),
-			'total_sales'      => __( 'Total Sales', 'codepress-admin-columns' ),
-		];
+        $_options = [
+            'billing_address'  => __('Billing Address', 'woocommerce'),
+            'billing_company'  => __('Billing Company', 'codepress-admin-columns'),
+            'billing_country'  => __('Billing Country', 'codepress-admin-columns'),
+            'billing_email'    => __('Billing Email', 'codepress-admin-columns'),
+            'customer_since'   => __('Customer Since', 'codepress-admin-columns'),
+            'order_count'      => __('Order Count', 'codepress-admin-columns'),
+            'shipping_address' => __('Shipping Address', 'woocommerce'),
+            'total_sales'      => __('Total Sales', 'codepress-admin-columns'),
+        ];
 
-		natcasesort( $_options );
+        natcasesort($_options);
 
-		$options[] = [
-			'title'   => __( 'WooCommerce', 'codepress-admin-columns' ),
-			'options' => $_options,
-		];
+        $options[] = [
+            'title'   => __('WooCommerce', 'codepress-admin-columns'),
+            'options' => $_options,
+        ];
 
-		return $options;
-	}
+        return $options;
+    }
 
-	public function get_dependent_settings() {
+    public function get_dependent_settings()
+    {
+        switch ($this->get_display_author_as()) {
+            case 'customer_since' :
+                return [new AC\Settings\Column\Date($this->column)];
 
-		switch ( $this->get_display_author_as() ) {
-			case 'customer_since' :
-				return [ new AC\Settings\Column\Date( $this->column ) ];
+            default :
+                $dependent_settings = parent::get_dependent_settings();
+                // Overwrite the UserLink setting
+                $dependent_settings[] = new CustomerLink($this->column);
 
-			default :
-				return parent::get_dependent_settings();
-		}
-	}
+                return $dependent_settings;
+        }
+    }
 
-	/**
-	 * @param string $country_code
-	 *
-	 * @return string|null
-	 */
-	private function get_country( $country_code ) {
-		$countries = WC()->countries->get_countries();
+    /**
+     * @param string $country_code
+     *
+     * @return string|null
+     */
+    private function get_country($country_code)
+    {
+        $countries = WC()->countries->get_countries();
 
-		if ( ! isset( $countries[ $country_code ] ) ) {
-			return null;
-		}
+        if ( ! isset($countries[$country_code])) {
+            return null;
+        }
 
-		return $countries[ $country_code ];
-	}
+        return $countries[$country_code];
+    }
 
-	/**
-	 * @param int $user_id
-	 * @param int $order_id
-	 *
-	 * @return string|false
-	 */
-	public function format( $user_id, $order_id ) {
+    /**
+     * @param int $user_id
+     * @param int $order_id
+     *
+     * @return string|false
+     */
+    public function format($user_id, $order_id)
+    {
+        switch ($this->get_display_author_as()) {
+            case 'billing_company' :
+                return wc_get_order($order_id)->get_billing_company();
 
-		switch ( $this->get_display_author_as() ) {
+            case 'billing_country' :
+                return $this->get_country((string)wc_get_order($order_id)->get_billing_country());
 
-			case 'billing_company' :
-				return wc_get_order( $order_id )->get_billing_company();
+            case 'billing_email' :
+                return wc_get_order($order_id)->get_billing_email();
 
-			case 'billing_country' :
-				return $this->get_country( (string) wc_get_order( $order_id )->get_billing_country() );
+            case 'billing_address' :
+                return wc_get_order($order_id)->get_formatted_billing_address();
 
-			case 'billing_email' :
-				return wc_get_order( $order_id )->get_billing_email();
+            case 'customer_since' :
+                $fto = $this->get_first_order_for_user($user_id);
 
-			case 'billing_address' :
-				return wc_get_order( $order_id )->get_formatted_billing_address();
+                if ( ! $fto) {
+                    return false;
+                }
 
-			case 'customer_since' :
-				$fto = $this->get_first_order_for_user( $user_id );
+                return get_post_field('post_date', $fto);
 
-				if ( ! $fto ) {
-					return false;
-				}
+            case 'order_count' :
+                $orders = $this->get_order_ids_for_user($user_id);
 
-				return get_post_field( 'post_date', $fto );
+                if ( ! $orders) {
+                    return false;
+                }
 
-			case 'order_count' :
-				$orders = $this->get_order_ids_for_user( $user_id );
+                return ac_helper()->html->link(add_query_arg('_customer_user', $user_id), count($orders));
 
-				if ( ! $orders ) {
-					return false;
-				}
+            case 'shipping_address' :
 
-				return ac_helper()->html->link( add_query_arg( '_customer_user', $user_id ), count( $orders ) );
+                return wc_get_order($order_id)->get_formatted_shipping_address();
+            case 'total_sales' :
 
-			case 'shipping_address' :
+                return $this->get_total_spent_for_user($user_id);
+            default :
 
-				return wc_get_order( $order_id )->get_formatted_shipping_address();
-			case 'total_sales' :
+                return parent::format($user_id, $order_id);
+        }
+    }
 
-				return $this->get_total_spent_for_user( $user_id );
-			default :
+    /**
+     * @param int $user_id
+     *
+     * @return int[]|false
+     */
+    private function get_order_ids_for_user($user_id)
+    {
+        if ( ! $user_id) {
+            return false;
+        }
 
-				return parent::format( $user_id, $order_id );
-		}
-	}
+        $args = [
+            'post_type'      => wc_get_order_types(),
+            'post_status'    => array_keys(wc_get_order_statuses()),
+            'meta_query'     => [
+                [
+                    'key'   => '_customer_user',
+                    'value' => $user_id,
+                ],
+            ],
+            'posts_per_page' => -1,
+            'orderby'        => 'date',
+            'order'          => 'ASC',
+            'fields'         => 'ids',
+        ];
 
-	/**
-	 * @param int $user_id
-	 *
-	 * @return int[]|false
-	 */
-	private function get_order_ids_for_user( $user_id ) {
-		if ( ! $user_id ) {
-			return false;
-		}
+        return get_posts($args);
+    }
 
-		$args = [
-			'post_type'      => wc_get_order_types(),
-			'post_status'    => array_keys( wc_get_order_statuses() ),
-			'meta_query'     => [
-				[
-					'key'   => '_customer_user',
-					'value' => $user_id,
-				],
-			],
-			'posts_per_page' => -1,
-			'orderby'        => 'date',
-			'order'          => 'ASC',
-			'fields'         => 'ids',
-		];
+    /**
+     * @param int $user_id
+     *
+     * @return int|false
+     */
+    private function get_first_order_for_user($user_id)
+    {
+        $orders = $this->get_order_ids_for_user($user_id);
 
-		return get_posts( $args );
-	}
+        if (empty($orders)) {
+            return false;
+        }
 
-	/**
-	 * @param int $user_id
-	 *
-	 * @return int|false
-	 */
-	private function get_first_order_for_user( $user_id ) {
-		$orders = $this->get_order_ids_for_user( $user_id );
+        return current($orders);
+    }
 
-		if ( empty( $orders ) ) {
-			return false;
-		}
+    /**
+     * @param $user_id
+     *
+     * @return false|string
+     */
+    private function get_total_spent_for_user($user_id)
+    {
+        $values = [];
 
-		return current( $orders );
-	}
+        foreach ((new Helper\User)->get_shop_order_totals_for_user($user_id) as $currency => $total) {
+            if ($total) {
+                $values[] = wc_price($total);
+            }
+        }
 
-	/**
-	 * @param $user_id
-	 *
-	 * @return false|string
-	 */
-	private function get_total_spent_for_user( $user_id ) {
-		$values = [];
+        if ( ! $values) {
+            return false;
+        }
 
-		foreach ( ( new Helper\User )->get_totals_for_user( $user_id ) as $currency => $total ) {
-			if ( $total ) {
-				$values[] = wc_price( $total );
-			}
-		}
-
-		if ( ! $values ) {
-			return false;
-		}
-
-		return implode( ' | ', $values );
-	}
+        return implode(' | ', $values);
+    }
 
 }

@@ -22,7 +22,8 @@ class Table implements Registerable {
 		$this->location = $location;
 	}
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/table/list_screen', [ $this, 'init_editable_table' ] );
 		add_action( 'ac/table_scripts', [ $this, 'table_scripts' ], 1 );
 	}

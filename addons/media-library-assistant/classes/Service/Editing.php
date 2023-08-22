@@ -10,7 +10,8 @@ use ACP\Editing\Ajax\TableRowsFactory;
 
 class Editing implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		TableRowsFactory::register( ListScreen\MediaLibrary::class, MediaLibraryRows::class );
 	}
 

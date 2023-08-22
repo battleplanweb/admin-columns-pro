@@ -3,50 +3,47 @@
 namespace ACA\MetaBox\Sorting\Model\Post;
 
 use ACA\MetaBox\Sorting\TableOrderByFactory;
+use ACP\Search\Query\Bindings;
 use ACP\Sorting\AbstractModel;
+use ACP\Sorting\Model\QueryBindings;
 use ACP\Sorting\Type\DataType;
+use ACP\Sorting\Type\Order;
 
-class Table extends AbstractModel {
+class Table extends AbstractModel implements QueryBindings
+{
 
-	/**
-	 * @var string
-	 */
-	private $table_name;
+    private $table_name;
 
-	/**
-	 * @var string
-	 */
-	private $meta_key;
+    private $meta_key;
 
-	public function __construct( $table_name, $meta_key, DataType $data_type = null ) {
-		parent::__construct( $data_type );
+    protected $data_type;
 
-		$this->table_name = (string) $table_name;
-		$this->meta_key = (string) $meta_key;
-	}
+    public function __construct(string $table_name, string $meta_key, DataType $data_type = null)
+    {
+        parent::__construct();
 
-	public function get_sorting_vars() {
-		add_filter( 'posts_clauses', [ $this, 'sorting_clauses_callback' ] );
+        $this->table_name = $table_name;
+        $this->meta_key = $meta_key;
+        $this->data_type = $data_type;
+    }
 
-		return [
-			'suppress_filters' => false,
-		];
-	}
+    public function create_query_bindings(Order $order): Bindings
+    {
+        global $wpdb;
 
-	public function sorting_clauses_callback( $clauses ) {
-		remove_filter( 'posts_clauses', [ $this, __FUNCTION__ ] );
+        $bindings = new Bindings();
 
-		global $wpdb;
+        $bindings->join(
+            sprintf(
+                "LEFT JOIN %s AS acsort_ct ON acsort_ct.ID = $wpdb->posts.ID",
+                esc_sql($this->table_name)
+            )
+        );
+        $bindings->order_by(
+            TableOrderByFactory::create($this->meta_key, $order, $this->data_type)
+        );
 
-		$clauses['join'] .= sprintf( "
-			LEFT JOIN %s AS acsort_ct 
-				ON acsort_ct.ID = $wpdb->posts.ID
-			",
-			esc_sql( $this->table_name )
-		);
-		$clauses['orderby'] = TableOrderByFactory::create( $this->meta_key, $this->data_type, $this->get_order() );
-
-		return $clauses;
-	}
+        return $bindings;
+    }
 
 }

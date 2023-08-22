@@ -18,7 +18,8 @@ class InitColumn implements Registerable {
 		$this->column_initiator = $column_initiator;
 	}
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/list_screen/column_created', [ $this, 'initiate_column' ] );
 	}
 

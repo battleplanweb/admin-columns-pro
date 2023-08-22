@@ -13,7 +13,8 @@ use LogicException;
 
 final class RelationalColumns implements AC\Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/column_types', [ $this, 'add_legacy_relational_columns' ] );
 		add_action( 'ac/column_types', [ $this, 'add_relational_columns' ] );
 	}

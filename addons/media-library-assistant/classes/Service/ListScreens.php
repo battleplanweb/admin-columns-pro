@@ -8,8 +8,9 @@ use ACA\MLA\ListScreenFactory\MediaLibraryFactory;
 
 class ListScreens implements Registerable {
 
-	public function register() {
-		AC\ListScreenFactory::add( new MediaLibraryFactory() );
+	public function register(): void
+    {
+		AC\ListScreenFactory\Aggregate::add( new MediaLibraryFactory() );
 	}
 
 }

@@ -7,7 +7,6 @@ use ACA\MetaBox\Editing\StorageFactory;
 use ACA\MetaBox\Sorting;
 use ACP\ConditionalFormat\FilteredHtmlFormatTrait;
 use ACP\ConditionalFormat\Formattable;
-use ACP\Editing\Storage\Post\Format;
 use ACP\Sorting\Sortable;
 
 class AdvancedTaxonomies extends Taxonomies implements Sortable, Formattable {

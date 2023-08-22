@@ -2,12 +2,12 @@
 
 namespace ACA\BP\Field\Profile;
 
-use ACP;
 use ACA\BP\Editing;
 use ACA\BP\Field\Profile;
 use ACA\BP\Filtering;
 use ACA\BP\Search;
 use ACA\BP\Sorting;
+use ACP;
 use ACP\Sorting\Type\DataType;
 
 class Datebox extends Profile {

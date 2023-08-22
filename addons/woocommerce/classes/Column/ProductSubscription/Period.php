@@ -4,7 +4,6 @@ namespace ACA\WC\Column\ProductSubscription;
 
 use AC;
 use ACA\WC\Editing;
-use ACA\WC\Export;
 use ACA\WC\Search;
 use ACP;
 use WC_Product_Subscription;

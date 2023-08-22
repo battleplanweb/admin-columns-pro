@@ -3,7 +3,6 @@
 namespace ACA\Types;
 
 use ACA\Types\ConditionalFormatting\FormattableConfigFactory;
-use ACA\Types\Export;
 use ACP;
 use ACP\ConditionalFormat\FormattableConfig;
 

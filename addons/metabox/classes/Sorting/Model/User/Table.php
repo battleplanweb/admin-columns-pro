@@ -3,52 +3,47 @@
 namespace ACA\MetaBox\Sorting\Model\User;
 
 use ACA\MetaBox\Sorting\TableOrderByFactory;
+use ACP\Search\Query\Bindings;
 use ACP\Sorting\AbstractModel;
+use ACP\Sorting\Model\QueryBindings;
 use ACP\Sorting\Type\DataType;
-use WP_User_Query;
+use ACP\Sorting\Type\Order;
 
-class Table extends AbstractModel {
+class Table extends AbstractModel implements QueryBindings
+{
 
-	/**
-	 * @var string
-	 */
-	private $table_name;
+    private $table_name;
 
-	/**
-	 * @var string
-	 */
-	private $meta_key;
+    private $meta_key;
 
-	public function __construct( $table_name, $meta_key, DataType $data_type = null ) {
-		parent::__construct( $data_type );
+    protected $data_type;
 
-		$this->table_name = (string) $table_name;
-		$this->meta_key = (string) $meta_key;
-	}
+    public function __construct(string $table_name, string $meta_key, DataType $data_type = null)
+    {
+        parent::__construct();
 
-	public function get_sorting_vars() {
-		add_action( 'pre_user_query', [ $this, 'pre_user_query_callback' ] );
+        $this->table_name = $table_name;
+        $this->meta_key = $meta_key;
+        $this->data_type = $data_type;
+    }
 
-		return [];
-	}
+    public function create_query_bindings(Order $order): Bindings
+    {
+        global $wpdb;
 
-	public function pre_user_query_callback( WP_User_Query $query ) {
-		remove_action( 'pre_user_query', [ $this, __FUNCTION__ ] );
+        $bindings = new Bindings();
 
-		global $wpdb;
+        $join = sprintf(
+            "LEFT JOIN %s AS acsort_ct ON acsort_ct.ID = $wpdb->users.ID",
+            esc_sql($this->table_name)
+        );
 
-		$query->query_from .= sprintf( "
-			LEFT JOIN %s AS acsort_ct 
-				ON acsort_ct.ID = $wpdb->users.ID
-			",
-			esc_sql( $this->table_name )
-		);
-		$query->query_orderby = sprintf( "
-			ORDER BY %s, 
-			$wpdb->users.ID %s",
-			TableOrderByFactory::create( $this->meta_key, $this->data_type, $this->get_order() ),
-			esc_sql( $this->get_order() )
-		);
-	}
+        $bindings->join($join);
+        $bindings->order_by(
+            TableOrderByFactory::create($this->meta_key, $order, $this->data_type)
+        );
+
+        return $bindings;
+    }
 
 }

@@ -5,7 +5,6 @@ namespace ACA\JetEngine\Value;
 use ACA\JetEngine\Column\Meta;
 use ACA\JetEngine\Field\Field;
 use ACA\JetEngine\Field\Type;
-use ACA\JetEngine\Value\Format;
 
 class ValueFormatterFactory {
 

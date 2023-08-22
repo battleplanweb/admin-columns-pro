@@ -24,7 +24,8 @@ class MapLegacyListScreen implements RequestHandler {
 		$this->list_screen_repository = $list_screen_repository;
 	}
 
-	public function handle( Request $request ) {
+	public function handle( Request $request ): void
+    {
 		if ( ! current_user_can( Capabilities::MANAGE ) ) {
 			return;
 		}

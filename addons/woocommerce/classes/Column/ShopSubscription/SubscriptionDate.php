@@ -4,7 +4,6 @@ namespace ACA\WC\Column\ShopSubscription;
 
 use AC;
 use ACA\WC;
-use ACA\WC\Export;
 use ACA\WC\Settings;
 use ACA\WC\Sorting;
 use ACP;

@@ -15,30 +15,43 @@ use ACP;
  * @property Field\Type\Posts $field
  */
 class Post extends Column\Meta
-	implements ACP\Search\Searchable, ACP\Editing\Editable, ACP\Sorting\Sortable, ACP\ConditionalFormat\Formattable {
+    implements ACP\Search\Searchable, ACP\Editing\Editable, ACP\Sorting\Sortable, ACP\ConditionalFormat\Formattable
+{
 
-	use SearchableTrait,
-		EditableTrait,
-		DefaultValueFormatterTrait,
-		ACP\ConditionalFormat\FilteredHtmlFormatTrait;
+    use SearchableTrait;
+    use EditableTrait;
+    use DefaultValueFormatterTrait;
+    use ACP\ConditionalFormat\FilteredHtmlFormatTrait;
 
-	protected function register_settings() {
-		$this->add_setting( new Settings\Column\Post( $this ) );
-	}
+    protected function register_settings()
+    {
+        $this->add_setting(new Settings\Column\Post($this));
+    }
 
-	/**
-	 * @return Settings\Column\Post
-	 */
-	private function get_post_setting() {
-		$setting = $this->get_setting( Settings\Column\Post::NAME );
+    /**
+     * @return Settings\Column\Post
+     */
+    private function get_post_setting()
+    {
+        $setting = $this->get_setting(Settings\Column\Post::NAME);
 
-		return $setting instanceof Settings\Column\Post
-			? $setting
-			: null;
-	}
+        return $setting instanceof Settings\Column\Post
+            ? $setting
+            : null;
+    }
 
-	public function sorting() {
-		return ( new Sorting\ModelFactory\Post )->create( $this->get_meta_type(), $this->get_meta_key(), $this->field->is_multiple(), $this->get_post_setting() );
-	}
+    public function sorting()
+    {
+        return (new Sorting\ModelFactory\Post())->create(
+            $this->get_meta_type(),
+            $this->get_meta_key(),
+            $this->field->is_multiple(),
+            $this->get_post_setting(),
+            [
+                'taxonomy' => $this->get_taxonomy(),
+                'post_type' => $this->get_post_type(),
+            ]
+        );
+    }
 
 }

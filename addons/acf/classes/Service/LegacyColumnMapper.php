@@ -16,7 +16,8 @@ use ACA\ACF\Utils\V2ToV3Migration;
  */
 class LegacyColumnMapper implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/table/list_screen', [ new V2ToV3Migration(), 'migrate_list_screen_settings' ], 9 );
 		add_action( 'ac/settings/notice', [ $this, 'render_deprecated_columns_notice' ] );
 	}

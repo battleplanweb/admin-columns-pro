@@ -3,36 +3,36 @@
 namespace ACA\WC\Sorting\Comment;
 
 use ACP;
+use ACP\Search\Query\Bindings;
+use ACP\Sorting\Type\Order;
 
-class Rating extends ACP\Sorting\AbstractModel {
+class Rating extends ACP\Sorting\AbstractModel implements ACP\Sorting\Model\QueryBindings
+{
 
-	/**
-	 * @var string
-	 */
-	private $meta_key;
+    private $meta_key;
 
-	public function __construct( $meta_key ) {
-		parent::__construct();
+    public function __construct(string $meta_key)
+    {
+        parent::__construct();
 
-		$this->meta_key = $meta_key;
-	}
+        $this->meta_key = $meta_key;
+    }
 
-	public function get_sorting_vars() {
-		$id = uniqid();
+    public function create_query_bindings(Order $order): Bindings
+    {
+        $bindings = new Bindings();
 
-		$vars = [
-			'meta_query' => [
-				$id => [
-					'key'     => $this->meta_key,
-					'type'    => $this->data_type->get_value(),
-					'value'   => '',
-					'compare' => '!=',
-				],
-			],
-			'orderby'    => $id,
-		];
+        $bindings->meta_query(
+            [
 
-		return $vars;
-	}
+                'key'     => $this->meta_key,
+                'type'    => $this->data_type->get_value(),
+                'value'   => '',
+                'compare' => '!=',
+            ]
+        );
+
+        return $bindings;
+    }
 
 }

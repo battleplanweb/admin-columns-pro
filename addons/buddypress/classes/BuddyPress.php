@@ -3,42 +3,42 @@
 namespace ACA\BP;
 
 use AC;
+use AC\ListScreenFactory\Aggregate;
 use AC\Registerable;
-use ACA\BP\ListScreenFactory;
-use ACA\BP\Service;
+use AC\Services;
 use ACP\Service\IntegrationStatus;
 
-final class BuddyPress implements Registerable {
+final class BuddyPress implements Registerable
+{
 
-	private $location;
+    private $location;
 
-	public function __construct( AC\Asset\Location\Absolute $location ) {
-		$this->location = $location;
-	}
+    public function __construct(AC\Asset\Location\Absolute $location)
+    {
+        $this->location = $location;
+    }
 
-	public function register() {
-		if ( ! class_exists( 'BuddyPress', false ) ) {
-			return;
-		}
+    public function register(): void
+    {
+        if ( ! class_exists('BuddyPress', false)) {
+            return;
+        }
 
-		$services = [
-			new Service\Admin( $this->location ),
-			new Service\Columns(),
-			new Service\ListScreens(),
-			new Service\Table( $this->location ),
-			new IntegrationStatus( 'ac-addon-buddypress')
-		];
+        Aggregate::add(new ListScreenFactory\Email());
+        Aggregate::add(new ListScreenFactory\Group());
 
-		array_map( [ $this, 'register_service' ], $services );
+        $this->create_services()->register();
+    }
 
-		AC\ListScreenFactory::add( new ListScreenFactory\Email() );
-		AC\ListScreenFactory::add( new ListScreenFactory\Group() );
-	}
-
-	private function register_service( $service ) {
-		if ( $service instanceof Registerable ) {
-			$service->register();
-		}
-	}
+    private function create_services(): Services
+    {
+        return new Services([
+            new Service\Admin($this->location),
+            new Service\Columns(),
+            new Service\ListScreens(),
+            new Service\Table($this->location),
+            new IntegrationStatus('ac-addon-buddypress'),
+        ]);
+    }
 
 }

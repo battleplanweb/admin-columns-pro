@@ -10,7 +10,8 @@ use GFAPI;
 
 class ListScreens implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/list_screen_groups', [ $this, 'register_list_screen_group' ] );
 		add_action( 'ac/list_keys', [ $this, 'add_list_keys' ] );
 	}

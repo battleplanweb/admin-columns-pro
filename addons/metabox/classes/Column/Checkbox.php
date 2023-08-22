@@ -36,10 +36,12 @@ class Checkbox extends ACA\MetaBox\Column
 	}
 
 	public function editing() {
-		return $this->is_clonable() ? false : new ACP\Editing\Service\Basic(
-			( new ACP\Editing\View\Toggle( new ToggleOptions( new Option( '' ), new Option( '1' ) ) ) ),
-			( new Editing\StorageFactory() )->create( $this )
-		);
+		return $this->is_clonable()
+			? false
+			: new ACP\Editing\Service\Basic(
+				( new ACP\Editing\View\Toggle( new ToggleOptions( new Option( '' ), new Option( '1' ) ) ) ),
+				( new Editing\StorageFactory() )->create( $this )
+			);
 	}
 
 	public function search() {

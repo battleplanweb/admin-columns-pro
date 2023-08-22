@@ -3,7 +3,6 @@
 namespace ACA\WC\Column\ShopOrder;
 
 use AC;
-use ACA\WC\Export;
 use ACA\WC;
 use ACP\Search;
 use WC_Order_Item_Fee;

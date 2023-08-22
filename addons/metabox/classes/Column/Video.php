@@ -34,10 +34,12 @@ class Video extends Column implements ACP\Editing\Editable, ACP\Search\Searchabl
 	}
 
 	public function editing() {
-		return $this->is_clonable() ? false : new ACP\Editing\Service\Basic(
-			( new ACP\Editing\View\Video() )->set_clear_button( true )->set_multiple( true ),
-			( new Editing\StorageFactory() )->create( $this, false )
-		);
+		return $this->is_clonable()
+			? false
+			: new ACP\Editing\Service\Basic(
+				( new ACP\Editing\View\Video() )->set_clear_button( true )->set_multiple( true ),
+				( new Editing\StorageFactory() )->create( $this, false )
+			);
 	}
 
 	public function search() {

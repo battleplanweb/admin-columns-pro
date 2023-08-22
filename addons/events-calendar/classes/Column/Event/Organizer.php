@@ -13,77 +13,98 @@ use ACP\ConditionalFormat;
 use ACP\Sorting\Model\MetaFormatFactory;
 
 class Organizer extends Meta
-	implements AC\Column\Relation, ACP\Export\Exportable, ACP\Search\Searchable, ConditionalFormat\Formattable {
+    implements AC\Column\Relation, ACP\Export\Exportable, ACP\Search\Searchable, ConditionalFormat\Formattable
+{
 
-	use ConditionalFormat\FilteredHtmlFormatTrait;
+    use ConditionalFormat\FilteredHtmlFormatTrait;
 
-	public function __construct() {
-		$this->set_type( 'column-ec-event_organizer' )
-		     ->set_label( __( 'Organizer', 'codepress-admin-columns' ) );
+    public function __construct()
+    {
+        $this->set_type('column-ec-event_organizer')
+             ->set_label(__('Organizer', 'codepress-admin-columns'));
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
-	public function get_relation_object() {
-		return new AC\Relation\Post( 'tribe_organizer' );
-	}
+    public function get_relation_object()
+    {
+        return new AC\Relation\Post('tribe_organizer');
+    }
 
-	public function get_meta_key() {
-		return '_EventOrganizerID';
-	}
+    public function get_meta_key()
+    {
+        return '_EventOrganizerID';
+    }
 
-	public function get_value( $id ) {
-		$post_ids = $this->get_raw_value( $id );
+    public function get_value($id)
+    {
+        $post_ids = $this->get_raw_value($id);
 
-		if ( ! $post_ids ) {
-			return $this->get_empty_char();
-		}
+        if ( ! $post_ids) {
+            return $this->get_empty_char();
+        }
 
-		$values = [];
-		foreach ( $post_ids as $_id ) {
-			$values[] = $this->get_formatted_value( $_id, $_id );
-		}
+        $values = [];
+        foreach ($post_ids as $_id) {
+            $values[] = $this->get_formatted_value($_id, $_id);
+        }
 
-		$setting_limit = $this->get_setting( 'number_of_items' );
+        $setting_limit = $this->get_setting('number_of_items');
 
-		return ac_helper()->html->more( $values, $setting_limit ? $setting_limit->get_value() : false );
-	}
+        return ac_helper()->html->more($values, $setting_limit ? $setting_limit->get_value() : false);
+    }
 
-	public function get_raw_value( $id ) {
-		$value = $this->get_meta_value( $id, $this->get_meta_key(), false );
+    public function get_raw_value($id)
+    {
+        $value = $this->get_meta_value($id, $this->get_meta_key(), false);
 
-		$value = array_filter( $value );
+        $value = array_filter($value);
 
-		if ( ! $value ) {
-			return false;
-		}
+        if ( ! $value) {
+            return false;
+        }
 
-		return $value;
-	}
+        return $value;
+    }
 
-	public function register_settings() {
-		$this->add_setting( new Settings\OrganizerDisplay( $this ) );
-		$this->add_setting( new AC\Settings\Column\NumberOfItems( $this ) );
-	}
+    public function register_settings()
+    {
+        $this->add_setting(new Settings\OrganizerDisplay($this));
+        $this->add_setting(new AC\Settings\Column\NumberOfItems($this));
+    }
 
-	public function editing() {
-		return new Editing\Service\Event\Organizer();
-	}
+    public function editing()
+    {
+        return new Editing\Service\Event\Organizer();
+    }
 
-	public function filtering() {
-		return new Filtering\RelatedPost( $this );
-	}
+    public function filtering()
+    {
+        return new Filtering\RelatedPost($this);
+    }
 
-	public function sorting() {
-		return ( new MetaFormatFactory() )->create( $this->get_meta_type(), $this->get_meta_key(), new ACP\Sorting\FormatValue\PostTitle() );
-	}
+    public function sorting()
+    {
+        return (new MetaFormatFactory())->create(
+            $this->get_meta_type(),
+            $this->get_meta_key(),
+            new ACP\Sorting\FormatValue\PostTitle(),
+            null,
+            [
+                'taxonomy' => $this->get_taxonomy(),
+                'post_type' => $this->get_post_type(),
+            ]
+        );
+    }
 
-	public function export() {
-		return new ACP\Export\Model\StrippedValue( $this );
-	}
+    public function export()
+    {
+        return new ACP\Export\Model\StrippedValue($this);
+    }
 
-	public function search() {
-		return new Search\Event\Relation( $this->get_meta_key(), $this->get_meta_type(), $this->get_relation_object() );
-	}
+    public function search()
+    {
+        return new Search\Event\Relation($this->get_meta_key(), $this->get_meta_type(), $this->get_relation_object());
+    }
 
 }

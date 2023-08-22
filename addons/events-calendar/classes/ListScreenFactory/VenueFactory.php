@@ -3,38 +3,31 @@
 namespace ACA\EC\ListScreenFactory;
 
 use AC\ListScreen;
-use AC\ListScreenFactory\ListSettingsTrait;
-use AC\ListScreenFactoryInterface;
+use AC\ListScreenFactory;
 use ACA\EC\ListScreen\Venue;
-use LogicException;
 use WP_Screen;
 
-class VenueFactory implements ListScreenFactoryInterface {
+class VenueFactory extends ListScreenFactory\BaseFactory
+{
 
-	use ListSettingsTrait;
+    public function can_create(string $key): bool
+    {
+        return 'tribe_venue' === $key;
+    }
 
-	public function can_create( string $key ): bool {
-		return 'tribe_venue' === $key;
-	}
+    protected function create_list_screen(string $key): ListScreen
+    {
+        return new Venue();
+    }
 
-	public function create( string $key, array $settings = [] ): ListScreen {
-		if ( ! $this->can_create( $key ) ) {
-			throw new LogicException( 'Invalid Listscreen key' );
-		}
+    public function can_create_from_wp_screen(WP_Screen $screen): bool
+    {
+        return $screen->base === 'edit' && $screen->post_type === 'tribe_venue';
+    }
 
-		return $this->add_settings( new Venue(), $settings );
-	}
-
-	public function can_create_by_wp_screen( WP_Screen $screen ): bool {
-		return $screen->base === 'edit' && $screen->post_type === 'tribe_venue';
-	}
-
-	public function create_by_wp_screen( WP_Screen $screen, array $settings = [] ): ListScreen {
-		if ( ! $this->can_create_by_wp_screen( $screen ) ) {
-			throw new LogicException( 'Invalid Screen' );
-		}
-
-		return $this->add_settings( new Venue(), $settings );
-	}
+    protected function create_list_screen_from_wp_screen(WP_Screen $screen): ListScreen
+    {
+        return $this->create_list_screen('tribe_venue');
+    }
 
 }

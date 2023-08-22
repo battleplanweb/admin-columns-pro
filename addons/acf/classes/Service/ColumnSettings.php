@@ -9,7 +9,8 @@ use ACA\ACF\Helper;
 
 class ColumnSettings implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/column/settings', [ $this, 'add_edit_field_link_to_column_type' ] );
 	}
 

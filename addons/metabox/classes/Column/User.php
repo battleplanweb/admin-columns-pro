@@ -22,11 +22,13 @@ class User extends Column implements ACP\Search\Searchable, ACP\Editing\Editable
 	}
 
 	public function editing() {
-		return $this->is_clonable() ? false : new ACP\Editing\Service\User(
-			( new ACP\Editing\View\AjaxSelect() )->set_clear_button( true ),
-			( new Editing\StorageFactory() )->create( $this ),
-			new ACP\Editing\PaginatedOptions\Users( $this->get_field_setting( 'query_args' ) )
-		);
+		return $this->is_clonable()
+			? false
+			: new ACP\Editing\Service\User(
+				( new ACP\Editing\View\AjaxSelect() )->set_clear_button( true ),
+				( new Editing\StorageFactory() )->create( $this ),
+				new ACP\Editing\PaginatedOptions\Users( $this->get_field_setting( 'query_args' ) )
+			);
 	}
 
 	public function sorting() {

@@ -2,10 +2,6 @@
 
 namespace ACA\ACF;
 
-use ACA\ACF\ConditionalFormatting;
-use ACA\ACF\Search;
-use ACA\ACF\Sorting;
-
 final class ColumnInstantiator {
 
 	/**

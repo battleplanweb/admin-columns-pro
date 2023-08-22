@@ -2,44 +2,48 @@
 
 namespace ACA\WC\Sorting\Product;
 
+use ACP\Search\Query\Bindings;
 use ACP\Sorting\AbstractModel;
+use ACP\Sorting\Model\QueryBindings;
 use ACP\Sorting\Model\SqlOrderByFactory;
 use ACP\Sorting\Model\WarningAware;
+use ACP\Sorting\Type\CastType;
+use ACP\Sorting\Type\Order;
 
-class Variation extends AbstractModel implements WarningAware {
+class Variation extends AbstractModel implements WarningAware, QueryBindings
+{
 
-	public function get_sorting_vars() {
-		add_filter( 'posts_clauses', [ $this, 'sorting_clauses_callback' ] );
+    public function create_query_bindings(Order $order): Bindings
+    {
+        global $wpdb;
 
-		return [
-			'suppress_filters' => false,
-		];
-	}
+        $bindings = new Bindings();
 
-	public function sorting_clauses_callback( $clauses ) {
-		global $wpdb;
+        $alias = $bindings->get_unique_alias('sort');
 
-		remove_filter( 'posts_clauses', [ $this, __FUNCTION__ ] );
+        $sub_query = "
+            SELECT ac_variation_count.ID, count( * ) AS count, post_parent
+            FROM $wpdb->posts ac_variation_count
+            WHERE post_type = 'product_variation'
+                AND post_status = 'publish'
+            GROUP BY post_parent
+        ";
 
-		$clauses['join'] .= "
-			LEFT JOIN 
-			(
-				SELECT ac_variation_count.ID, count( * ) as count, post_parent
-				FROM {$wpdb->posts} ac_variation_count
-				WHERE 
-					post_type = 'product_variation'
-					AND post_status = 'publish'
-				GROUP BY post_parent
-			) ac_variation_count 
-			ON ac_variation_count.post_parent = {$wpdb->posts}.ID
-		";
-		$clauses['groupby'] = "{$wpdb->posts}.ID";
-		$clauses['orderby'] = sprintf( '%s,%s',
-			SqlOrderByFactory::create( 'ac_variation_count.count', $this->get_order() ),
-			"{$wpdb->posts}.ID"
-		);
+        $bindings->join(
+            "LEFT JOIN ($sub_query) AS $alias ON $alias.post_parent = $wpdb->posts.ID"
+        );
+        $bindings->group_by("$wpdb->posts.ID");
+        $bindings->order_by(
+            SqlOrderByFactory::create(
+                "$alias.count",
+                (string)$order,
+                [
+                    'cast_type' => CastType::SIGNED,
+                ]
+            )
+        );
 
-		return $clauses;
-	}
+        return $bindings;
+    }
 
 }

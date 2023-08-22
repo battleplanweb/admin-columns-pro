@@ -3,7 +3,6 @@
 namespace ACA\WC\Column\ShopOrder;
 
 use AC;
-use ACA\WC\Export;
 use ACA\WC\Field\ShopOrder;
 use ACA\WC\Settings;
 use ACA\WC\Sorting;

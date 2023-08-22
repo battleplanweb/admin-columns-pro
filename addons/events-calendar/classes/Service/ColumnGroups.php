@@ -2,7 +2,6 @@
 
 namespace ACA\EC\Service;
 
-use AC;
 use AC\Groups;
 use AC\Registerable;
 
@@ -11,7 +10,8 @@ final class ColumnGroups implements Registerable {
 	const EVENTS_CALENDAR = 'events_calendar';
 	const EVENTS_CALENDAR_FIELDS = 'events_calendar_fields';
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/column_groups', [ $this, 'register_column_groups' ] );
 	}
 

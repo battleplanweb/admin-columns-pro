@@ -2,8 +2,8 @@
 
 namespace ACA\EC\Column\Venue;
 
-use ACP\ConditionalFormat;
 use ACA\EC\Column\Meta;
+use ACP\ConditionalFormat;
 use ACP\Search\Comparison\Meta\Text;
 use ACP\Search\Searchable;
 

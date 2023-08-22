@@ -9,26 +9,35 @@ use WC_Order;
 /**
  * @since 3.0
  */
-class Created extends OrderDate implements ACP\Sorting\Sortable, ACP\Search\Searchable, ACP\Filtering\Filterable {
+class Created extends OrderDate implements ACP\Sorting\Sortable, ACP\Search\Searchable, ACP\Filtering\Filterable
+{
 
-	public function set_label() {
-		$this->label = __( 'Created', 'codepress-admin-columns' );
-	}
+    public function set_label()
+    {
+        $this->label = __('Created', 'codepress-admin-columns');
+    }
 
-	public function get_date( WC_Order $order ) {
-		return $order->get_date_created();
-	}
+    public function get_date(WC_Order $order)
+    {
+        return $order->get_date_created();
+    }
 
-	public function sorting() {
-		return new ACP\Sorting\Model\Post\PostField( 'post_date' );
-	}
+    public function sorting()
+    {
+        return new ACP\Sorting\Model\Post\PostField(
+            'post_date',
+            new ACP\Sorting\Type\DataType(ACP\Sorting\Type\DataType::DATETIME)
+        );
+    }
 
-	public function filtering() {
-		return new ACP\Filtering\Model\Post\Date( $this->column );
-	}
+    public function filtering()
+    {
+        return new ACP\Filtering\Model\Post\Date($this->column);
+    }
 
-	public function search() {
-		return new ACP\Search\Comparison\Post\Date\PostDate();
-	}
+    public function search()
+    {
+        return new ACP\Search\Comparison\Post\Date\PostDate();
+    }
 
 }

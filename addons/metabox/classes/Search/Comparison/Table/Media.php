@@ -15,7 +15,14 @@ class Media extends TableStorage
 	 */
 	private $mime_type;
 
-	public function __construct( $operators, $table, $column, $mime_type = [], $value_type = null, ACP\Search\Labels $labels = null ) {
+	public function __construct(
+		$operators,
+		$table,
+		$column,
+		$mime_type = [],
+		$value_type = null,
+		ACP\Search\Labels $labels = null
+	) {
 		$this->mime_type = $mime_type;
 
 		parent::__construct( $operators, $table, $column, $value_type, $labels );

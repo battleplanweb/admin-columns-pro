@@ -3,38 +3,31 @@
 namespace ACA\ACF\ListScreenFactory;
 
 use AC\ListScreen;
-use AC\ListScreenFactory\ListSettingsTrait;
-use AC\ListScreenFactoryInterface;
+use AC\ListScreenFactory;
 use ACA\ACF\ListScreen\FieldGroup;
-use LogicException;
 use WP_Screen;
 
-class FieldGroupFactory implements ListScreenFactoryInterface {
+class FieldGroupFactory extends ListScreenFactory\BaseFactory
+{
 
-	use ListSettingsTrait;
+    public function can_create(string $key): bool
+    {
+        return 'acf-field-group' === $key;
+    }
 
-	public function can_create( string $key ): bool {
-		return 'acf-field-group' === $key;
-	}
+    protected function create_list_screen(string $key): ListScreen
+    {
+        return new FieldGroup();
+    }
 
-	public function create( string $key, array $settings = [] ): ListScreen {
-		if ( ! $this->can_create( $key ) ) {
-			throw new LogicException( 'Invalid Listscreen key' );
-		}
+    public function can_create_from_wp_screen(WP_Screen $screen): bool
+    {
+        return $screen->base === 'edit' && $screen->post_type === 'acf-field-group';
+    }
 
-		return $this->add_settings( new FieldGroup(), $settings );
-	}
-
-	public function can_create_by_wp_screen( WP_Screen $screen ): bool {
-		return $screen->base === 'edit' && $screen->post_type === 'acf-field-group';
-	}
-
-	public function create_by_wp_screen( WP_Screen $screen, array $settings = [] ): ListScreen {
-		if ( ! $this->can_create_by_wp_screen( $screen ) ) {
-			throw new LogicException( 'Invalid Screen' );
-		}
-
-		return $this->add_settings( new FieldGroup(), $settings );
-	}
+    protected function create_list_screen_from_wp_screen(WP_Screen $screen): ListScreen
+    {
+        return new FieldGroup();
+    }
 
 }

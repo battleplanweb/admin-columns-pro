@@ -23,7 +23,8 @@ class HideSubscriptionsFilter implements Registerable {
 		$this->hide_on_screen = $hide_on_screen;
 	}
 
-	public function register() {
+	public function register(): void
+    {
 		add_filter( 'admin_body_class', [ $this, 'hide_filter' ] );
 	}
 

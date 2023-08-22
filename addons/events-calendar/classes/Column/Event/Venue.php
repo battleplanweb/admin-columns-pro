@@ -8,8 +8,8 @@ use ACA\EC\Editing;
 use ACA\EC\Filtering;
 use ACA\EC\Search;
 use ACA\EC\Settings;
-use ACP\ConditionalFormat;
 use ACP;
+use ACP\ConditionalFormat;
 
 class Venue extends Meta
 	implements AC\Column\Relation, ACP\Export\Exportable, ACP\Search\Searchable, ACP\ConditionalFormat\Formattable {

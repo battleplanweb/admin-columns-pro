@@ -1,33 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ACA\MetaBox\Sorting;
 
 use ACA\MetaBox;
 use ACA\MetaBox\Column;
 use ACP;
+use ACP\Sorting\AbstractModel;
 
-abstract class Factory {
+abstract class Factory
+{
 
-	/**
-	 * @return ACP\Sorting\AbstractModel
-	 */
-	public function create( Column $column ) {
-		if ( $column->is_clonable() ) {
-			return new ACP\Sorting\Model\Disabled;
-		}
+    public function create(Column $column): AbstractModel
+    {
+        if ($column->is_clonable()) {
+            return new ACP\Sorting\Model\Disabled();
+        }
 
-		if ( $column->get_storage() === MetaBox\StorageAware::CUSTOM_TABLE ) {
-			return $this instanceof TableStorageFactory
-				? $this->create_table_storage( $column )
-				: new ACP\Sorting\Model\Disabled();
-		}
+        if ($column->get_storage() === MetaBox\StorageAware::CUSTOM_TABLE) {
+            return $this instanceof TableStorageFactory
+                ? $this->create_table_storage($column)
+                : new ACP\Sorting\Model\Disabled();
+        }
 
-		return $this->create_default( $column );
-	}
+        return $this->create_default($column);
+    }
 
-	/**
-	 * @return ACP\Sorting\AbstractModel
-	 */
-	abstract protected function create_default( Column $column );
+    abstract protected function create_default(Column $column): AbstractModel;
 
 }

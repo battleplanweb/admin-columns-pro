@@ -8,7 +8,8 @@ use ACP\Editing\Ajax\TableRows;
 
 class MediaLibraryRows extends TableRows {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'mla_list_table_prepare_items', [ $this, 'handle_request' ] );
 
 		// Triggers hook above

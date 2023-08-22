@@ -9,7 +9,6 @@ use ACP\ConditionalFormat\FormattableConfig;
 use ACP\ConditionalFormat\Formatter\FilterHtmlFormatter;
 use ACP\ConditionalFormat\Formatter\IntegerFormatter;
 use ACP\ConditionalFormat\Formatter\SanitizedFormatter;
-use WC_Coupon;
 
 /**
  * @since 2.0
@@ -37,17 +36,15 @@ class Orders extends AC\Column implements AC\Column\AjaxValue, ACP\Export\Export
 	private function get_order_ids_by_coupon_id( $id ): array {
 		global $wpdb;
 
-		$coupon = new WC_Coupon( $id );
-		$table = $wpdb->prefix . 'woocommerce_order_items';
+		$table = $wpdb->prefix . 'wc_order_coupon_lookup';
 
 		$sql = "
-			SELECT {$table}.order_id
+			SELECT DISTINCT(order_id)
 			FROM {$table}
-			WHERE order_item_type = 'coupon'
-			AND order_item_name = %s
+			WHERE coupon_id = %d
 		";
 
-		return $wpdb->get_col( $wpdb->prepare( $sql, $coupon->get_code() ) );
+		return $wpdb->get_col( $wpdb->prepare( $sql, $id ) );
 	}
 
 	public function get_raw_value( $id ) {
@@ -57,7 +54,8 @@ class Orders extends AC\Column implements AC\Column\AjaxValue, ACP\Export\Export
 	public function get_ajax_value( $id ) {
 		$values = [];
 		foreach ( $this->get_order_ids_by_coupon_id( $id ) as $order_id ) {
-			$values[] = ac_helper()->html->link( get_edit_post_link( $order_id ), $order_id );
+			$order = wc_get_order( $order_id );
+			$values[] = ac_helper()->html->link( $order->get_edit_order_url(), '#' . $order_id );
 		}
 
 		return implode( ', ', $values );

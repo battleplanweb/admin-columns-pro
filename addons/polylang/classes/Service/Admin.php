@@ -7,7 +7,8 @@ use ACA\Polylang\Column;
 
 class Admin implements Registerable {
 
-	public function register() {
+	public function register(): void
+    {
 		add_action( 'ac/admin_scripts', [ $this, 'admin_style' ] );
 	}
 

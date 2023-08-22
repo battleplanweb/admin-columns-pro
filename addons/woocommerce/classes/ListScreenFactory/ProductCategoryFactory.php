@@ -3,39 +3,32 @@
 namespace ACA\WC\ListScreenFactory;
 
 use AC\ListScreen;
-use AC\ListScreenFactory\ListSettingsTrait;
-use AC\ListScreenFactoryInterface;
+use AC\ListScreenFactory;
 use ACA\WC\ListScreen\ProductCategory;
 use ACP\ListScreen\Taxonomy;
-use LogicException;
 use WP_Screen;
 
-class ProductCategoryFactory implements ListScreenFactoryInterface {
+class ProductCategoryFactory extends ListScreenFactory\BaseFactory
+{
 
-	use ListSettingsTrait;
+    public function can_create(string $key): bool
+    {
+        return Taxonomy::KEY_PREFIX . 'product_cat' === $key;
+    }
 
-	public function can_create( string $key ): bool {
-		return Taxonomy::KEY_PREFIX . 'product_cat' === $key;
-	}
+    protected function create_list_screen(string $key): ListScreen
+    {
+        return new ProductCategory();
+    }
 
-	public function create( string $key, array $settings = [] ): ListScreen {
-		if ( ! $this->can_create( $key ) ) {
-			throw new LogicException( 'Invalid Listscreen key' );
-		}
+    public function can_create_from_wp_screen(WP_Screen $screen): bool
+    {
+        return 'edit-tags' === $screen->base && 'product_cat' === $screen->taxonomy;
+    }
 
-		return $this->add_settings( new ProductCategory(), $settings );
-	}
-
-	public function can_create_by_wp_screen( WP_Screen $screen ): bool {
-		return 'edit-tags' === $screen->base && 'product_cat' === $screen->taxonomy;
-	}
-
-	public function create_by_wp_screen( WP_Screen $screen, array $settings = [] ): ListScreen {
-		if ( ! $this->can_create_by_wp_screen( $screen ) ) {
-			throw new LogicException( 'Invalid Screen' );
-		}
-
-		return $this->add_settings( new ProductCategory(), $settings );
-	}
+    protected function create_list_screen_from_wp_screen(WP_Screen $screen): ListScreen
+    {
+        return new ProductCategory();
+    }
 
 }
