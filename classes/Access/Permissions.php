@@ -37,8 +37,6 @@ final class Permissions
 
     public function has_permission(string $permission): bool
     {
-        return true;
-
         return in_array($permission, $this->permissions, true);
     }
 
@@ -51,8 +49,6 @@ final class Permissions
 
     public function has_updates_permission(): bool
     {
-        return true;
-
         return $this->has_permission(self::UPDATE);
     }
 
