@@ -2,10 +2,11 @@
 
 namespace ACA\WC\Search\Query;
 
-use ACP\Search;
-use ACP\Search\Query\Bindings\QueryArguments;
+use ACP\Query;
+use ACP\Query\Bindings\QueryArguments;
+use Automattic\WooCommerce\Internal\DataStores\Orders\OrdersTableDataStore;
 
-final class Order extends Search\Query
+final class Order extends Query
 {
 
     public function register(): void
@@ -28,7 +29,11 @@ final class Order extends Search\Query
                 $clauses['groupby'] = $binding->get_group_by();
             }
             if ($binding->get_order_by()) {
-                $clauses['orderby'] = $binding->get_order_by();
+                $clauses['orderby'] = sprintf(
+                    "%s, %s.id ASC",
+                    $binding->get_order_by(),
+                    OrdersTableDataStore::get_orders_table_name()
+                );
             }
         }
 

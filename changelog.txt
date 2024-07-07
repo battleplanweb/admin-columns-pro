@@ -1,5 +1,131 @@
 == Changelog ==
 
+= 6.4.10 =
+Release Date: June 11th, 2024
+
+* [Fixed] Added Excel spreadsheet compatibility/escaping when exporting data to CSV. Reported Issue Reference: CVE-2019-17661
+* [Fixed] Use the correct date format storage for MetaBox dates
+* [Updated] Admin Columns Core to version 4.7.7
+
+= 6.4.9 =
+Release Date: June 7th, 2024
+
+* [Improved] Expanded year options in the date column dropdown for editing.
+* [Improved] Numeric values in Smart Filtering are now formatted.
+* [Improved] Custom Field with multiple values now supports JSON.
+* [Improved] Presets are now sorted correctly on the Tools page.
+* [Improved] User Registered date format is now customizable.
+* [Fixed] Daily license check reliability issues resolved.
+* [Fixed] Column header and Bulk Edit button mismatch issue when columns were reordered.
+* [Fixed] JetEngine Selectbox now correctly returns the label for '0' keyed options.
+* [Fixed] Product Taxonomy column filtering on the WooCommerce Order page now works correctly.
+* [Fixed] Adding a new Conditional Format now works when Smart Filtering is disabled.
+* [Fixed] Custom Field column with Post as Display value error resolved.
+* [Updated] Admin Columns Core to version 4.7.6
+
+= 6.4.8 =
+Release Date: May 3rd, 2024
+
+* [Improved] Export for Products Sold now exports a numeric value
+* [Fixed] WooCommerce Notes column could give an error on the Private note display
+* [Fixed] Gravity Forms Form column, did not work for nested Gutenberg Blocks
+* [Fixed] Filtering yearly on ACF Date field now works correctly
+
+= 6.4.7 =
+Release Date: April 17th, 2024
+
+* [Added] Filtering implemented for WooCommerce Customer Note column (HPOS)
+* [Added] Gravity Forms column that shows the added Form (gutenberg block) to a page/post
+* [Added] Implemented Export for HPOS Product column
+* [Added] Implemented Export for HPOS Tax column
+* [Fixed] Term creation bug with Bulk Edit
+* [Fixed] Removed unused Taxonomy Description column (duplicate)
+* [Fixed] Selection of Primary Column gave an error (Yoast SEO)
+* [Fixed] ACF Boolean Repeater field now has an export value
+* [Fixed] SVG Support in image columns
+* [Improved] Export for Network Users "Blogs" improved
+* [Updated] Admin Columns Core to version 4.7.5
+
+= 6.4.6 =
+Release Date: March 4th, 2024
+
+* [Fixed] Force the new table view ID when copying table views based on templates
+* [Fixed] Search comparison MimeType fixed
+* [Fixed] Javascript bug when selecting the Month picker in Smart Filtering
+* [Fixed] The Custom Field column setting gave an error when using the text field hook
+* [Fixed] The Inline Edit toggle was not always visible
+* [Improved] Filtering on the Publish Date column does not force to filter only published post anymore
+* [Updated] Admin Columns Core to version 4.7.4
+
+= 6.4.5 =
+Release Date: February 6th, 2024
+
+* [Fixed] Missing filtering button on Taxonomy pages when filtering is enabled
+* [Fixed] Smart Filtering and Filtering re-implemented for Gravity Forms
+* [Fixed] Filtering on the Toolset Types Relationship column gave a fatal error
+* [Improved] Always sort on a second unique column to prevent duplicate records on paginated tables
+* [Improved] You can now disable integration from the Addons tab
+* [Improved] ACF WYSIWYG editing improved
+* [BuddyPress] Added editing support for the User Groups column
+* [Updated] Admin Columns Core to version 4.7.3
+
+= 6.4.4 =
+Release Date: January 16th, 2024
+
+* [Fixed] Fatal error when Restoring the settings in the Settings tab
+* [Added] New filter for the 'Posts by Author' column on the User table
+* [Improved] Filter drop-downs for user-related data now allow you to search for the user display name
+* [Improved] Single table view export is now pretty printed
+* [Improved] Better sorting for columns with non-unique values
+* [Pods] Repeatable fields are not supported anymore until we have built fully support for repeatable fields
+* [Updated] Admin Columns Core to version 4.7.2
+
+= 6.4.3 =
+Release Date: January 9th, 2024
+
+* [Fixed] JetEngine Post Relationship Smart Filtering gave an error
+* [Fixed] Export for the Subscription Relationship column, does not work anymore
+* [Fixed] Export for the WooCommerce Status did not work
+* [Improved] Show 250 items in Filter drop downs by default
+* [Added] Added a new hook that allows developers to alter the max number of options in drop down lists used in Filtering `ac/select/query/limit`.
+
+= 6.4.2 =
+Release Date: December 19th, 2023
+
+* [Improved] Filtering dropdowns for Custom Field text fields are back instead of open text fields
+* [Fixed] Fixed a fatal error when a user was selected as conditional but had no first or last name
+* [ToolsetTypes] Fixed an Uncaught TypeError in the Checkbox field column
+
+= 6.4.1 =
+Release Date: December 8th, 2023
+
+* [Fixed] The update script triggered a fatal error
+* [JetEngine] Meta Boxes for Media Post Type are now supported
+* [WooCommerce] It is now possible to select more Product properties for the Grouped by column
+
+= 6.4 =
+Release Date: December 6th, 2023
+
+* [Added] New User Column: Admin Color Scheme
+* [Added] New Media Columns: Aspect Ratio & Orientation (Landscape, Portrait, or Square)
+* [Added] New Wrapping setting: Allows to clip the column values to create more compact views
+* [Added] New Preset feature: Added the option to create column presets (column templates) and store them with your theme or plugin
+* [Fixed] When editing a column on the Media page, the value was not updated in the colum itself
+* [Fixed] Fixed an issue where non-existing terms could cause an error on the column settings page
+* [Updated] Smart Filtering has been rebuilt from scratch and no longer relies on third-party plugins
+* [Updated] It is now possible to search for Saved Filters in the drop down on the table page
+* [Updated] The standard filtering dropdowns are optimised and no longer rely on caching. They are now populated with AJAX. Some filtering dropdowns have been replaced with open text fields.
+* [Improved] It is now possible to choose how dates are stored in the Custom Field column
+* [Improved] Added "Select" Custom Field Type with UI for option input and new filter `acp/column/settings/select_options`
+* [Improved] Webp images are not recognized for the custom field column
+* [GravityForms] Remove Smart Filtering and Filtering from support
+* [JetEngine] More operators for the Relationship Smart Filter
+* [JetEngine] Better Support for fields that use the Glossary options
+* [WooCommerce] Sorting and Filtering support for HPOS Shipping Method column
+* [WooCommerce] New HPOS column: Returning Customer
+* [WooCommerce] New HPOS column: Order Meta
+* [Updated] Admin Columns Core to version 4.7
+
 = 6.3.5 =
 Release Date: October 2nd, 2023
 

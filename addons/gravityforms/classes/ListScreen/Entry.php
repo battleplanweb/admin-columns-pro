@@ -33,7 +33,8 @@ class Entry extends AC\ListScreen implements Editing\ListScreen, Export\ListScre
         $this->column_configurator = $column_configurator;
 
         $this->group = 'gravity_forms';
-        $this->set_meta_type(MetaTypes::GRAVITY_FORMS_ENTRY);
+        $this->meta_type = MetaTypes::GRAVITY_FORMS_ENTRY;
+        $this->query_type = MetaTypes::GRAVITY_FORMS_ENTRY;
     }
 
     public function list_table(): AC\ListTable
@@ -73,7 +74,7 @@ class Entry extends AC\ListScreen implements Editing\ListScreen, Export\ListScre
 
     public function get_table_url(): Uri
     {
-        $url = new AC\Type\Url\ListTable('admin.php');
+        $url = new AC\Type\Url\ListTable('admin.php', $this->has_id() ? $this->get_id() : null);
 
         return $url->with_arg('id', (string)$this->form_id)
                    ->with_arg('page', 'gf_entries');

@@ -23,39 +23,18 @@ use WP_Error;
 class ActivationUpdater
 {
 
-    /**
-     * @var ActivationKeyStorage
-     */
     private $activation_key_storage;
 
-    /**
-     * @var ActivationStorage
-     */
     private $activation_storage;
 
-    /**
-     * @var LicenseKeyRepository
-     */
     private $license_key_repository;
 
-    /**
-     * @var ApiFactory
-     */
     private $api_factory;
 
-    /**
-     * @var SiteUrl
-     */
     private $site_url;
 
-    /**
-     * @var IntegrationRepository
-     */
     private $integration_repository;
 
-    /**
-     * @var PermissionChecker
-     */
     private $permission_checker;
 
     public function __construct(
@@ -124,7 +103,7 @@ class ActivationUpdater
     private function create_activation_key_from_response(API\Response $api_response): ?Key
     {
         try {
-            $key = new Key($api_response->get('activation_key'));
+            $key = new Key((string)$api_response->get('activation_key'));
         } catch (InvalidArgumentException $e) {
             return null;
         }

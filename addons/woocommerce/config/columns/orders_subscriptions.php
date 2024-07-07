@@ -25,6 +25,7 @@ return [
     Column\Order\Discount::class,
     Column\Order\Fees::class,
     Column\Order\Ip::class,
+    Column\Order\Meta::class,
     Column\Order\Notes::class,
     Column\Order\OrderNumber::class,
     Column\Order\PaymentMethod::class,

@@ -12,8 +12,11 @@ use AC\Services;
 use AC\Vendor\DI;
 use AC\Vendor\DI\ContainerBuilder;
 use ACA\WC\Service\TableScreen;
+use ACA\WC\Service\TableTemplates;
 use ACP;
 use ACP\Service\IntegrationStatus;
+use ACP\Service\Storage\TemplateFiles;
+use ACP\Service\View;
 use Automattic;
 use Automattic\WooCommerce\Internal\Admin\Orders\PageController;
 use Automattic\WooCommerce\Internal\Features\FeaturesController;
@@ -81,8 +84,11 @@ final class WooCommerce implements Registerable
             );
         }
 
-        ACP\Search\QueryFactory::register('wc_order', Search\Query\Order::class);
+        ACP\QueryFactory::register('wc_order', Search\Query\Order::class);
+
         ACP\Search\TableScreenFactory::register(ListScreen\Order::class, Search\TableScreen\Order::class);
+        ACP\Filtering\TableScreenFactory::register(ListScreen\Order::class, Filtering\Table\Order::class);
+        ACP\Filtering\TableScreenFactory::register(ListScreen\OrderSubscription::class, Filtering\Table\Order::class);
 
         $this->create_services($container)
              ->register();
@@ -103,8 +109,13 @@ final class WooCommerce implements Registerable
             },
             Features::class          => autowire()->constructorParameter(
                 0,
-                wc_get_container()->get(FeaturesController::class)
+                wc_get_container()->has(FeaturesController::class)
+                    ? wc_get_container()->get(FeaturesController::class)
+                    : null
             ),
+            TemplateFiles::class     => static function (): TemplateFiles {
+                return TemplateFiles::from_directory(__DIR__ . '/../config/storage/template');
+            },
         ];
 
         return (new ContainerBuilder())->addDefinitions($definitions)
@@ -118,10 +129,6 @@ final class WooCommerce implements Registerable
             : require $this->location->with_suffix('config/columns/shoporder/users.php')->get_path();
 
         $services = new Services([
-            new Service\Columns(
-                'wp-comments',
-                require $this->location->with_suffix('config/columns/comments.php')->get_path()
-            ),
             new Service\Columns('wp-users', $user_column_config),
         ]);
 
@@ -136,7 +143,8 @@ final class WooCommerce implements Registerable
             Service\ListScreenGroups::class,
             Service\TableRows::class,
             Service\TableScreen::class,
-            ACP\Service\Templates::class,
+            View::class,
+            TemplateFiles::class,
         ];
 
         if ($container->get('use.hpos')) {

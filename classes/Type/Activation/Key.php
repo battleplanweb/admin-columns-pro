@@ -8,12 +8,9 @@ use InvalidArgumentException;
 final class Key implements ActivationToken
 {
 
-    /**
-     * @var string
-     */
     private $token;
 
-    public function __construct($token)
+    public function __construct(string $token)
     {
         if ( ! self::is_valid($token)) {
             throw new InvalidArgumentException('Invalid license token.');

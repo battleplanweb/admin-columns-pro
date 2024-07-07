@@ -11,7 +11,6 @@ use AC\ListScreen;
 use AC\Registerable;
 use AC\Renderable;
 use AC\ScreenController;
-use AC\Settings;
 
 final class Screen implements Registerable
 {
@@ -36,30 +35,28 @@ final class Screen implements Registerable
      */
     private $buttons = [];
 
-    /**
-     * @var ColumnSize\ListStorage
-     */
     private $column_size_list_storage;
 
-    /**
-     * @var ColumnSize\UserStorage
-     */
     private $column_size_user_storage;
 
     private $primary_column_factory;
+
+    private $edit_button;
 
     public function __construct(
         Asset\Location\Absolute $location,
         ListScreen $list_screen,
         ColumnSize\ListStorage $column_size_list_storage,
         ColumnSize\UserStorage $column_size_user_storage,
-        PrimaryColumnFactory $primary_column_factory
+        PrimaryColumnFactory $primary_column_factory,
+        AC\Settings\General\EditButton $edit_button
     ) {
         $this->location = $location;
         $this->list_screen = $list_screen;
         $this->column_size_list_storage = $column_size_list_storage;
         $this->column_size_user_storage = $column_size_user_storage;
         $this->primary_column_factory = $primary_column_factory;
+        $this->edit_button = $edit_button;
     }
 
     /**
@@ -70,11 +67,13 @@ final class Screen implements Registerable
         $controller = new ScreenController($this->list_screen);
         $controller->register();
 
-        $render = new TableFormView(
-            $this->list_screen->get_meta_type(),
-            sprintf('<input type="hidden" name="layout" value="%s">', $this->list_screen->get_layout_id())
-        );
-        $render->register();
+        if ($this->list_screen->has_id()) {
+            $render = new TableFormView(
+                $this->list_screen->get_meta_type(),
+                sprintf('<input type="hidden" name="layout" value="%s">', $this->list_screen->get_id())
+            );
+            $render->register();
+        }
 
         (new AdminHeadStyle())->register();
 
@@ -131,9 +130,7 @@ final class Screen implements Registerable
             return;
         }
 
-        $edit_button = new Settings\Option\EditButton();
-
-        if ( ! $edit_button->is_enabled()) {
+        if ( ! $this->edit_button->is_enabled()) {
             return;
         }
 
@@ -145,9 +142,6 @@ final class Screen implements Registerable
         $this->register_button($button, 1);
     }
 
-    /**
-     * @since 2.2.4
-     */
     public function admin_scripts()
     {
         $style = new Asset\Style('ac-table', $this->location->with_suffix('assets/css/table.css'), ['ac-ui']);
@@ -168,9 +162,10 @@ final class Screen implements Registerable
             ->add_inline_variable('AC', [
                 'assets'           => $this->location->with_suffix('assets/')->get_url(),
                 'list_screen'      => $this->list_screen->get_key(),
-                'layout'           => $this->list_screen->get_layout_id(),
+                'layout'           => $this->list_screen->has_id() ? (string)$this->list_screen->get_id() : '',
                 'column_types'     => $this->get_column_types_mapping(),
                 'ajax_nonce'       => wp_create_nonce('ac-ajax'),
+                'read_only'        => $this->list_screen->is_read_only(),
                 'table_id'         => $this->list_screen->get_table_attr_id(),
                 'screen'           => $this->get_current_screen_id(),
                 'meta_type'        => $this->list_screen->get_meta_type(),
@@ -228,7 +223,7 @@ final class Screen implements Registerable
         }
 
         foreach ($query_args_whitelist as $query_arg) {
-            if (isset($_GET[$query_arg])) {
+            if (isset($_GET[$query_arg]) && is_string($_GET[$query_arg])) {
                 $url = $url->with_arg($query_arg, $_GET[$query_arg]);
             }
         }

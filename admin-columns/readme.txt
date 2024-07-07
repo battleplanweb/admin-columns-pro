@@ -2,10 +2,10 @@
 Contributors: codepress, tschutter, davidmosterd, engelen, dungengronovius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZDZRSYLQ4Z76J
 Tags: plugins, wordpress, admin, column, columns, custom columns, custom fields, image, dashboard, sortable, filters, posts, media, users, pages, posttypes, manage columns, wp-admin
-Requires at least: 4.7.1
-Tested up to: 6.3.1
+Requires at least: 4.7.3
+Tested up to: 6.5.4
 Requires PHP: 7.2
-Stable tag: 4.6.9
+Stable tag: 4.7.7
 
 Customise columns on the administration screens for post(types), pages, media, comments, links and users with an easy to use drag-and-drop interface.
 
@@ -209,9 +209,53 @@ You can find a list of the available actions and filters (and examples on how to
 
 == Changelog ==
 
+= 4.7.7 =
+Release Date: June 10th, 2024
+
+* [Fixed] Gravity Forms column no longer relies on namespace check
+
+= 4.7.6 =
+Release Date: June 4th, 2024
+
+* [Fixed] Custom Field column with Post as Display value could give an error
+
+= 4.7.5 =
+Release Date: April 14th, 2024
+
+* [Fixed] SVG Support in image columns
+
+= 4.7.4 =
+Release Date: March 4th, 2024
+
+* [Fixed] The Custom Field column setting gave an error when using the text field hook
+
+= 4.7.3 =
+Release Date: February 6th, 2024
+
+* [Improved] Better loading of available integrations
+
+= 4.7.2 =
+Release Date: January 16th, 2024
+
+* [Fixed] Fatal error when Restoring the settings in the Settings tab
+
+= 4.7.1 =
+Release Date: January 9th, 2024
+
+* [Fixed] When the edit columns button was disabled, a styled container was displayed
+
+= 4.7 =
+Release Date: December 6th, 2023
+
+* [Improved] It is now possible to choose how dates are stored in the Custom Field column
+* [Improved] Webp images are not recognized for the custom field column
+* [Fixed] Fixed an issue where non-existing terms could cause an error on the column settings page
+
+
 = 4.6.9 =
 Release Date: October 2nd, 2023
 
+* [Fixed] Render values for Taxonomies fixed
 * [Fixed] URLs for Terms in Taxonomy columns were incorrect
 
 = 4.6.8 =
@@ -222,7 +266,7 @@ Release Date: September 19th, 2023
 = 4.6.7 =
 Release Date: August 25th, 2023
 
-* [Fixed] Error  when adding the 'Last Modified Author' column
+* [Fixed] Error when adding the 'Last Modified Author' column
 
 = 4.6.6 =
 Release Date: August 21st, 2023

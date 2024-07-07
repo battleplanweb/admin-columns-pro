@@ -99,8 +99,9 @@ final class ActivationStorage
         $data = [
             self::PARAM_STATUS         => $activation->get_status()->get_value(),
             self::PARAM_RENEWAL_METHOD => $activation->get_renewal_method()->get_value(),
-            self::PARAM_EXPIRY_DATE    => $activation->get_expiry_date()->exists() ? $activation->get_expiry_date(
-            )->get_value()->getTimestamp() : null,
+            self::PARAM_EXPIRY_DATE    => $activation->get_expiry_date()->exists()
+                ? $activation->get_expiry_date()->get_value()->getTimestamp()
+                : null,
             self::PARAM_PRODUCTS       => $activation->get_products()->get_value(),
         ];
 

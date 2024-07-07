@@ -26,6 +26,17 @@ class Html
         return implode(' ', $output);
     }
 
+    public function get_style_attributes_as_string(array $attributes): string
+    {
+        $style = '';
+
+        foreach ($attributes as $key => $value) {
+            $style .= sprintf('%s:%s;', $key, $value);
+        }
+
+        return $style;
+    }
+
     /**
      * @param string $url
      * @param string $label
@@ -155,13 +166,8 @@ class Html
 
     /**
      * Display a modal which trigger an ajax event on click. The ajax callback calls AC\Column::get_ajax_value.
-     *
-     * @param string      $label
-     * @param string|null $title
-     *
-     * @return string
      */
-    public function get_ajax_modal_link($label, array $attributes = [])
+    public function get_ajax_modal_link(string $label, array $attributes = [], string $label_suffix = null): string
     {
         $attribute_markup = [];
 
@@ -182,9 +188,10 @@ class Html
         }
 
         return sprintf(
-            '<a data-modal-value %s>%s</a>',
+            '<a style="border-bottom: 1px dotted;" data-modal-value %s>%s</a>%s',
             implode(' ', $attribute_markup),
-            $label
+            $label,
+            $label_suffix
         );
     }
 

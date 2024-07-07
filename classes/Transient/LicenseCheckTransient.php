@@ -36,15 +36,10 @@ class LicenseCheckTransient implements Expirable
         $this->timestamp->delete();
     }
 
-    /**
-     * @param int $expiration Time until expiration in seconds.
-     *
-     * @return bool
-     */
-    public function save($expiration)
+    public function save(int $expiration_seconds): bool
     {
         // Always store timestamp before option data.
-        return $this->timestamp->save(time() + (int)$expiration);
+        return $this->timestamp->save(time() + $expiration_seconds);
     }
 
 }

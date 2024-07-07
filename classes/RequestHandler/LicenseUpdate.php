@@ -14,14 +14,8 @@ use ACP\RequestHandler;
 class LicenseUpdate implements RequestHandler
 {
 
-    /**
-     * @var ActivationTokenFactory
-     */
     private $activation_token_factory;
 
-    /**
-     * @var ActivationUpdater
-     */
     private $activation_updater;
 
     public function __construct(ActivationTokenFactory $activation_token_factory, ActivationUpdater $activation_updater)

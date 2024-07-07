@@ -7,33 +7,30 @@ use ACP\Search\Helper\MetaQuery\SerializedComparisonFactory;
 use ACP\Search\Operators;
 use ACP\Search\Value;
 
-class Serialized extends Meta {
+class Serialized extends Meta
+{
 
-	public function __construct( $meta_key, $meta_type ) {
-		$operators = new Operators( [
-			Operators::EQ,
-			Operators::NEQ,
-			Operators::IS_EMPTY,
-			Operators::NOT_IS_EMPTY,
-		] );
+    public function __construct(string $meta_key)
+    {
+        $operators = new Operators([
+            Operators::EQ,
+            Operators::NEQ,
+            Operators::IS_EMPTY,
+            Operators::NOT_IS_EMPTY,
+        ]);
 
-		parent::__construct( $operators, $meta_key, $meta_type );
-	}
+        parent::__construct($operators, $meta_key);
+    }
 
-	/**
-	 * @param string $operator
-	 * @param Value  $value
-	 *
-	 * @return array
-	 */
-	protected function get_meta_query( $operator, Value $value ) {
-		$comparison = SerializedComparisonFactory::create(
-			$this->get_meta_key(),
-			$operator,
-			$value
-		);
+    protected function get_meta_query(string $operator, Value $value): array
+    {
+        $comparison = SerializedComparisonFactory::create(
+            $this->meta_key,
+            $operator,
+            $value
+        );
 
-		return $comparison();
-	}
+        return $comparison();
+    }
 
 }

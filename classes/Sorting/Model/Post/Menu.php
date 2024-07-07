@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace ACP\Sorting\Model\Post;
 
-use ACP\Search\Query\Bindings;
-use ACP\Sorting\AbstractModel;
+use ACP\Query\Bindings;
 use ACP\Sorting\Model\QueryBindings;
 use ACP\Sorting\Model\SqlOrderByFactory;
 use ACP\Sorting\Sorter;
 use ACP\Sorting\Type\Order;
 
-class Menu extends AbstractModel implements QueryBindings
+class Menu implements QueryBindings
 {
 
     private $post_type;
 
     public function __construct(string $post_type)
     {
-        parent::__construct();
-
         $this->post_type = $post_type;
     }
 
@@ -68,7 +65,7 @@ class Menu extends AbstractModel implements QueryBindings
             $values[$id] = implode(' ', $_values);
         }
 
-        return (new Sorter())->sort($values, $this->data_type);
+        return (new Sorter())->sort($values);
     }
 
     private function get_menu_label(int $menu_item_id): string

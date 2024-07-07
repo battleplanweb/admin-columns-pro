@@ -11,7 +11,8 @@ use ACP;
 use WC_Order;
 use WC_Order_Item_Product;
 
-class Product extends AC\Column implements ACP\Search\Searchable, ACP\ConditionalFormat\Formattable
+class Product extends AC\Column implements ACP\Search\Searchable, ACP\ConditionalFormat\Formattable,
+                                           ACP\Export\Exportable
 {
 
     use ACP\ConditionalFormat\FilteredHtmlFormatTrait;
@@ -79,7 +80,7 @@ class Product extends AC\Column implements ACP\Search\Searchable, ACP\Conditiona
 
     public function register_settings(): void
     {
-        $this->add_setting(new Settings\ShopOrder\Product($this))
+        $this->add_setting(new Settings\Product($this))
              ->add_setting(new AC\Settings\Column\NumberOfItems($this))
              ->add_setting(new AC\Settings\Column\Separator($this));
     }
@@ -87,6 +88,11 @@ class Product extends AC\Column implements ACP\Search\Searchable, ACP\Conditiona
     public function search()
     {
         return new Search\Order\Product();
+    }
+
+    public function export()
+    {
+        return new ACP\Export\Model\StrippedValue($this);
     }
 
 }

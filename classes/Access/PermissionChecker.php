@@ -5,9 +5,6 @@ namespace ACP\Access;
 final class PermissionChecker
 {
 
-    /**
-     * @var PermissionsStorage
-     */
     private $permissions_storage;
 
     /**

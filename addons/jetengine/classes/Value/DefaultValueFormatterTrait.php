@@ -2,15 +2,17 @@
 
 namespace ACA\JetEngine\Value;
 
-trait DefaultValueFormatterTrait {
+trait DefaultValueFormatterTrait
+{
 
-	public function get_value( $id ) {
-		$raw_value = $this->get_raw_value( $id );
+    public function get_value($id)
+    {
+        $raw_value = $this->get_raw_value($id);
 
-		if ( ! $raw_value ) {
-			return $this->get_empty_char();
-		}
+        if ($raw_value === null || $raw_value === '') {
+            return $this->get_empty_char();
+        }
 
-		return ( new ValueFormatterFactory() )->create( $this, $this->field )->format( $raw_value );
-	}
+        return (new ValueFormatterFactory())->create($this, $this->field)->format($raw_value);
+    }
 }

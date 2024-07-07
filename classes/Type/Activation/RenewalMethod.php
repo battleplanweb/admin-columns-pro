@@ -4,52 +4,41 @@ namespace ACP\Type\Activation;
 
 use LogicException;
 
-final class RenewalMethod {
+final class RenewalMethod
+{
 
-	const METHOD_AUTO = 'auto';
-	const METHOD_MANUAL = 'manual';
+    public const METHOD_AUTO = 'auto';
+    public const METHOD_MANUAL = 'manual';
 
-	/**
-	 * @var string
-	 */
-	private $method;
+    private $method;
 
-	public function __construct( $method ) {
-		if ( ! self::is_valid( $method ) ) {
-			throw new LogicException( 'Invalid renewal method.' );
-		}
+    public function __construct($method)
+    {
+        if ( ! self::is_valid($method)) {
+            throw new LogicException('Invalid renewal method.');
+        }
 
-		$this->method = $method;
-	}
+        $this->method = $method;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function is_auto_renewal() {
-		return self::METHOD_AUTO === $this->method;
-	}
+    public function is_auto_renewal(): bool
+    {
+        return self::METHOD_AUTO === $this->method;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function is_manual_renewal() {
-		return self::METHOD_MANUAL === $this->method;
-	}
+    public function is_manual_renewal(): bool
+    {
+        return self::METHOD_MANUAL === $this->method;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function get_value() {
-		return $this->method;
-	}
+    public function get_value(): string
+    {
+        return $this->method;
+    }
 
-	/**
-	 * @param string $method
-	 *
-	 * @return bool
-	 */
-	public static function is_valid( $method ) {
-		return in_array( $method, [ self::METHOD_AUTO, self::METHOD_MANUAL ], true );
-	}
+    public static function is_valid($method): bool
+    {
+        return in_array($method, [self::METHOD_AUTO, self::METHOD_MANUAL], true);
+    }
 
 }

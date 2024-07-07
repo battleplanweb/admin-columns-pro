@@ -6,21 +6,24 @@ use AC\Asset\Location\Absolute;
 use AC\Asset\Script;
 use AC\Nonce\Ajax;
 
-class LicenseCheck extends Script {
+class LicenseCheck extends Script
+{
 
-	public function __construct( Absolute $location ) {
-		parent::__construct( 'acp-license-check', $location );
-	}
+    public function __construct(Absolute $location)
+    {
+        parent::__construct('acp-license-check', $location);
+    }
 
-	public function register(): void {
-		parent::register();
+    public function register(): void
+    {
+        parent::register();
 
-		$this->add_inline_variable(
-			'ACP_LICENCE_CHECK',
-			[
-				'nonce' => ( new Ajax() )->create(),
-			]
-		);
-	}
+        $this->add_inline_variable(
+            'ACP_LICENCE_CHECK',
+            [
+                'nonce' => (new Ajax())->create(),
+            ]
+        );
+    }
 
 }

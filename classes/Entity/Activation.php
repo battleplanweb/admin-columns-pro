@@ -7,103 +7,77 @@ use ACP\Type\Activation\Products;
 use ACP\Type\Activation\RenewalMethod;
 use ACP\Type\Activation\Status;
 
-final class Activation {
+final class Activation
+{
 
-	/**
-	 * @var Status
-	 */
-	private $status;
+    private $status;
 
-	/**
-	 * @var RenewalMethod
-	 */
-	private $renewal_method;
+    private $renewal_method;
 
-	/**
-	 * @var ExpiryDate
-	 */
-	private $expiry_date;
+    private $expiry_date;
 
-	/**
-	 * @var Products
-	 */
-	private $products;
+    private $products;
 
-	public function __construct( Status $status, RenewalMethod $renewal_method, ExpiryDate $expiry_date, Products $products ) {
-		$this->status = $status;
-		$this->renewal_method = $renewal_method;
-		$this->expiry_date = $expiry_date;
-		$this->products = $products;
-	}
+    public function __construct(
+        Status $status,
+        RenewalMethod $renewal_method,
+        ExpiryDate $expiry_date,
+        Products $products
+    ) {
+        $this->status = $status;
+        $this->renewal_method = $renewal_method;
+        $this->expiry_date = $expiry_date;
+        $this->products = $products;
+    }
 
-	/**
-	 * @return ExpiryDate
-	 */
-	public function get_expiry_date() {
-		return $this->expiry_date;
-	}
+    public function get_expiry_date(): ExpiryDate
+    {
+        return $this->expiry_date;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function is_lifetime() {
-		return $this->expiry_date->is_lifetime();
-	}
+    public function is_lifetime(): bool
+    {
+        return $this->expiry_date->is_lifetime();
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function is_expired() {
-		return $this->expiry_date->is_expired();
-	}
+    public function is_expired(): bool
+    {
+        return $this->expiry_date->is_expired();
+    }
 
-	/**
-	 * @return RenewalMethod
-	 */
-	public function get_renewal_method() {
-		return $this->renewal_method;
-	}
+    public function get_renewal_method(): RenewalMethod
+    {
+        return $this->renewal_method;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function is_auto_renewal() {
-		return $this->renewal_method->is_auto_renewal();
-	}
+    public function is_auto_renewal(): bool
+    {
+        return $this->renewal_method->is_auto_renewal();
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function is_manual_renewal() {
-		return $this->renewal_method->is_manual_renewal();
-	}
+    public function is_manual_renewal(): bool
+    {
+        return $this->renewal_method->is_manual_renewal();
+    }
 
-	/**
-	 * @return Status
-	 */
-	public function get_status() {
-		return $this->status;
-	}
+    public function get_status(): Status
+    {
+        return $this->status;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function is_active() {
-		return $this->status->is_active();
-	}
+    public function is_active(): bool
+    {
+        return $this->status->is_active();
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function is_cancelled() {
-		return $this->status->is_cancelled();
-	}
+    public function is_cancelled(): bool
+    {
+        return $this->status->is_cancelled();
+    }
 
-	/**
-	 * @return Products
-	 */
-	public function get_products() {
-		return $this->products;
-	}
+    public function get_products(): Products
+    {
+        return $this->products;
+    }
 
 }

@@ -6,10 +6,12 @@ use AC;
 use ACA\WC\Sorting\Order\OrderData;
 use ACP\ConditionalFormat\FilteredHtmlFormatTrait;
 use ACP\ConditionalFormat\Formattable;
+use ACP\Export\Exportable;
+use ACP\Export\Model\StrippedValue;
 use ACP\Sorting\Sortable;
 use ACP\Sorting\Type\DataType;
 
-class Tax extends AC\Column implements Formattable, Sortable
+class Tax extends AC\Column implements Formattable, Sortable, Exportable
 {
 
     use FilteredHtmlFormatTrait;
@@ -37,6 +39,11 @@ class Tax extends AC\Column implements Formattable, Sortable
         }
 
         return implode('<br>', $result);
+    }
+
+    public function export()
+    {
+        return new StrippedValue($this);
     }
 
     public function sorting()

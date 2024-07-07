@@ -6,17 +6,16 @@ use ACP;
 use ACP\Access\Permissions;
 use ACP\Access\Platform;
 
-class LocalServer implements ACP\Access\Rule {
+class LocalServer implements ACP\Access\Rule
+{
 
-	public function get_permissions(): Permissions
+    public function get_permissions(): Permissions
     {
-		$permissions = new Permissions();
+        if (Platform::is_local()) {
+            return new Permissions([Permissions::USAGE]);
+        }
 
-		if ( Platform::is_local() ) {
-			$permissions = $permissions->with_permission( Permissions::USAGE );
-		}
-
-		return $permissions;
-	}
+        return new Permissions();
+    }
 
 }

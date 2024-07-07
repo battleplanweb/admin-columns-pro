@@ -53,12 +53,14 @@ class Scripts implements Registerable
     {
         $transient = new LicenseCheckTransient($this->plugin->is_network_active());
 
-        if ($transient->is_expired()) {
-            $script = new Script\LicenseCheck($this->location->with_suffix('assets/core/js/license-check.js'));
-            $script->enqueue();
-
-            $transient->save(DAY_IN_SECONDS);
+        if ( ! $transient->is_expired()) {
+            return;
         }
+
+        $script = new Script\LicenseCheck($this->location->with_suffix('assets/core/js/license-check.js'));
+        $script->enqueue();
+
+        $transient->save((int)DAY_IN_SECONDS);
     }
 
     private function enqueue(Enqueueable $assets)

@@ -24,39 +24,18 @@ use InvalidArgumentException;
 class LicenseActivate implements RequestHandler
 {
 
-    /**
-     * @var ActivationKeyStorage
-     */
     private $activation_key_storage;
 
-    /**
-     * @var ApiFactory
-     */
     private $api_factory;
 
-    /**
-     * @var SiteUrl
-     */
     private $site_url;
 
-    /**
-     * @var PluginDataUpdater
-     */
     private $products_updater;
 
-    /**
-     * @var ActivationUpdater
-     */
     private $activation_updater;
 
-    /**
-     * @var PermissionChecker
-     */
     private $permission_checker;
 
-    /**
-     * @var PermissionsStorage
-     */
     private $permission_storage;
 
     public function __construct(
@@ -124,7 +103,7 @@ class LicenseActivate implements RequestHandler
         }
 
         try {
-            $activation_key = new Key($response->get('activation_key'));
+            $activation_key = new Key((string)$response->get('activation_key'));
         } catch (InvalidArgumentException $e) {
             $this->error_notice($e->getMessage());
 

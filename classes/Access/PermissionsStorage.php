@@ -4,7 +4,6 @@ namespace ACP\Access;
 
 use AC\Storage\KeyValueFactory;
 use AC\Storage\KeyValuePair;
-use AC\Storage\Option;
 
 final class PermissionsStorage
 {
@@ -21,16 +20,12 @@ final class PermissionsStorage
 
     public function retrieve(): Permissions
     {
-        $permissions = $this->storage->get([
-            Option::OPTION_DEFAULT => [],
-        ]);
-
-        return new Permissions($permissions ?: []);
+        return new Permissions($this->storage->get() ?: []);
     }
 
     public function exists(): bool
     {
-        return false !== $this->storage->get();
+        return $this->storage->exists();
     }
 
     public function save(Permissions $permissions): void

@@ -36,7 +36,9 @@ class PluginDataUpdater
             return;
         }
 
-        $this->storage_factory->create()->save((array)$response->get_body());
+        $this->storage_factory->create()->save(
+            (array)$response->get_body()
+        );
     }
 
 }
