@@ -16,6 +16,7 @@ return [
     Column\Product\ShippingClass::class,
     Column\Product\Sales::class,
     Column\Product\LowOnStock::class,
+    Column\Product\StockThreshold::class,
 
     Column\ProductVariation\Attribute::class,
     Column\ProductVariation\Description::class,

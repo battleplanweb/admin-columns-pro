@@ -25,7 +25,7 @@ class Query extends ArrayIterator
             'hide_empty' => 0,
             'taxonomy'   => null,
         ], $args);
-
+ 
         // calculate offset
         $args['offset'] = ($args['page'] - 1) * $args['number'];
 

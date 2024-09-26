@@ -66,7 +66,7 @@ class Depth implements QueryBindings
         $values = [];
 
         foreach (array_keys($ids) as $id) {
-            $values[$id] = $this->get_depth($id, $ids);
+            $values[$id] = $this->get_depth((int)$id, $ids);
         }
 
         asort($values, SORT_NUMERIC);

@@ -25,14 +25,14 @@ class OrderCount implements QueryBindings
 
         $bindings = new Bindings();
 
+        $alias = $bindings->get_unique_alias('order_count');
+
         $where_status = $this->status
             ? sprintf(
-                " AND acsort_orders.status IN ( '%s' )",
+                " AND $alias.status IN ( '%s' )",
                 implode("','", array_map('esc_sql', $this->status))
             )
             : '';
-
-        $alias = $bindings->get_unique_alias('order_count');
 
         $bindings->join(
             " 

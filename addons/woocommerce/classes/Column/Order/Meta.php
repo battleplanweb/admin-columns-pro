@@ -42,6 +42,15 @@ class Meta extends AC\Column implements Search\Searchable, ACP\Editing\Editable,
             : '';
     }
 
+    public function get_select_options(): array
+    {
+        $setting = $this->get_setting('select_options');
+
+        return $setting instanceof ACP\Settings\Column\SelectOptions
+            ? $setting->get_options()
+            : [];
+    }
+
     public function get_field_type(): string
     {
         $setting = $this->get_setting(CustomFieldType::NAME);
@@ -91,6 +100,8 @@ class Meta extends AC\Column implements Search\Searchable, ACP\Editing\Editable,
             case CustomFieldType::TYPE_USER :
                 return new Search\Comparison\Meta\User($this->get_meta_key());
 
+            case CustomFieldType::TYPE_SELECT :
+                return new Search\Comparison\Meta\Select($this->get_meta_key(), $this->get_select_options());
             case CustomFieldType::TYPE_POST :
             case CustomFieldType::TYPE_COLOR :
             case CustomFieldType::TYPE_TEXT :

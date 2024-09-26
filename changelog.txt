@@ -1,5 +1,17 @@
 == Changelog ==
 
+= 6.4.11 =
+Release Date: August 26th, 2024
+
+* [Fixed] WooCommerce Order Meta: Enhanced filtering and editing capabilities for select options.
+* [Fixed] WooCommerce Variation Image: Improved filtering accuracy for the 'is set' condition, ensuring correct results.
+* [Fixed] WooCommerce Grouped By Column: Resolved display issue that affected the grouped by column view.
+* [Fixed] WooCommerce Order Count: Corrected sorting behavior for order counts.
+* [Fixed] Gravity Forms: Implemented fallback check for WP_Error handling.
+* [Added] Introduced export functionality for the Aspect Ratio column.
+* [Added] WooCommerce HPOS Order and Subscription Table: Added a new WooCommerce ID column.
+* [Added] WooCommerce Stock Threshold: New column introduced in the Product and Product Variation table.
+
 = 6.4.10 =
 Release Date: June 11th, 2024
 

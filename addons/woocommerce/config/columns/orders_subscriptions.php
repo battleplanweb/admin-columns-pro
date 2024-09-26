@@ -27,6 +27,7 @@ return [
     Column\Order\Ip::class,
     Column\Order\Meta::class,
     Column\Order\Notes::class,
+    Column\Order\OrderId::class,
     Column\Order\OrderNumber::class,
     Column\Order\PaymentMethod::class,
     Column\Order\Product::class,

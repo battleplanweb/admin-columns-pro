@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: Admin Columns <info@admincolumns.com>\n"
 "Last-Translator: Codepress <info@codepress.nl\n"
-"POT-Creation-Date: 2024-06-07 07:17+0000\n"
+"POT-Creation-Date: 2024-08-26 08:11+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -258,7 +258,7 @@ msgstr ""
 msgid "Invalid value supplied for export counter."
 msgstr ""
 
-#: admin-columns-pro/classes/Export/Strategy.php:256
+#: admin-columns-pro/classes/Export/Strategy.php:290
 msgid "No exportable columns found."
 msgstr ""
 
@@ -661,7 +661,7 @@ msgstr ""
 msgid "Post Type"
 msgstr ""
 
-#: admin-columns-pro/classes/Column/Media/AspectRatio.php:19
+#: admin-columns-pro/classes/Column/Media/AspectRatio.php:21
 msgid "Aspect Ratio"
 msgstr ""
 
@@ -2573,7 +2573,7 @@ msgstr ""
 msgid "Paid Amount"
 msgstr ""
 
-#: admin-columns-pro/addons/woocommerce/classes/Column/Order/PaymentMethod.php:18, admin-columns-pro/addons/woocommerce/classes/Column/ShopOrder/PaymentMethod.php:20, admin-columns-pro/addons/woocommerce/classes/Settings/HideOnScreen/FilterSubscriptionPayment.php:10
+#: admin-columns-pro/addons/woocommerce/classes/Column/Order/PaymentMethod.php:18, admin-columns-pro/addons/woocommerce/classes/Column/ShopOrder/PaymentMethod.php:21, admin-columns-pro/addons/woocommerce/classes/Settings/HideOnScreen/FilterSubscriptionPayment.php:10
 msgid "Payment Method"
 msgstr ""
 

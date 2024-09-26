@@ -14,6 +14,8 @@ return [
     ACP\Column\Post\TitleRaw::class,
 
     Column\Product\ShippingClass::class,
+    Column\Product\LowOnStock::class,
+    Column\Product\StockThreshold::class,
 
     Column\ProductVariation\Attribute::class,
     Column\ProductVariation\Description::class,

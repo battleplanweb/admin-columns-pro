@@ -33,6 +33,7 @@ return [
     Column\Order\DownloadPermissionGranted::class,
     Column\Order\Downloads::class,
     Column\Order\Fees::class,
+    Column\Order\OrderId::class,
     Column\Order\Ip::class,
     Column\Order\IsCustomer::class,
     Column\Order\Notes::class,

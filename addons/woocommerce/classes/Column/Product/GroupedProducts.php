@@ -29,7 +29,7 @@ class GroupedProducts extends AC\Column\Meta
     {
         $children = $this->get_raw_value($id);
 
-        if (empty($children)) {
+        if (empty($children) || ! is_array($children)) {
             return $this->get_empty_char();
         }
 

@@ -4,10 +4,12 @@ namespace ACP\Column\Media;
 
 use AC;
 use ACP\ConditionalFormat;
+use ACP\Export\Exportable;
+use ACP\Export\Model\StrippedValue;
 use ACP\Sorting;
 use ACP\Sorting\Sortable;
 
-class AspectRatio extends AC\Column\Media\Meta implements Sortable
+class AspectRatio extends AC\Column\Media\Meta implements Sortable, Exportable
 {
 
     use ConditionalFormat\ConditionalFormatTrait;
@@ -64,6 +66,11 @@ class AspectRatio extends AC\Column\Media\Meta implements Sortable
     public function sorting()
     {
         return new Sorting\Model\Media\AspectRatio();
+    }
+
+    public function export()
+    {
+        return new StrippedValue($this);
     }
 
 }

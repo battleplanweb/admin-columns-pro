@@ -65,7 +65,7 @@ class ComparisonFactory implements SearchComparisonFactory
                 } else {
                     $query = $query_factory->create($meta_key, $meta_type);
                 }
-      
+
                 return new ACP\Search\Comparison\Meta\Image($meta_key, $query);
 
             case FieldType::TYPE_GALLERY:

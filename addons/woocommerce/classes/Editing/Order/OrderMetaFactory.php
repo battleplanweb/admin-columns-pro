@@ -85,6 +85,11 @@ final class OrderMetaFactory
                     new ACP\Editing\PaginatedOptions\Users()
                 );
 
+            case CustomFieldType::TYPE_SELECT:
+                return new ACP\Editing\Service\Basic(
+                    (new ACP\Editing\View\Select($column->get_select_options()))->set_clear_button(true),
+                    new Editing\Storage\Order\OrderMeta($meta_key)
+                );
             case CustomFieldType::TYPE_COUNT:
             case CustomFieldType::TYPE_NON_EMPTY:
             case CustomFieldType::TYPE_ARRAY:

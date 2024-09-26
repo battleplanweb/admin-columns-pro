@@ -224,6 +224,10 @@ abstract class Strategy
             return $data;
         }
 
+        if (is_numeric($data)) {
+            return $data;
+        }
+
         $characters = [
             '=',
             '+',
