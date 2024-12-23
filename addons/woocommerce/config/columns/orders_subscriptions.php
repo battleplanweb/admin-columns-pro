@@ -30,7 +30,6 @@ return [
     Column\Order\OrderId::class,
     Column\Order\OrderNumber::class,
     Column\Order\PaymentMethod::class,
-    Column\Order\Product::class,
     Column\Order\Purchased::class,
     Column\Order\Refunds::class,
     Column\Order\Shipping::class,
@@ -42,4 +41,5 @@ return [
     Column\OrderSubscription\AutoRenewal::class,
     Column\OrderSubscription\BillingPeriod::class,
     Column\OrderSubscription\BillingInterval::class,
+    Column\OrderSubscription\Product::class,
 ];

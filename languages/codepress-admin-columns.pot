@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: Admin Columns <info@admincolumns.com>\n"
 "Last-Translator: Codepress <info@codepress.nl\n"
-"POT-Creation-Date: 2024-08-26 08:11+0000\n"
+"POT-Creation-Date: 2024-11-05 08:26+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -519,11 +519,11 @@ msgstr ""
 msgid "+ Add view"
 msgstr ""
 
-#: admin-columns-pro/classes/Admin/ScriptFactory/SettingsFactory.php:64, admin-columns-pro/classes/Editing/Asset/Script/Table.php:117, admin-columns-pro/classes/Editing/Asset/Script/Table.php:121
+#: admin-columns-pro/classes/Admin/ScriptFactory/SettingsFactory.php:64, admin-columns-pro/classes/Editing/Asset/Script/Table.php:118, admin-columns-pro/classes/Editing/Asset/Script/Table.php:122
 msgid "Add"
 msgstr ""
 
-#: admin-columns-pro/classes/Admin/ScriptFactory/SettingsFactory.php:65, admin-columns-pro/classes/ConditionalFormat/Asset/Table.php:69, admin-columns-pro/classes/Editing/Asset/Script/Table.php:114, admin-columns-pro/classes/Export/Asset/Script/Table.php:66, admin-columns-pro/classes/Search/Asset/Script/Table.php:132
+#: admin-columns-pro/classes/Admin/ScriptFactory/SettingsFactory.php:65, admin-columns-pro/classes/ConditionalFormat/Asset/Table.php:69, admin-columns-pro/classes/Editing/Asset/Script/Table.php:115, admin-columns-pro/classes/Export/Asset/Script/Table.php:66, admin-columns-pro/classes/Search/Asset/Script/Table.php:132
 msgid "Cancel"
 msgstr ""
 
@@ -551,7 +551,7 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: admin-columns-pro/classes/Admin/ScriptFactory/SettingsFactory.php:73, admin-columns-pro/classes/Editing/Asset/Script/Table.php:95
+#: admin-columns-pro/classes/Admin/ScriptFactory/SettingsFactory.php:73, admin-columns-pro/classes/Editing/Asset/Script/Table.php:96
 msgid "Delete"
 msgstr ""
 
@@ -625,7 +625,7 @@ msgstr ""
 msgid "Restore the current column widths and order to their defaults."
 msgstr ""
 
-#: admin-columns-pro/classes/Asset/Script/Table.php:77, admin-columns-pro/classes/Asset/Script/Table.php:86, admin-columns-pro/classes/Editing/Asset/Script/Table.php:198
+#: admin-columns-pro/classes/Asset/Script/Table.php:77, admin-columns-pro/classes/Asset/Script/Table.php:86, admin-columns-pro/classes/Editing/Asset/Script/Table.php:199
 msgid "Are you sure?"
 msgstr ""
 
@@ -865,15 +865,15 @@ msgstr ""
 msgid "documentation"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/HideOnScreen/BulkDelete.php:12, admin-columns-pro/classes/Editing/Asset/Script/Table.php:145
+#: admin-columns-pro/classes/Editing/HideOnScreen/BulkDelete.php:12, admin-columns-pro/classes/Editing/Asset/Script/Table.php:146
 msgid "Bulk Delete"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/HideOnScreen/BulkEdit.php:12, admin-columns-pro/classes/Editing/Asset/Script/Table.php:192
+#: admin-columns-pro/classes/Editing/HideOnScreen/BulkEdit.php:12, admin-columns-pro/classes/Editing/Asset/Script/Table.php:193
 msgid "Bulk Edit"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/HideOnScreen/InlineEdit.php:12, admin-columns-pro/classes/Editing/Asset/Script/Table.php:107
+#: admin-columns-pro/classes/Editing/HideOnScreen/InlineEdit.php:12, admin-columns-pro/classes/Editing/Asset/Script/Table.php:108
 msgid "Inline Edit"
 msgstr ""
 
@@ -1281,6 +1281,22 @@ msgstr ""
 msgid "Upcoming Event"
 msgstr ""
 
+#: admin-columns-pro/addons/events-calendar/classes/Search/PastEvents.php:35
+msgid "Has Past Event"
+msgstr ""
+
+#: admin-columns-pro/addons/events-calendar/classes/Search/PastEvents.php:36
+msgid "Has No Past Event"
+msgstr ""
+
+#: admin-columns-pro/addons/events-calendar/classes/Search/RelatedEvents.php:35
+msgid "Has Event"
+msgstr ""
+
+#: admin-columns-pro/addons/events-calendar/classes/Search/RelatedEvents.php:36
+msgid "Has No Event"
+msgstr ""
+
 #: admin-columns-pro/addons/events-calendar/classes/Search/UpcomingEvent.php:35
 msgid "Has Upcoming Event"
 msgstr ""
@@ -1461,7 +1477,7 @@ msgstr ""
 msgid "No parent post types available."
 msgstr ""
 
-#: admin-columns-pro/addons/woocommerce/classes/ListTable/ProductVariation.php:156, admin-columns-pro/classes/Editing/Asset/Script/Table.php:110
+#: admin-columns-pro/addons/woocommerce/classes/ListTable/ProductVariation.php:156, admin-columns-pro/classes/Editing/Asset/Script/Table.php:111
 msgid "Image"
 msgstr ""
 
@@ -1699,270 +1715,270 @@ msgctxt "table view display"
 msgid "Dropdown"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:90
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:91
 msgid "Select author"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:92
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:93
 msgid "Redo"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:93
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:94
 msgid "Undo"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:96
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:97
 msgid "Generate"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:97
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:98
 msgid "Restore"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:98
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:99
 msgid "Show"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:99
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:100
 msgid "Hide"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:100
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:101
 msgid "Download"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:102
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:103
 msgid "This field is required."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:103
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:104
 msgid "Please enter a valid float value."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:104
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:105
 msgid "Please enter valid float values."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:105
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:106
 msgid "Something went wrong."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:108, admin-columns-pro/classes/Export/Asset/Script/Table.php:64
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:109, admin-columns-pro/classes/Export/Asset/Script/Table.php:64
 msgid "Failed"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:109
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:110
 msgid "Media"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:111
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:112
 msgid "Audio"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:112
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:113
 msgid "Time"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:113
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:114
 msgid "Update"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:115, admin-columns-pro/classes/Export/Asset/Script/Table.php:65
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:116, admin-columns-pro/classes/Export/Asset/Script/Table.php:65
 msgid "Done"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:116
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:117
 msgid "Replace with"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:118, admin-columns-pro/classes/Editing/Asset/Script/Table.php:122
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:119, admin-columns-pro/classes/Editing/Asset/Script/Table.php:123
 msgid "Remove"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:120
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:121
 msgid "Subtract"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:123
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:124
 msgid "Multiply"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:124
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:125
 msgid "Divide"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:127
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:128
 msgctxt "bulk-delete"
 msgid "This will affect {0}"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:128
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:129
 msgid "all selected items"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:129, admin-columns-pro/classes/Editing/Asset/Script/Table.php:130
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:130, admin-columns-pro/classes/Editing/Asset/Script/Table.php:131
 msgid "all items"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:131, admin-columns-pro/classes/Export/Asset/Script/Table.php:72
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:132, admin-columns-pro/classes/Export/Asset/Script/Table.php:72
 msgid "{0} items"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:132, admin-columns-pro/classes/Export/Asset/Script/Table.php:73
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:133, admin-columns-pro/classes/Export/Asset/Script/Table.php:73
 msgid "1 item"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:133
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:134
 msgid "Select all {0} items"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:135
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:136
 msgid "{0} selected for %s."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:140
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:141
 msgctxt "bulk-delete"
 msgid "Assign all content to:"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:146
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:147
 msgid "Bulk Restore"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:147
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:148
 msgid "Do you want to bulk delete all selected items?"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:151
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:152
 msgid "Do you want to bulk restore all selected items?"
-msgstr ""
-
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:155
-msgctxt "bulk-delete"
-msgid "current user"
 msgstr ""
 
 #: admin-columns-pro/classes/Editing/Asset/Script/Table.php:156
 msgctxt "bulk-delete"
+msgid "current user"
+msgstr ""
+
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:157
+msgctxt "bulk-delete"
 msgid "Delete all content"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:161
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:162
 msgctxt "bulk-delete"
 msgid "Delete the items permanently"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:166
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:167
 msgctxt "bulk-delete"
 msgid "The selected items will be deleted permanently."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:171
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:172
 msgctxt "bulk-delete"
 msgid "Restore"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:172
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:173
 msgctxt "bulk-delete"
 msgid "Restore the items"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:177, admin-columns-pro/classes/Editing/Asset/Script/Table.php:204
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:178, admin-columns-pro/classes/Editing/Asset/Script/Table.php:205
 msgid "Processed {0} items"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:178
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:179
 msgctxt "bulk-delete"
 msgid "Move the items to trash"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:183
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:184
 msgctxt "bulk-delete"
 msgid "What should be done with content owned by these users?"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:188
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:189
 msgid "Yes, Delete"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:189
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:190
 msgid "Yes, Restore"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:193
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:194
 msgid "Done & Deselect All"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:195
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:196
 msgid "This will update {0} items."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:196
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:197
 msgid "You are about to clear {0} items."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:197
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:198
 msgid "You are about to update {0} items."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:199
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:200
 msgid "Yes, Update"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:202
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:203
 msgid "Show items"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:203
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:204
 msgid "Hide items"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:205
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:206
 msgid "Updating items."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:206
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:207
 msgid "Processed {0} of {1} items."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:207
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:208
 msgid "Updating failed. Please try again."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:208
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:209
 msgctxt "bulk edit errors"
 msgid "We have found {0} while processing."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:213
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:214
 msgid "These items are not editable and could not be modified:"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:229
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:230
 msgid "bulk edit"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:230
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:231
 msgid "Bulk edit items by clicking the Bulk Edit button below the column labels."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:236
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:237
 msgid "bulk delete"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:237
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:238
 msgid "Bulk delete items by clicking the trash icon in the top left corner."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:243
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:244
 msgid "export"
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:244
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:245
 msgid "Export items by clicking the Export button."
 msgstr ""
 
-#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:267
+#: admin-columns-pro/classes/Editing/Asset/Script/Table.php:268
 msgid "current user"
 msgstr ""
 
@@ -2615,7 +2631,7 @@ msgstr ""
 msgid "User Agent"
 msgstr ""
 
-#: admin-columns-pro/addons/woocommerce/classes/Column/OrderSubscription/AutoRenewal.php:17, admin-columns-pro/addons/woocommerce/classes/Column/ShopSubscription/AutoRenewal.php:17, admin-columns-pro/addons/woocommerce/classes/Search/OrderSubscription/AutoRenewal.php:28
+#: admin-columns-pro/addons/woocommerce/classes/Column/OrderSubscription/AutoRenewal.php:17, admin-columns-pro/addons/woocommerce/classes/Column/ShopSubscription/AutoRenewal.php:17, admin-columns-pro/addons/woocommerce/classes/Search/OrderSubscription/AutoRenewal.php:27
 msgid "Auto Renewal"
 msgstr ""
 
@@ -3212,6 +3228,10 @@ msgstr ""
 
 #: admin-columns-pro/addons/yoast-seo/classes/Column/Post/PrimaryTaxonomy.php:19
 msgid "Primary Taxonomy"
+msgstr ""
+
+#: admin-columns-pro/addons/yoast-seo/classes/Column/Post/RelatedKeyphrases.php:14, admin-columns-pro/addons/yoast-seo/classes/Column/Taxonomy/RelatedKeyphrases.php:14
+msgid "Related Keyphrases"
 msgstr ""
 
 #: admin-columns-pro/addons/yoast-seo/classes/Column/Post/SchemaArticleType.php:24

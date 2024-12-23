@@ -3,7 +3,6 @@
 namespace ACA\WC\Search\OrderSubscription;
 
 use AC\Helper\Select\Options;
-use ACA\GravityForms\Search\Query\Bindings;
 use ACP;
 use ACP\Search\Comparison;
 use ACP\Search\Operators;
@@ -31,7 +30,7 @@ class AutoRenewal extends Comparison implements Comparison\Values
 
     protected function create_query_bindings(string $operator, Value $value): ACP\Query\Bindings
     {
-        $bindings = new Bindings();
+        $bindings = new ACP\Query\Bindings\QueryArguments();
         $bindings->meta_query([
             'key'   => '_requires_manual_renewal',
             'value' => $value->get_value(),

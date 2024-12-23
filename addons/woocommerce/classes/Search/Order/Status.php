@@ -10,7 +10,9 @@ use ACP\Search\Operators;
 class Status extends OrderField implements ACP\Search\Comparison\Values
 {
 
-    public function __construct()
+    private $options;
+
+    public function __construct(array $options = null)
     {
         parent::__construct(
             'status',
@@ -19,11 +21,17 @@ class Status extends OrderField implements ACP\Search\Comparison\Values
                 Operators::NEQ,
             ])
         );
+
+        if ($options === null) {
+            $options = wc_get_order_statuses();
+        }
+
+        $this->options = $options;
     }
 
     public function get_values(): Options
     {
-        return Options::create_from_array(wc_get_order_statuses());
+        return Options::create_from_array($this->options);
     }
 
 }

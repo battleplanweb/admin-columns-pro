@@ -1,5 +1,30 @@
 == Changelog ==
 
+= 6.4.13 =
+Release Date: November 5th, 2024
+
+* [Added] Introduced the Yoast Related Keyphrases column
+* [Added] Enabled Smart Filtering for the HPOS Order Notes column
+* [Added] Added Bulk Delete option for WooCommerce Orders
+* [Improved] Added filtering for Events column on Organizer and Venue tables
+* [Improved] Support for adding new numeric Product Attributes (Taxonomy) via `acp/editing/taxonomy/numeric_term_names` hook
+* [Fixed] WooCommerce Product column now filters correctly on the Shop Subscription table
+* [Fixed] The ‘Is not’ operator is now available for WooCommerce Product filtering on the Orders page
+* [Fixed] WooCommerce subscription status filtering now displays accurate options
+* [Updated] Admin Columns Core to version 4.7.9
+* [Improved] Better edit term link with taxonomy as parameter
+
+= 6.4.12 =
+Release Date: October 1st, 2024
+
+* [Fixed] WYSIWYG editing modal closes when adding a link in the editor
+* [Fixed] Leaving date time editing empty, will now clear the value
+* [Improved] Set default focus on value field for the Price editing modal
+* [Improved] Sticky Header improvements for multiline headers
+* [Improved] Added Modified Date column to Product Variation table
+* [Improved] Added Before and After setting to Author column
+* [Updated] Admin Columns Core to version 4.7.8
+
 = 6.4.11 =
 Release Date: August 26th, 2024
 

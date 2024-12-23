@@ -7,6 +7,7 @@ namespace ACA\WC\ListScreen;
 use AC;
 use AC\ColumnRepository;
 use AC\Type\Uri;
+use ACA\WC\Deletable;
 use ACA\WC\Editing;
 use ACA\WC\Export;
 use ACA\WC\ListTable\ManageValue;
@@ -17,7 +18,8 @@ use ACP;
 use Automattic;
 
 class Order extends AC\ListScreen implements ACP\Export\ListScreen, ACP\Editing\ListScreen,
-                                             AC\ListScreen\ManageValue, AC\ListScreen\ListTable
+                                             AC\ListScreen\ManageValue, AC\ListScreen\ListTable,
+                                             ACP\Editing\BulkDelete\ListScreen
 {
 
     private $column_config;
@@ -67,6 +69,11 @@ class Order extends AC\ListScreen implements ACP\Export\ListScreen, ACP\Editing\
     public function editing()
     {
         return new Editing\Strategy\Order();
+    }
+
+    public function deletable(): ACP\Editing\BulkDelete\Deletable
+    {
+        return new Deletable\Order();
     }
 
     public function export()

@@ -10,7 +10,7 @@ use ACA\WC\Settings\ShopOrder\NoteType;
 use ACP;
 use WC_DateTime;
 
-class Notes extends AC\Column implements ACP\Editing\Editable, AC\Column\AjaxValue
+class Notes extends AC\Column implements ACP\Editing\Editable, AC\Column\AjaxValue, ACP\Search\Searchable
 {
 
     use OrderTitle;
@@ -168,7 +168,21 @@ class Notes extends AC\Column implements ACP\Editing\Editable, AC\Column\AjaxVal
             case NoteType::SYSTEM_NOTE :
                 return new Editing\ShopOrder\NotesSystem();
             default:
-                return false;
+                return null;
+        }
+    }
+
+    public function search()
+    {
+        switch ($this->get_note_type()) {
+            case NoteType::PRIVATE_NOTE :
+                return new Search\Order\Notes\PrivateNotes();
+            case NoteType::CUSTOMER_NOTE :
+                return new Search\Order\Notes\CustomerNotes();
+            case NoteType::SYSTEM_NOTE :
+                return new Search\Order\Notes\SystemNotes();
+            default:
+                return null;
         }
     }
 

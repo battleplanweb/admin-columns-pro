@@ -8,6 +8,7 @@ return [
     ACP\Column\Post\AuthorName::class,
     ACP\Column\Post\DatePublished::class,
     ACP\Column\Post\ID::class,
+    ACP\Column\Post\Modified::class,
     ACP\Column\Post\LastModifiedAuthor::class,
     ACP\Column\Post\Slug::class,
     ACP\Column\Post\Status::class,

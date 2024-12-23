@@ -88,15 +88,25 @@ class Taxonomy implements Storage
         wp_remove_object_terms($id, $term_ids, $this->taxonomy);
     }
 
-    private function create_non_exisiting_terms(array $term_ids_or_names): array
+    private function create_non_existing_terms(array $term_ids_or_names): array
     {
         $transaction = new Transaction();
 
         $term_ids = [];
+        $search_numeric_terms = apply_filters('acp/editing/taxonomy/numeric_term_names', false, $this->taxonomy);
 
         foreach ($term_ids_or_names as $term_id_or_name) {
             if (is_numeric($term_id_or_name)) {
-                $term_ids[] = $term_id_or_name;
+                if ( ! $search_numeric_terms) {
+                    $term_ids[] = $term_id_or_name;
+                    continue;
+                }
+
+                $term = get_term_by('term_id', $term_id_or_name, $this->taxonomy);
+                $term_ids[] = $term instanceof WP_Term
+                    ? $term->term_id
+                    : $this->insert_term($term_id_or_name, $transaction);
+
                 continue;
             }
 
@@ -107,15 +117,7 @@ class Taxonomy implements Storage
                 continue;
             }
 
-            $term = wp_insert_term($term_id_or_name, $this->taxonomy);
-
-            if ($term instanceof WP_Error) {
-                $transaction->rollback();
-
-                throw new RuntimeException($term->get_error_message());
-            }
-
-            $term_ids[] = (int)$term['term_id'];
+            $term_ids[] = $this->insert_term($term_id_or_name, $transaction);
         }
 
         $transaction->commit();
@@ -123,10 +125,23 @@ class Taxonomy implements Storage
         return array_map('intval', $term_ids);
     }
 
+    private function insert_term(string $name, Transaction $transaction): int
+    {
+        $term = wp_insert_term($name, $this->taxonomy);
+
+        if ($term instanceof WP_Error) {
+            $transaction->rollback();
+
+            throw new RuntimeException($term->get_error_message());
+        }
+
+        return (int)$term['term_id'];
+    }
+
     private function add_terms(int $id, array $term_ids_or_names)
     {
         if ($this->enable_term_creation) {
-            $term_ids = $this->create_non_exisiting_terms($term_ids_or_names);
+            $term_ids = $this->create_non_existing_terms($term_ids_or_names);
         } else {
             $term_ids = $this->santize_term_ids($term_ids_or_names);
         }
@@ -137,7 +152,7 @@ class Taxonomy implements Storage
     public function replace_terms(int $id, array $term_ids_or_names)
     {
         if ($this->enable_term_creation) {
-            $term_ids = $this->create_non_exisiting_terms($term_ids_or_names);
+            $term_ids = $this->create_non_existing_terms($term_ids_or_names);
         } else {
             $term_ids = $this->santize_term_ids($term_ids_or_names);
         }

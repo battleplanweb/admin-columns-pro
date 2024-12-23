@@ -3,6 +3,7 @@
 namespace ACP\Column\Post;
 
 use AC;
+use AC\Settings\Column\BeforeAfter;
 use ACP\ConditionalFormat;
 use ACP\Editing;
 use ACP\Export;
@@ -43,6 +44,7 @@ class AuthorName extends AC\Column\Post\AuthorName
     public function register_settings()
     {
         $this->add_setting(new Settings\Column\User($this));
+        $this->add_setting(new BeforeAfter($this));
     }
 
     /**

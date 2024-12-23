@@ -22,7 +22,7 @@ class Status extends AC\Column implements ACP\Search\Searchable, ACP\Editing\Edi
 
     public function search()
     {
-        return new WC\Search\Order\Status();
+        return new WC\Search\Order\Status(wcs_get_subscription_statuses());
     }
 
     public function editing()

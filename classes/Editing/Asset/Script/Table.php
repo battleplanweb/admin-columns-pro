@@ -5,6 +5,7 @@ namespace ACP\Editing\Asset\Script;
 use AC;
 use AC\Asset\Location;
 use AC\Asset\Script;
+use ACA;
 use ACP;
 use ACP\Editing\ApplyFilter;
 use ACP\Editing\EditableDataFactory;
@@ -308,6 +309,8 @@ final class Table extends Script
                     return 'trash';
                 }
 
+                return 'post';
+            case $this->list_screen instanceof ACA\WC\ListScreen\Order:
                 return 'post';
             case $this->list_screen instanceof ACP\ListScreen\User:
                 return 'user';
