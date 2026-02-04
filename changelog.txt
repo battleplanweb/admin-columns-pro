@@ -1,5 +1,177 @@
 == Changelog ==
 
+= 7.0.6 =
+Release Date: January 28th, 2026
+
+* [Fixed] Prevented a fatal error when retrieving the total items count if $wp_list_table is not a WP_List_Table instance.
+* [Fixed] Fixed a WordPress VIP icon font issue.
+* [Improved] Optimized performance and memory usage when retrieving table views.
+* [Improved] The value rendering hook now also triggers when the value is empty.
+
+= 7.0.5 =
+Release Date: January 27th, 2026
+
+* [Fixed] Errors affecting date columns from some third-party plugins
+* [Fixed] Incorrect values returned by Toolset Select fields
+* [Fixed] The `EditorColumns` URI was incorrectly added to the WP_Admin_Bar object which could cause an error
+* [Updates] WooCommerce Order column now export custom order number instead of just the ID
+* [Improved] FileStorage performance and optimization
+* [Improved] Added get_post_type and get_meta_type methods to the CustomFieldContext class
+
+= 7.0.4 =
+Release Date: January 21st, 2026
+
+* [Added] WooCommerce Last Active column for the user table
+* [Fixed] Default WordPress and third-party columns that no longer displayed values
+* [Fixed] Gravity Forms checkbox null value error
+* [Fixed] Fixed PHP 8.4 deprecation warnings
+* [Fixed] File Storage updater now supports older file formats
+* [Fixed] Deprecated column type error in Pods
+* [Fixed] Media Library Assistant export error
+* [Fixed] User link setting linking to the wrong page
+
+= 7.0.3 =
+Release Date: January 16th, 2026
+
+* [Fixed] Smart Filtering on Taxonomies did not work when filtering was disabled
+* [Fixed] Better fix for the Media table
+* [Updated] Changed namespace for formatters from `ACP\Value\Formatter` to `ACP\Formatter`
+
+= 7.0.2 =
+Release Date: January 14th, 2026
+
+* [Fixed] Fatal error in WPML string translations
+* [Fixed] Error on the Media table when Grid view is active
+
+= 7.0.1 =
+Release Date: January 13th, 2026
+
+* [Fixed] Skip unsupported (unrenderable) ACF Fields that could throw a fatal error
+* [Fixed] Replaced variable `$column` with `$context` in the 'ac/editing/saved' hook
+* [Fixed] The get_hash() method in the ACF Field class will always return a `string`
+* [Deprecated] Deprecated AC\ListScreen::get_singular_label()
+* [Deprecated] Deprecated AC\Table\Button::set_text()
+
+= 7.0 =
+Release Date: January 12th, 2025
+
+* [Breaking Changes] Custom columns created for versions below 7.0 are no longer compatible and must be rewritten. Please read [Upgrading from v6 to v7](https://docs.admincolumns.com/article/117-how-to-upgrade-from-v6-to-v7)
+* [Breaking Changes] Many hooks have been renamed or modified to fit the new architecture and to prevent fatal errors.
+* [Improved] Completely new design and interface for the settings pages.
+* [Added] Conditional Formatting now supports applying rules for all users (Global Conditional Formatting).
+* [Added] New integration with Rank Math SEO.
+* [Added] New integration with SEOPress.
+* [Added] New Tools page to manage templates.
+* [Added] New Tools page to help set up File Storage.
+* [Added] ACF: Field-type columns now organize under their respective ACF Field Groups.
+* [Improved] Exporting table contents to CSV is faster
+* [Improved] Global Conditional Formatting is now also saved in File Storage
+* [Improved] Table views can now be toggled (enable/disable)
+* [Improved] Added support for composite editing modals (e.g., editing First and Last name together in one modal).
+* [Improved] More columns now support the extended value feature, providing richer and more detailed previews.
+* [Improved] ACF: The field type columns are now grouped by ACF Group.
+* [Improved] JetEngine: Column type keys are now prefixed to prevent conflicts with default columns.
+* [Improved] Toolset Types: Fully reworked column setup. Now one column per field instead of a single "Types" column. The upgrade script will update all existing configurations.
+* [Improved] Pods: Fully reworked column setup. Now one column per field instead of a single "Pods" column. The upgrade script will update all existing configurations.
+* [Updated] Free version numbering jumped ahead to 7.0 to align with the Pro version.
+
+= 6.4.23 =
+Release Date: September 22nd, 2025
+
+* [Improved] Author column can now also search on related meta (Custom Fields)
+* [Improved] Post Parent column is now always available for Post Type list tables
+* [Improved] Condition Formatting File Size column now works in Kb
+* [Improved] More translatable strings for Bulk Edit scripts
+* [Improved] Added backward compatibility layer in preparation for the upcoming 7.0 release
+* [Updated] Admin Columns Core to version 4.7.18
+
+= 6.4.22 =
+Release Date: August 27th, 2025
+
+* [Fixed] Security fixes (Axios update)
+* [Improved] Support filtering when WooCommerce Analytics is disabled. (HPOS Products)
+* [Improved] Improved conditional formatting for File Size column.
+* [Improved] More flexible way to resolve ACF location rules
+* [Improved] More translatable string for WC Editing modals
+* [Updated] Admin Columns Core to version 4.7.17
+
+= 6.4.21 =
+Release Date: July 28th, 2025
+
+* [Improved] User Role editing, now correctly updates instead of replacing roles
+* [Improved] Show full State name for WooCommerce Address fields
+* [Fixed] Wrong alignment of sticky headers
+* [Fixed] Missing Bulk Edit buttons after toggling columns in the Screen Options
+
+
+= 6.4.20 =
+Release Date: June 17th, 2025
+
+* [Updated] Admin Columns Core to version 4.7.16
+* [Fixed] Cache optimization
+
+= 6.4.19 =
+Release Date: June 16th, 2025
+
+* [Improved] JetEngine Select, Radio, and Checkboxes now have support for manual bulk options
+* [Updated] Admin Columns Core to version 4.7.15
+* [Fixed] Better null check for options to prevent PHP 8.3 issues
+* [Improved] Small UI changes in the admin view
+
+= 6.4.18 =
+Release Date: April 30th, 2025
+
+* [Improved] Strip HTML for HPOS Order columns
+* [Improved] Smart Filter with 'isset' operator could give a wrong display format
+* [Improved] Events Calendar add-on: The Venue Website now display the full URL instead of a pre-defined label
+* [Fixed] MetaBox editing fix for unserialize() errors
+* [Fixed] Editing for MetaBox Taxonomy columns with custom table did not work correct
+* [Fixed] Multiple 'Doing it wrong' warnings
+* [Updated] Admin Columns Core to version 4.7.14
+
+= 6.4.17 =
+Release Date: March 19th, 2025
+
+* [Fixed] Resolved an issue where exporting list screen settings with a saved filter containing quotes caused an error.
+* [Improved] The Value modal in the Images column now has a more compact display.
+* [Improved] Numbers in the filter widget are now only formatted when they contain five or more digits, improving readability.
+* [Improved] Product Count sorting in the HPOS Order Table now utilizes the product lookup table in the database.
+* [Improved] Added an option to hide the default WooCommerce Order filters
+* [Updated] Admin Columns Core to version 4.7.13
+
+= 6.4.16 =
+Release Date: March 12th, 2025
+
+* [Fixed] Corruption issues affecting certain languages in the core.
+* [Fixed] Resolved a fatal error that occurred when a template folder was defined but contained no templates.
+* [Improved] MetaBox integration now loads even when the AllInOne plugin is active without the core.
+* [Updated] Admin Columns Core to version 4.7.12
+
+= 6.4.15 =
+Release Date: March 3rd, 2025
+
+* [Fixed] Export for Discount columns (Orders) did not work
+* [Fixed] Post Link Editing was not working correctly
+* [Fixed] Fixed query arguments for the Search query in Product Taxonomy (Orders)
+* [Added] Editing support for Order TransactionID and Payment method
+* [Added] Added GTIN, IPC, EAN, and ISBN columns
+* [Improved] Polylang now returns correct columns for quick edit
+* [Improved] Show price for Variation value modal
+* [Improved] License checks now update renewed licenses automatically
+* [Updated] Admin Columns Core to version 4.7.11
+
+= 6.4.14 =
+Release Date: January 7th, 2025
+
+* [Added] New WooCommerce Product column: GTIN, UPC, EAN, or ISBN
+* [Improved] Recursive value export for Gravity Forms List field
+* [Improved] Export values without HTML for default WooCommerce HPOS tables
+* [Fixed] Export for Media Orientation column does now export the correct value
+* [Fixed] Column resize did not work when the Extended view was selected in the Screen Options
+* [Fixed] PHP warning for deprecated function in Average Order Interval column
+* [Updated] Admin Columns Core to version 4.7.10
+* [Fixed] Prevent conflicting classnames for generated column names
+
 = 6.4.13 =
 Release Date: November 5th, 2024
 

@@ -11,50 +11,26 @@ $items = $this->items;
 <div class="ac-modal-images-container">
     <?php
     foreach ($this->items as $item) : ?>
-		<div class="ac-image-container">
-			<div class="ac-image-center">
-				<img alt="<?= esc_attr($item['alt']) ?>" src="<?= esc_url($item['img_src']) ?>">
+		<div class="ac-image-container acu-shadow acu-rounded-lg">
+			<div class="ac-image-center acu-relative">
+				<img alt="<?= esc_attr($item['alt']) ?>" src="<?= esc_url($item['img_src']) ?>"
+					class="acu-block acu-w-full acu-object-cover">
+
+				<div class="ac-image-buttons acu-absolute acu-gap-3  acu-bottom-3 acu-left-3 acu-right-3 acu-flex acu-justify-center">
+					<a class="ac-image-button" target="_blank" href="<?= $item['edit_url'] ?>"><?= __('Edit') ?></a>
+					<a class="ac-image-button" download href="<?= $item['img_src'] ?>"><?= __('Download') ?></a>
+				</div>
 			</div>
 			<div class="ac-image-meta">
-                <?php
-                if ($item['filename']) : ?>
-					<div class="ac-image-meta-item -filename">
-                        <?= __('File name', 'codepress-admin-columns') ?>: <strong><?= $item['filename'] ?></strong>
-					</div>
-                <?php
-                endif ?>
-                <?php
-                if ($item['filetype']) : ?>
-					<div class="ac-image-meta-item -filetype">
-                        <?= __('File type', 'codepress-admin-columns') ?>: <strong><?= $item['filetype'] ?></strong>
-					</div>
-                <?php
-                endif ?>
-                <?php
-                if ($item['filesize']) : ?>
-					<div class="ac-image-meta-item -filesize">
-                        <?= __('File size', 'codepress-admin-columns') ?>: <strong><?= $item['filesize'] ?></strong>
-					</div>
-                <?php
-                endif ?>
-                <?php
-                if ($item['dimensions']) : ?>
-					<div class="ac-image-meta-item -dimensions">
-                        <?= __('Dimensions', 'codepress-admin-columns') ?>:
-						<strong><?= $item['dimensions'] ?></strong>
-					</div>
-                <?php
-                endif ?>
-				<div class="ac-image-meta-item -download">
-					<a download href="<?= $item['img_src'] ?>"><?= __('Download file') ?></a>
+				<div class="acu-font-bold acu-mb-1"><?= $item['filename'] ?? '' ?></div>
+				<div class="acu-flex acu-gap-[20px]">
+					<span>
+						<span class="dashicons dashicons-format-image"></span>
+						<?= strtoupper($item['filetype']) ?>
+					</span>
+					<span><?= $item['filesize'] ?></span>
+					<span><?= $item['dimensions'] ?></span>
 				</div>
-                <?php
-                if ($item['edit_url']) : ?>
-					<div class="ac-image-meta-item -edit">
-						<a target="_blank" href="<?= $item['edit_url'] ?>"><?= __('Edit file') ?></a>
-					</div>
-                <?php
-                endif ?>
 			</div>
 		</div>
     <?php

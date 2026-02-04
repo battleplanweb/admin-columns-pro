@@ -2,106 +2,147 @@
 
 namespace ACP\Editing\Storage\User;
 
+use AC;
 use ACP\Editing\Storage;
-use ACP\RolesFactory;
 use WP_User;
 
-class Role implements Storage {
+class Role implements Storage
+{
 
-	/**
-	 * @var bool $allow_non_editable_rows
-	 */
-	private $allow_non_editable_rows;
+    private bool $allow_non_editable_roles;
 
-	public function __construct( bool $allow_non_editable_rows ) {
-		$this->allow_non_editable_rows = $allow_non_editable_rows;
-	}
+    public function __construct(bool $allow_non_editable_roles)
+    {
+        $this->allow_non_editable_roles = $allow_non_editable_roles;
+    }
 
-	public function get( int $id ) {
-		$roles = ac_helper()->user->get_user_field( 'roles', $id );
+    public function get(int $id)
+    {
+        $roles = get_user_by('id', $id)->roles ?? null;
 
-		if ( ! $roles || ! is_array( $roles ) ) {
-			return false;
-		}
+        return $roles && is_array($roles)
+            ? array_values(array_filter($roles, [$this, 'is_editable_role']))
+            : false;
+    }
 
-		return array_values( array_filter( $roles, [ $this, 'is_editable_role' ] ) );
-	}
+    private function get_editable_roles(): AC\Type\UserRoles
+    {
+        static $editable_roles;
 
-	private function is_editable_role( string $role ): bool {
-		$editable_roles = ( new RolesFactory() )->create( $this->allow_non_editable_rows );
+        if (null === $editable_roles) {
+            $editable_roles = (new AC\Helper\UserRoles())->find_all($this->allow_non_editable_roles);
+        }
 
-		return in_array( $role, $editable_roles, true );
-	}
+        return $editable_roles;
+    }
 
-	private function is_not_editable_role( string $role ): bool {
-		return ! $this->is_editable_role( $role );
-	}
+    private function is_editable_role(string $role): bool
+    {
+        foreach ($this->get_editable_roles() as $editable_role) {
+            if ($role === $editable_role->get_name()) {
+                return true;
+            }
+        }
 
-	public function update( int $id, $data ): bool {
-		$params = $data;
+        return false;
+    }
 
-		if ( ! isset( $params['method'] ) ) {
-			$params = [
-				'method' => 'replace',
-				'value'  => $params,
-			];
-		}
+    private function is_not_editable_role(string $role): bool
+    {
+        return ! $this->is_editable_role($role);
+    }
 
-		$user = get_user_by( 'id', $id );
+    public function update(int $id, $data): bool
+    {
+        if ( ! current_user_can('edit_users') || ! current_user_can('promote_user', $id)) {
+            return false;
+        }
 
-		$roles = $params['value'];
+        $user = get_user_by('id', $id);
 
-		if ( current_user_can( 'edit_users' ) && current_user_can( 'promote_user', $id ) ) {
+        if ( ! $user) {
+            return false;
+        }
 
-			switch ( $params['method'] ) {
-				case 'add':
-					$this->add_roles( $user, $roles );
+        $params = $data;
 
-					break;
-				case 'remove':
-					$this->remove_roles( $user, $roles );
+        if ( ! isset($params['method'])) {
+            $params = [
+                'method' => 'replace',
+                'value'  => $params,
+            ];
+        }
 
-					break;
-				default:
+        $roles = $params['value'] ?: [];
 
-					if ( empty( $roles ) ) {
-						foreach ( $user->roles as $role ) {
-							$user->remove_role( $role );
-						}
-					} else {
-						// prevent the removal of your own admin role
-						if ( current_user_can( 'administrator' ) && get_current_user_id() === $id ) {
-							$roles[] = 'administrator';
-						}
+        switch ($params['method']) {
+            case 'add':
+                $this->add_roles($user, $roles);
 
-						// prevent the removal of existing non-editable roles
-						$non_editable_roles = array_values( array_filter( $user->roles, [ $this, 'is_not_editable_role' ] ) );
+                break;
+            case 'remove':
+                $this->safely_remove_roles($user, $roles);
 
-						$user->set_role( array_pop( $roles ) );
-						$this->add_roles( $user, array_merge( $roles, $non_editable_roles ) );
-					}
-			}
-		}
+                break;
+            default:
+                $this->replace_roles($user, $roles);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	private function add_roles( WP_User $user, $roles ) {
-		array_map( [ $user, 'add_role' ], $roles );
-	}
+    private function replace_roles(WP_User $user, array $roles): void
+    {
+        foreach ($roles as $role) {
+            if ( ! in_array($role, $user->roles, true)) {
+                $user->add_role($role);
+            }
+        }
 
-	private function remove_roles( WP_User $user, $roles ) {
-		if ( current_user_can( 'administrator' ) && get_current_user_id() == $user->ID ) {
-			$key = array_search( 'administrator', $roles );
+        $remove = [];
 
-			if ( $key !== false ) {
-				unset( $roles[ $key ] );
-			}
-		}
+        foreach ($user->roles as $role) {
+            if ( ! in_array($role, $roles, true)) {
+                $remove[] = $role;
+            }
+        }
 
-		foreach ( $roles as $key ) {
-			$user->remove_role( $key );
-		}
-	}
+        $this->safely_remove_roles($user, $remove);
+    }
+
+    private function add_roles(WP_User $user, array $roles): void
+    {
+        foreach ($roles as $role) {
+            if ( ! in_array($role, $user->roles, true)) {
+                $user->add_role($role);
+            }
+        }
+    }
+
+    private function safely_remove_roles(WP_User $user, array $roles): void
+    {
+        $exluded_roles = $this->get_non_removeable_roles($user);
+
+        foreach ($roles as $role) {
+            if ( ! in_array($role, $exluded_roles, true)) {
+                $user->remove_role($role);
+            }
+        }
+    }
+
+    private function get_non_removeable_roles(WP_User $user): array
+    {
+        $roles = [];
+
+        // prevent the removal of your own administrator role
+        if (get_current_user_id() === $user->ID && current_user_can('administrator')) {
+            $roles[] = 'administrator';
+        }
+
+        // prevent the removal of existing non-editable roles
+        $non_editable_roles = array_values(array_filter($user->roles, [$this, 'is_not_editable_role']));
+
+        return array_merge($roles, $non_editable_roles);
+    }
 
 }

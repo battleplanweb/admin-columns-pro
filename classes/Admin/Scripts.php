@@ -3,69 +3,46 @@
 namespace ACP\Admin;
 
 use AC\Asset;
-use AC\Asset\Enqueueable;
-use AC\Entity\Plugin;
 use AC\Registerable;
-use ACP\Access\PermissionsStorage;
+use ACP\ActivationTokenFactory;
+use ACP\AdminColumnsPro;
 use ACP\Asset\Script;
-use ACP\Transient\LicenseCheckTransient;
+use ACP\Transient\TimeTransientFactory;
 
 class Scripts implements Registerable
 {
 
-    private $location;
+    private ActivationTokenFactory $token_factory;
 
-    private $permission_storage;
-
-    private $plugin;
+    private Asset\Location $location;
 
     public function __construct(
-        Asset\Location\Absolute $location,
-        PermissionsStorage $permission_storage,
-        Plugin $plugin
+        AdminColumnsPro $plugin,
+        ActivationTokenFactory $activation_token_factory
     ) {
-        $this->location = $location;
-        $this->permission_storage = $permission_storage;
-        $this->plugin = $plugin;
+        $this->location = $plugin->get_location();
+        $this->token_factory = $activation_token_factory;
     }
 
     public function register(): void
     {
-        add_action('ac/admin_scripts', [$this, 'register_usage_limiter']);
         add_action('admin_enqueue_scripts', [$this, 'register_daily_license_check']);
-    }
-
-    public function register_usage_limiter(): void
-    {
-        if ($this->permission_storage->retrieve()->has_usage_permission()) {
-            return;
-        }
-
-        $assets = [
-            new Asset\Style('acp-usage-limiter', $this->location->with_suffix('assets/core/css/usage-limiter.css')),
-            new Asset\Script('acp-usage-limiter', $this->location->with_suffix('assets/core/js/usage-limiter.js')),
-        ];
-
-        array_map([$this, 'enqueue'], $assets);
     }
 
     public function register_daily_license_check(): void
     {
-        $transient = new LicenseCheckTransient($this->plugin->is_network_active());
+        $activation_token = $this->token_factory->create();
 
-        if ( ! $transient->is_expired()) {
+        if ( ! $activation_token) {
             return;
         }
 
-        $script = new Script\LicenseCheck($this->location->with_suffix('assets/core/js/license-check.js'));
-        $script->enqueue();
+        $cache = TimeTransientFactory::create_license_check_daily();
 
-        $transient->save((int)DAY_IN_SECONDS);
-    }
-
-    private function enqueue(Enqueueable $assets)
-    {
-        $assets->enqueue();
+        if ($cache->is_expired()) {
+            $script = new Script\LicenseCheck($this->location->with_suffix('assets/core/js/license-check.js'));
+            $script->enqueue();
+        }
     }
 
 }

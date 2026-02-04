@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ACA\WC\Search\Order;
 
 use ACA\WC\Search;
@@ -17,7 +19,9 @@ class Total extends ACP\Search\Comparison
             new Operators([
                 Operators::EQ,
                 Operators::LT,
+                Operators::LTE,
                 Operators::GT,
+                Operators::GTE,
                 Operators::BETWEEN,
             ]),
             Value::DECIMAL

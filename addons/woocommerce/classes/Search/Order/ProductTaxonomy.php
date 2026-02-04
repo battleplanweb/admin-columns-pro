@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ACA\WC\Search\Order;
 
 use AC\Helper\Select\Options\Paginated;
@@ -65,10 +67,10 @@ class ProductTaxonomy extends ACP\Search\Comparison implements ACP\Search\Compar
         global $wpdb;
 
         $product_ids = get_posts([
-            'post_type'       => 'product',
-            'fields'          => 'ids',
-            'posts_per_field' => -1,
-            'tax_query'       => [
+            'post_type'      => 'product',
+            'fields'         => 'ids',
+            'posts_per_page' => -1,
+            'tax_query'      => [
                 [
                     'taxonomy' => $this->taxonomy,
                     'terms'    => $term_id,

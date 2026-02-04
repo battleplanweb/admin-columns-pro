@@ -32,6 +32,13 @@ class Request
         return $this;
     }
 
+    public function set_header(string $name, string $value): self
+    {
+        $this->args['headers'][$name] = $value;
+
+        return $this;
+    }
+
     public function get_args(): array
     {
         return $this->args;

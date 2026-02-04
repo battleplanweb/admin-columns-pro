@@ -2,17 +2,20 @@
 
 namespace ACP\Search\Asset\Script;
 
+use AC\Admin\Tooltip;
 use AC\Asset\Location;
 use AC\Asset\Script;
 use AC\Capabilities;
 use AC\Helper\Select\Option;
 use AC\ListScreen;
 use AC\Request;
+use AC\Type\ColumnId;
+use AC\View;
+use ACP\Column;
 use ACP\Search\Comparison\RemoteValues;
 use ACP\Search\Comparison\SearchableValues;
 use ACP\Search\Comparison\Values;
-use ACP\Search\ComparisonFactory;
-use ACP\Search\Settings\HideOnScreen;
+use ACP\Search\Settings\TableElement;
 use ACP\Search\Type\SegmentKey;
 
 final class Table extends Script
@@ -32,7 +35,7 @@ final class Table extends Script
         array $filters,
         Request $request,
         ListScreen $list_screen,
-        SegmentKey $segment_key = null
+        ?SegmentKey $segment_key = null
     ) {
         parent::__construct($handle, $location, ['wp-pointer']);
 
@@ -65,13 +68,13 @@ final class Table extends Script
         $rules = json_decode($rules_raw, true);
 
         foreach ($rules['rules'] as $key => $rule) {
-            $column = $this->list_screen->get_column_by_name($rule['id']);
+            $column = $this->list_screen->get_column(new ColumnId((string)$rule['id']));
 
-            if ( ! $column) {
+            if ( ! $column instanceof Column) {
                 continue;
             }
 
-            $comparison = (new ComparisonFactory())->create($column);
+            $comparison = $column->search();
 
             if ( ! $comparison) {
                 continue;
@@ -79,14 +82,16 @@ final class Table extends Script
 
             if (
                 ($comparison instanceof RemoteValues || $comparison instanceof SearchableValues)
-                && $rule['value'] && ! is_array($rule['value'])) {
+                && $rule['value']
+                && ! is_array($rule['value'])
+            ) {
                 $rules['rules'][$key]['formatted_value'] = $comparison->format_label($rule['value']);
             }
 
             if ($comparison instanceof Values) {
                 /** @var Option $option */
                 foreach ($comparison->get_values()->get_copy() as $option) {
-                    if ((string)$option->get_value() === $rule['value']) {
+                    if ($option->get_value() === $rule['value']) {
                         $rules['rules'][$key]['formatted_value'] = $option->get_label();
                         break;
                     }
@@ -110,7 +115,7 @@ final class Table extends Script
                 'order'   => $_GET['order'] ?? null,
             ],
             'segments'        => [
-                'enabled'    => ! (new HideOnScreen\SavedFilters())->is_hidden($this->list_screen),
+                'enabled'    => (new TableElement\SavedFilters())->is_enabled($this->list_screen),
                 'can_manage' => current_user_can(Capabilities::MANAGE),
             ],
         ]);
@@ -134,6 +139,21 @@ final class Table extends Script
                 'instructions'    => __('Instructions', 'codepress-admin-columns'),
             ],
         ]);
+
+        add_action('ac/table/admin_footer', [$this, 'render_tooltip_saved_filters']);
+    }
+
+    public function render_tooltip_saved_filters(): void
+    {
+        $content = (new View())->set_template('table/tooltip-saved-filters')->render();
+
+        $tooltip = new Tooltip('filtered_segments', [
+            'content'    => $content,
+            'link_label' => __('Instructions', 'codepress-admin-columns'),
+            'title'      => __('Instructions', 'codepress-admin-columns'),
+        ]);
+
+        echo $tooltip->get_instructions();
     }
 
 }

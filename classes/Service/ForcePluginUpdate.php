@@ -5,18 +5,20 @@ namespace ACP\Service;
 use AC\Capabilities;
 use AC\Registerable;
 use ACP\ActivationTokenFactory;
-use ACP\Transient\UpdateCheckTransientHourly;
+use ACP\Transient\TimeTransientFactory;
 use ACP\Updates\PluginDataUpdater;
 
 class ForcePluginUpdate implements Registerable
 {
 
-    private $activation_token_factory;
+    private ActivationTokenFactory $activation_token_factory;
 
-    private $updater;
+    private PluginDataUpdater $updater;
 
-    public function __construct(ActivationTokenFactory $activation_token_factory, PluginDataUpdater $updater)
-    {
+    public function __construct(
+        ActivationTokenFactory $activation_token_factory,
+        PluginDataUpdater $updater
+    ) {
         $this->activation_token_factory = $activation_token_factory;
         $this->updater = $updater;
     }
@@ -33,9 +35,9 @@ class ForcePluginUpdate implements Registerable
     {
         global $pagenow;
 
-        return '1' === filter_input(INPUT_GET, 'force-check') && $pagenow === 'update-core.php' && current_user_can(
-                Capabilities::MANAGE
-            );
+        return '1' === filter_input(INPUT_GET, 'force-check')
+               && $pagenow === 'update-core.php'
+               && current_user_can(Capabilities::MANAGE);
     }
 
     /**
@@ -47,7 +49,7 @@ class ForcePluginUpdate implements Registerable
             return;
         }
 
-        $this->updater->update($this->activation_token_factory->create());
+        $this->update_plugin_data();
     }
 
     /**
@@ -55,13 +57,18 @@ class ForcePluginUpdate implements Registerable
      */
     public function force_plugin_updates_cached(): void
     {
-        $transient = new UpdateCheckTransientHourly();
+        $cache = TimeTransientFactory::create_update_check_hourly();
 
-        if ($transient->is_expired()) {
-            $this->updater->update($this->activation_token_factory->create());
+        if ($cache->is_expired()) {
+            $cache->save();
 
-            $transient->save();
+            $this->update_plugin_data();
         }
+    }
+
+    private function update_plugin_data(): void
+    {
+        $this->updater->update($this->activation_token_factory->create());
     }
 
 }

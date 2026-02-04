@@ -9,7 +9,7 @@ use AC\Registerable;
 final class TemplateFiles implements Registerable
 {
 
-    private $files;
+    private array $files = [];
 
     public function __construct(array $files)
     {

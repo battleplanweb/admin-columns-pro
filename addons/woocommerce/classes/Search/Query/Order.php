@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ACA\WC\Search\Query;
 
 use ACP\Query;
 use ACP\Query\Bindings\QueryArguments;
-use Automattic\WooCommerce\Internal\DataStores\Orders\OrdersTableDataStore;
 
 final class Order extends Query
 {
@@ -29,11 +30,7 @@ final class Order extends Query
                 $clauses['groupby'] = $binding->get_group_by();
             }
             if ($binding->get_order_by()) {
-                $clauses['orderby'] = sprintf(
-                    "%s, %s.id ASC",
-                    $binding->get_order_by(),
-                    OrdersTableDataStore::get_orders_table_name()
-                );
+                $clauses['orderby'] = $binding->get_order_by();
             }
         }
 

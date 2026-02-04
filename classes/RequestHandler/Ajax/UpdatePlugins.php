@@ -6,49 +6,42 @@ use AC;
 use AC\Nonce;
 use AC\RequestAjaxHandler;
 use ACP\ActivationTokenFactory;
-use ACP\Transient\UpdateCheckTransient;
+use ACP\Transient\TimeTransientFactory;
 use ACP\Updates\PluginDataUpdater;
 
 class UpdatePlugins implements RequestAjaxHandler
 {
 
-    /**
-     * @var ActivationTokenFactory
-     */
-    private $activation_token_factory;
+    private ActivationTokenFactory $activation_token_factory;
 
-    /**
-     * @var PluginDataUpdater
-     */
-    private $updater;
+    private PluginDataUpdater $updater;
 
-    /**
-     * @var UpdateCheckTransient
-     */
-    private $cache;
+    private Nonce\Ajax $nonce;
 
     public function __construct(
         ActivationTokenFactory $activation_token_factory,
         PluginDataUpdater $updater,
-        UpdateCheckTransient $cache
+        Nonce\Ajax $nonce
     ) {
         $this->activation_token_factory = $activation_token_factory;
         $this->updater = $updater;
-        $this->cache = $cache;
+        $this->nonce = $nonce;
     }
 
     public function handle(): void
     {
         $request = new AC\Request();
 
-        if ( ! (new Nonce\Ajax())->verify($request)) {
+        if ( ! $this->nonce->verify($request)) {
             wp_send_json_error();
         }
 
-        if ($this->cache->is_expired()) {
-            $this->updater->update($this->activation_token_factory->create());
+        $cache = TimeTransientFactory::create_update_check();
 
-            $this->cache->save(HOUR_IN_SECONDS * 12);
+        if ($cache->is_expired()) {
+            $cache->save();
+
+            $this->updater->update($this->activation_token_factory->create());
         }
     }
 

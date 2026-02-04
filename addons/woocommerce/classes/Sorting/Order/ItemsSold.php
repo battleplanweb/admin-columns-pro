@@ -21,13 +21,19 @@ class ItemsSold implements QueryBindings
 
         $alias = $bindings->get_unique_alias('acsort');
 
+        $subQuery = "
+            SELECT order_id, SUM(product_qty) AS total_product_count
+            FROM {$wpdb->prefix}wc_order_product_lookup
+            GROUP BY order_id
+        ";
+
         $bindings->join(
-            "LEFT JOIN {$wpdb->prefix}wc_order_stats AS $alias ON $alias.order_id = {$wpdb->prefix}wc_orders.id"
+            "LEFT JOIN ($subQuery) AS $alias ON $alias.order_id = {$wpdb->prefix}wc_orders.id"
         );
 
         $bindings->order_by(
             SqlOrderByFactory::create(
-                "$alias.num_items_sold",
+                "$alias.total_product_count",
                 (string)$order,
                 [
                     'empty_values' => [EmptyValues::NULL, EmptyValues::ZERO],

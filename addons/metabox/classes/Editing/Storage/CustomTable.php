@@ -1,63 +1,81 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ACA\MetaBox\Editing\Storage;
 
 use ACP;
 use MetaBox\CustomTable\Cache;
 use MetaBox\CustomTable\Storage;
 
-class CustomTable implements ACP\Editing\Storage {
+class CustomTable implements ACP\Editing\Storage
+{
 
-	/**
-	 * @var Storage
-	 */
-	private $storage;
+    private Storage $storage;
 
-	/**
-	 * @var string
-	 */
-	private $meta_key;
+    private $table;
 
-	/**
-	 * @var string
-	 */
-	private $table;
+    private $field_id;
 
-	public function __construct( Storage $storage, $table, $meta_key ) {
-		$this->storage = $storage;
-		$this->meta_key = $meta_key;
-		$this->table = $table;
-	}
+    public function __construct(Storage $storage, string $field_id)
+    {
+        $this->storage = $storage;
+        $this->table = $storage->table;
+        $this->field_id = $field_id;
+    }
 
-	public function get( int $id ) {
-		$row = Cache::get( $id, $this->table );
+    public function get(int $id)
+    {
+        $row = Cache::get($id, $this->table);
 
-		$value = isset( $row[ $this->meta_key ] ) ? $row[ $this->meta_key ] : false;
+        $value = $row[$this->field_id] ?? false;
 
-		$unserialize = @unserialize( $value, [ 'allowed_classes' => false ] );
+        if ( ! $this->is_serialized($value)) {
+            return $value;
+        }
 
-		return $unserialize !== false ? $unserialize : $value;
-	}
+        $data = @unserialize($value, ['allowed_classes' => false]);
 
-	public function update( int $id, $data ): bool {
-		$row = Cache::get( $id, $this->table );
+        return $data !== false ? $data : $value;
+    }
 
-		if ( is_array( $data ) ) {
-			$data = serialize( $data );
-		}
+    private function is_serialized($value): bool
+    {
+        if ( ! is_string($value)) {
+            return false;
+        }
+        $value = trim($value);
 
-		$row[ $this->meta_key ] = $data;
+        if ($value === 'N;') {
+            return true;
+        }
+        if ( ! preg_match('/^([adObis]):/', $value, $matches)) {
+            return false;
+        }
 
-		if ( $this->storage->row_exists( $id ) ) {
-			$this->storage->update_row( $id, $row );
-		} else {
-			$row['ID'] = $id;
-			$this->storage->insert_row( $row );
-		}
+        return true;
+    }
 
-		Cache::set( $id, $this->table, $row );
+    public function update(int $id, $data): bool
+    {
+        $row = Cache::get($id, $this->table);
 
-		return true;
-	}
+        if (is_array($data)) {
+            $data = serialize($data);
+        }
+
+        $row[$this->field_id] = $data;
+
+        if ($this->storage->row_exists($id)) {
+            $this->storage->update_row($id, $row);
+        } else {
+            $row['ID'] = $id;
+            $this->storage->insert_row($row);
+        }
+
+        Cache::set($id, $this->table, $row);
+
+        return true;
+    }
 
 }

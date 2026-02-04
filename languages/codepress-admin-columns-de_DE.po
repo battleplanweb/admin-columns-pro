@@ -6,12 +6,13 @@
 # Mark Howells-Mead <permanent.tourist@gmail.com>, 2020
 # Steffen Dressler <steffen@gourami.de>, 2021
 # Thomas Diesenreiter, 2023
+# Tobias K, 2025
 # Tobias Schutter <info@codepress.nl>, 2016,2021,2023
 msgid ""
 msgstr ""
 "Project-Id-Version: Admin Columns Pro\n"
 "PO-Revision-Date: 2014-05-22 15:53+0000\n"
-"Last-Translator: Thomas Diesenreiter, 2023\n"
+"Last-Translator: Tobias K, 2025\n"
 "Language-Team: German (Germany) (http://app.transifex.com/codepress/admin-columns-pro/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +27,7 @@ msgstr ""
 
 #: admin-columns-pro/classes/API.php:98
 msgid "The Admin Columns Server was unreachable."
-msgstr ""
+msgstr "Der Admin Columns Server war nicht erreichbar."
 
 #: admin-columns-pro/classes/PluginActionLinks.php:63
 msgid "Settings"
@@ -40,7 +41,7 @@ msgstr "Werkzeuge"
 #: admin-columns-pro/classes/Admin/Page/License.php209,
 #: admin-columns-pro/classes/Admin/Page/License.php:268
 msgid "License"
-msgstr ""
+msgstr "Lizenz"
 
 #: admin-columns-pro/classes/Admin/Settings.php196,
 #: admin-columns-pro/classes/Table/HorizontalScrolling.php:88
@@ -125,11 +126,11 @@ msgstr "Meine Account-Seite"
 
 #: admin-columns-pro/classes/Check/LockedSettings.php:101
 msgid "activating %s"
-msgstr ""
+msgstr "aktiviere"
 
 #: admin-columns-pro/classes/Check/LockedSettings.php:105
 msgid "To start using Admin Columns Pro, fill in your license key below."
-msgstr ""
+msgstr "Um Admin Columns Pro nutzen zu können, geben Sie bitte Ihren Lizenzschlüssel ein."
 
 #: admin-columns-pro/classes/Check/Renewal.php:220
 msgid "Renew your license"
@@ -144,22 +145,22 @@ msgstr "Ihre Admin Columns Pro Lizenz läuft in %s ab. Um Zugang auf neuen Featu
 #: admin-columns-pro/classes/ConditionalFormat/Operators.php:64
 msgctxt "operator"
 msgid "Contains"
-msgstr ""
+msgstr "Enthält"
 
 #: admin-columns-pro/classes/ConditionalFormat/Operators.php:68
 msgctxt "operator"
 msgid "Does Not Contain"
-msgstr ""
+msgstr "Enthält nicht"
 
 #: admin-columns-pro/classes/ConditionalFormat/Operators.php:72
 msgctxt "operator"
 msgid "Starts With"
-msgstr ""
+msgstr "Beginnt mit"
 
 #: admin-columns-pro/classes/ConditionalFormat/Operators.php:76
 msgctxt "operator"
 msgid "Ends With"
-msgstr ""
+msgstr "Endet mit"
 
 #: admin-columns-pro/classes/ConditionalFormat/Operators.php:82
 msgctxt "operator"
@@ -174,12 +175,12 @@ msgstr ""
 #: admin-columns-pro/classes/ConditionalFormat/Operators.php:90
 msgctxt "operator"
 msgid "Less Than"
-msgstr ""
+msgstr "Weniger als"
 
 #: admin-columns-pro/classes/ConditionalFormat/Operators.php:94
 msgctxt "operator"
 msgid "Less Than or Equal"
-msgstr ""
+msgstr "Weniger als oder gleich"
 
 #: admin-columns-pro/classes/ConditionalFormat/Operators.php:98
 msgctxt "operator"
@@ -239,17 +240,17 @@ msgstr ""
 #: admin-columns-pro/classes/ConditionalFormat/Operators.php:149
 msgctxt "operator"
 msgid "Within … days"
-msgstr ""
+msgstr "Innerhalb von ... Tagen"
 
 #: admin-columns-pro/classes/ConditionalFormat/Operators.php:153
 msgctxt "operator"
 msgid "More than … days ago"
-msgstr ""
+msgstr "Vor mehr als ... Tagen"
 
 #: admin-columns-pro/classes/ConditionalFormat/Operators.php:157
 msgctxt "operator"
 msgid "Less than … days ago"
-msgstr ""
+msgstr "Vor weniger als ... Tagen"
 
 #: admin-columns-pro/classes/Editing/Settings.php:86
 msgid "Enable Editing"
@@ -265,7 +266,7 @@ msgstr "Ungültiger Wert für den Export-Zähler."
 
 #: admin-columns-pro/classes/Export/Strategy.php:258
 msgid "No exportable columns found."
-msgstr ""
+msgstr "Keine exportierbaren Spalten gefunden."
 
 #: admin-columns-pro/classes/Export/TableScreen.php:89
 msgid "Export Button"
@@ -325,11 +326,11 @@ msgstr "Filtern"
 
 #: admin-columns-pro/classes/RequestHandler/LicenseActivate.php:93
 msgid "Empty license key."
-msgstr ""
+msgstr "Leerer Lizenzschlüssel."
 
 #: admin-columns-pro/classes/RequestHandler/LicenseActivate.php:99
 msgid "Invalid license key."
-msgstr ""
+msgstr "Ungültiger Lizenzschlüssel."
 
 #: admin-columns-pro/classes/RequestHandler/LicenseActivate.php:119
 msgid "Product is activated, but automatic updates are disabled."
@@ -563,16 +564,16 @@ msgstr "Ansicht wechseln"
 #: admin-columns-pro/classes/Asset/Script/Table.php:69
 msgctxt "column-resize-button"
 msgid "Reset"
-msgstr ""
+msgstr "Zurücksetzen"
 
 #: admin-columns-pro/classes/Asset/Script/Table.php:70
 msgid "Columns"
-msgstr ""
+msgstr "Spalten"
 
 #: admin-columns-pro/classes/Asset/Script/Table.php71,
 #: admin-columns-pro/classes/Settings/ListScreen/HideOnScreen/ColumnResize.php:10
 msgid "Resize Columns"
-msgstr ""
+msgstr "Größe der Spalten ändern"
 
 #: admin-columns-pro/classes/Asset/Script/Table.php:74
 msgid "Restore the current column widths and order to their defaults."
@@ -586,7 +587,7 @@ msgstr "Sind Sie sicher?"
 
 #: admin-columns-pro/classes/Asset/Script/Table.php:77
 msgid "Save changes"
-msgstr ""
+msgstr "Änderungen speichern"
 
 #: admin-columns-pro/classes/Asset/Script/Table.php:80
 msgid ""
@@ -733,7 +734,7 @@ msgstr "Kind-Seiten"
 
 #: admin-columns-pro/classes/Column/Post/GutenbergBlocks.php:15
 msgid "Gutenberg Blocks"
-msgstr ""
+msgstr "Gutenberg-Blöcke"
 
 #: admin-columns-pro/classes/Column/Post/HasTerm.php:13
 msgid "Has Term"
@@ -775,7 +776,7 @@ msgstr[1] "%s Revisionen"
 #: admin-columns-pro/classes/Column/Post/Shortcode.php14,
 #: admin-columns-pro/classes/Settings/Column/Shortcodes.php:25
 msgid "Shortcode"
-msgstr ""
+msgstr "Shortcode"
 
 #: admin-columns-pro/classes/Column/Post/Title.php:16
 msgid "Add title"
@@ -804,12 +805,12 @@ msgstr "Profilbild"
 
 #: admin-columns-pro/classes/Column/User/Password.php:14
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: admin-columns-pro/classes/Column/User/Password.php20,
 #: admin-columns-pro/classes/Editing/View/WpPassword.php:14
 msgid "Set new password"
-msgstr ""
+msgstr "Neues Passwort festlegen"
 
 #: admin-columns-pro/classes/Column/User/Password.php:21
 msgid "Enable Inline Edit to change password"
@@ -828,7 +829,7 @@ msgstr "Beiträge vom Autor"
 #: admin-columns-pro/classes/ConditionalFormat/Asset/Table.php:79
 msgctxt "between_operator"
 msgid "and"
-msgstr ""
+msgstr "und"
 
 #: admin-columns-pro/classes/ConditionalFormat/Asset/Table.php:80
 msgid "Save &amp; Apply"
@@ -843,11 +844,11 @@ msgstr "Abbrechen"
 
 #: admin-columns-pro/classes/ConditionalFormat/Asset/Table.php:82
 msgid "Add Rule"
-msgstr ""
+msgstr "Regel hinzufügen"
 
 #: admin-columns-pro/classes/ConditionalFormat/Asset/Table.php:83
 msgid "Add condition"
-msgstr ""
+msgstr "Bedingung hinzufügen"
 
 #: admin-columns-pro/classes/ConditionalFormat/Asset/Table.php84,
 #: admin-columns-pro/classes/ConditionalFormat/Asset/Table.php85,
@@ -948,7 +949,7 @@ msgstr "Export"
 
 #: admin-columns-pro/classes/Export/Settings/Column.php:28
 msgid "Enable Export"
-msgstr ""
+msgstr "Export aktivieren"
 
 #: admin-columns-pro/classes/Filtering/Markup/Dropdown.php54,
 #: admin-columns-pro/addons/woocommerce/classes/Filtering/ShopOrder/CustomerMessage.php:30
@@ -1017,12 +1018,12 @@ msgstr[1] "Sets"
 #: admin-columns-pro/classes/QuickAdd/Admin/HideOnScreen/QuickAdd.php15,
 #: admin-columns-pro/classes/QuickAdd/Table/Checkbox/ShowButton.php:11
 msgid "Add Row"
-msgstr ""
+msgstr "Zeile hinzufügen"
 
 #: admin-columns-pro/classes/RequestHandler/Ajax/Feedback.php30,
 #: admin-columns-pro/classes/RequestHandler/Ajax/LicenseActivate.php:79
 msgid "Invalid request"
-msgstr ""
+msgstr "Ungültige Anfrage"
 
 #: admin-columns-pro/classes/RequestHandler/Ajax/Feedback.php:37
 msgid "Please insert a valid email so we can reply to your feedback."
@@ -1034,7 +1035,7 @@ msgstr "Ihr Feedback ist leer."
 
 #: admin-columns-pro/classes/RequestHandler/Ajax/Feedback.php:59
 msgid "Thank you very much for your feedback!"
-msgstr ""
+msgstr "Vielen Dank für Ihr Feedback!"
 
 #: admin-columns-pro/classes/RequestHandler/Ajax/LicenseActivate.php:85
 msgid "Empty license."
@@ -1042,7 +1043,7 @@ msgstr "Leere Lizenz."
 
 #: admin-columns-pro/classes/RequestHandler/Ajax/LicenseActivate.php:89
 msgid "Invalid license."
-msgstr ""
+msgstr "Ungültige Lizenz."
 
 #: admin-columns-pro/classes/Search/Labels/Date.php:12
 msgid "is after"
@@ -1223,7 +1224,7 @@ msgstr ""
 
 #: admin-columns-pro/addons/acf/classes/Service/LegacyColumnMapper.php:45
 msgid "Update Now"
-msgstr ""
+msgstr "Jetzt aktualisieren"
 
 #: admin-columns-pro/addons/acf/classes/Service/ListScreens.php:31
 msgid "Advanced Custom Fields"
@@ -3436,7 +3437,7 @@ msgstr ""
 #: admin-columns-pro/addons/acf/classes/Search/Comparison/FieldGroup/Location.php:41
 msgctxt "ACF location"
 msgid "Users"
-msgstr ""
+msgstr "Benutzer"
 
 #: admin-columns-pro/addons/acf/classes/Search/Comparison/FieldGroup/Location.php:44
 msgctxt "ACF location"

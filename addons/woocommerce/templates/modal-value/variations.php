@@ -17,6 +17,7 @@ $items = $this->items;
             ) ?></th>
 		<th class="col-attributes"><?= __('Attributes', 'codepress-admin-columns') ?></th>
 		<th class="col-stock"><?= __('Stock', 'codepress-admin-columns') ?></th>
+		<th class="col-price"><?= __('Price', 'codepress-admin-columns') ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -36,6 +37,9 @@ $items = $this->items;
 			</td>
 			<td class="col-stock">
                 <?= $item['stock'] ?>
+			</td>
+			<td class="col-price">
+                <?= $item['price'] ?>
 			</td>
 		</tr>
     <?php

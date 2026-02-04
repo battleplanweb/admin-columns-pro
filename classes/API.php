@@ -9,25 +9,13 @@ use WP_Error;
 class API
 {
 
-    /**
-     * @var string
-     */
-    protected $url;
+    protected ?string $url = null;
 
-    /**
-     * @var string
-     */
-    protected $proxy;
+    protected ?string $proxy = null;
 
-    /**
-     * @var bool
-     */
-    protected $use_proxy = true;
+    protected bool $use_proxy = true;
 
-    /**
-     * @var array
-     */
-    private $meta = [];
+    private array $meta = [];
 
     public function get_url(): string
     {
@@ -110,6 +98,10 @@ class API
         $body['meta'] = array_merge($body['meta'], $this->meta);
 
         $request->set_body($body);
+
+        // Set headers
+        $request->set_header('X-AC-Version', ACP_VERSION);
+        $request->set_header('X-AC-Command', $body['command'] ?? '');
 
         $data = wp_remote_post($this->get_request_url(), $request->get_args());
 

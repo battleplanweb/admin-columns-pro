@@ -2,38 +2,36 @@
 
 namespace ACP\Updates;
 
-use AC\Asset;
 use AC\Registerable;
+use ACP\AdminColumnsPro;
 use ACP\Asset\Script\PluginUpdatesCheck;
-use ACP\Transient\UpdateCheckTransient;
+use ACP\Transient\TimeTransientFactory;
 
-class PeriodicUpdateCheck implements Registerable {
+class PeriodicUpdateCheck implements Registerable
+{
 
-	/**
-	 * @var Asset\Location\Absolute
-	 */
-	private $location;
+    private AdminColumnsPro $plugin;
 
-	/**
-	 * @var UpdateCheckTransient
-	 */
-	private $cache;
-
-	public function __construct( Asset\Location\Absolute $location, UpdateCheckTransient $cache ) {
-		$this->location = $location;
-		$this->cache = $cache;
-	}
-
-	public function register(): void
+    public function __construct(AdminColumnsPro $plugin)
     {
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
-	}
+        $this->plugin = $plugin;
+    }
 
-	public function enqueue_scripts() {
-		if ( $this->cache->is_expired() ) {
-			$script = new PluginUpdatesCheck( $this->location->with_suffix( 'assets/core/js/update-plugins-check.js' ) );
-			$script->enqueue();
-		}
-	}
+    public function register(): void
+    {
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
+    }
+
+    public function enqueue_scripts(): void
+    {
+        $cache = TimeTransientFactory::create_update_check();
+
+        if ($cache->is_expired()) {
+            $script = new PluginUpdatesCheck(
+                $this->plugin->get_location()->with_suffix('assets/core/js/update-plugins-check.js')
+            );
+            $script->enqueue();
+        }
+    }
 
 }
