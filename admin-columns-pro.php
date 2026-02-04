@@ -1,4 +1,5 @@
 <?php
+
 /*
 Plugin Name: Admin Columns Pro
 Version: 7.0.6
@@ -10,6 +11,7 @@ Requires at least: 5.9
 Text Domain: codepress-admin-columns
 Domain Path: /languages/
 */
+
 
 use AC\Vendor\DI\ContainerBuilder;
 use ACP\Loader;
