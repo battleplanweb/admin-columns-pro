@@ -1,17 +1,10 @@
 <?php
-
 /*
-Plugin Name: Admin Columns Pro
-Version: 7.0.6
-Description: Customize columns on the administration screens for post(types), users and other content. Filter and sort content, and edit posts directly from the posts overview. All via an intuitive, easy-to-use drag-and-drop interface.
-GitHub Plugin URI: battleplanweb/admin-columns-pro
-
-Requires PHP: 7.4
-Requires at least: 5.9
-Text Domain: codepress-admin-columns
-Domain Path: /languages/
+Plugin Name: Admin Columns Pro (BP)
+Version: 7.0.7
+GitHub Plugin URI: https://github.com/battleplanweb/admin-columns-pro
+Primary Branch: master
 */
-
 
 use AC\Vendor\DI\ContainerBuilder;
 use ACP\Loader;
